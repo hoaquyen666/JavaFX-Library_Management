@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="417493ce-69ba-4e8d-b0e7-487c8cedb821" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/JavaFX-Library_Management.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/Administrator/Administrator.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/Librarian/Librarian.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/Reader/Reader.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/SeniorManager/SeniorManager.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/library.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,23 +48,23 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "hoaquyen666"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;hoaquyen666&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/hoaquyen666/JavaFX-Library_Management.git",
-    "accountId": "9d848574-e2d9-4990-ae56-7a4f50f140a2"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/hoaquyen666/JavaFX-Library_Management.git&quot;,
+    &quot;accountId&quot;: &quot;9d848574-e2d9-4990-ae56-7a4f50f140a2&quot;
   }
-}]]></component>
+}</component>
   <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$/Client/Administrator" gradleHome="C:\Users\ADMIN\.gradle\wrapper\dists\gradle-8.13-bin\5xuhj0ry160q40clulazy9h7d\gradle-8.13" javaHome="C:\Program Files\Java\jdk-21" gradleVersion="8.13" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="3A4uDRuynzyo2v4E1B50a2o2fOI" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -87,13 +80,19 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.side.proportion": "0.3413793",
     "settings.editor.selected.configurable": "settings.sync",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -112,6 +111,7 @@
       <option name="presentableId" value="Default" />
       <updated>1771864045047</updated>
       <workItem from="1771864046830" duration="353000" />
+      <workItem from="1771864617763" duration="352000" />
     </task>
     <servers />
   </component>
