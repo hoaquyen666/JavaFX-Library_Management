@@ -6,6 +6,7 @@
 *.iws
 out/
 .idea/workspace.xml
+.idea/modules.xml
 ############################
 # Build folders
 ############################
