@@ -11,5 +11,7 @@ module com.example.reader {
     requires eu.hansolo.tilesfx;
 
     opens com.example.reader to javafx.fxml;
+    opens com.example.reader.controller to javafx.fxml;
+
     exports com.example.reader;
 }
