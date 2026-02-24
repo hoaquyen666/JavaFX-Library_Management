@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="417493ce-69ba-4e8d-b0e7-487c8cedb821" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Client/Administrator/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/Librarian/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/Reader/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/SeniorManager/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,32 +68,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Administrator [:com.example.administrator.Launcher.main()].executor": "Run",
-    "Gradle.Librarian [:com.example.librarian.Launcher.main()].executor": "Run",
-    "Gradle.Reader [:com.example.reader.Launcher.main()].executor": "Run",
-    "Gradle.SeniorManager [:com.example.seniormanager.Launcher.main()].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.3413793",
-    "settings.editor.selected.configurable": "settings.sync",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Administrator [:com.example.administrator.Launcher.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Librarian [:com.example.librarian.Launcher.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Reader [:com.example.reader.Launcher.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.SeniorManager [:com.example.seniormanager.Launcher.main()].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.3413793&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.sync&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -117,6 +112,7 @@
       <workItem from="1771864046830" duration="353000" />
       <workItem from="1771864617763" duration="352000" />
       <workItem from="1771865322986" duration="855000" />
+      <workItem from="1771902060730" duration="2813000" />
     </task>
     <servers />
   </component>
