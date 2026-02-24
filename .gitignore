@@ -5,7 +5,7 @@
 *.iml
 *.iws
 out/
-
+.idea/workspace.xml
 ############################
 # Build folders
 ############################
