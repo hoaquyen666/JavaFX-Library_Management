@@ -1,1 +1,0 @@
-# Data Access Object - truy vấn DB
