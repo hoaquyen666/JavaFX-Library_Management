@@ -9,7 +9,9 @@ module com.example.seniormanager {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires jakarta.mail;
+    requires jakarta.activation;
 
-    opens com.example.seniormanager to javafx.fxml;
     exports com.example.seniormanager;
+    opens com.example.seniormanager.controller to javafx.fxml;
 }
