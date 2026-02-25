@@ -50,6 +50,11 @@ dependencies {
     }
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    dependencies {
+        implementation("com.sun.mail:jakarta.mail:2.0.1") // jakarta.mail
+        implementation("com.sun.activation:jakarta.activation:2.0.1") // jakarta.activation
+    }
 }
 
 tasks.withType<Test> {
