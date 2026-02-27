@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="reader-page" stylesheets="@../../../css/reader.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarian.controller.ReaderManagementController">
+    <padding>
+        <Insets bottom="8.0" left="8.0" right="8.0" top="10.0" />
+    </padding>
+
+    <top>
+        <VBox spacing="10.0">
+            <HBox alignment="CENTER_LEFT" spacing="8.0">
+                <Label styleClass="page-title" text="Tài khoản độc giả" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button styleClass="btn-primary" text="+ Thêm" />
+                <Button disable="true" styleClass="btn-disabled" text="Sửa" />
+                <Button disable="true" styleClass="btn-disabled" text="Reset password" />
+                <Button disable="true" styleClass="btn-disabled" text="Xóa" />
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="8.0">
+                <ComboBox fx:id="groupFilter" promptText="Tất cả nhóm quyền" styleClass="filter-combo" />
+                <ComboBox fx:id="departmentFilter" promptText="Tất cả phòng ban" styleClass="filter-combo" />
+                <TextField fx:id="searchField" promptText="Tìm kiếm" styleClass="search-field" HBox.hgrow="ALWAYS" />
+                <Button onAction="#onSearchAction" styleClass="btn-search" text="Tìm" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="6.0">
+            <TableView fx:id="readerTable" editable="true" styleClass="reader-table" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colSelect" prefWidth="47.0" text="" />
+                    <TableColumn fx:id="colAvatar" minWidth="0.0" prefWidth="49.0" text="" />
+                    <TableColumn fx:id="colAccount" prefWidth="140.0" text="Tài khoản" />
+                    <TableColumn fx:id="colFullName" prefWidth="170.0" text="Họ tên" />
+                    <TableColumn fx:id="colPhone" prefWidth="130.0" text="Điện thoại" />
+                    <TableColumn fx:id="colEmail" prefWidth="185.0" text="Email" />
+                    <TableColumn fx:id="colDepartment" prefWidth="150.0" text="Phòng ban" />
+                    <TableColumn fx:id="colAddress" prefWidth="120.0" text="Địa chỉ" />
+                    <TableColumn fx:id="colStatus" prefWidth="100.0" text="Trạng thái" />
+                </columns>
+            </TableView>
+
+            <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="footer-bar">
+                <Region HBox.hgrow="ALWAYS" />
+                <Label styleClass="footer-label" text="Tổng:" />
+                <Label fx:id="totalCountLabel" styleClass="footer-count" text="0 bản ghi" />
+                <Label styleClass="pager-arrow" text="‹" />
+                <Label styleClass="pager-current" text="1" />
+                <Label styleClass="pager-arrow" text="›" />
+                <ComboBox fx:id="pageSizeCombo" styleClass="page-size-combo" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
