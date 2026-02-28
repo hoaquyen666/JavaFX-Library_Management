@@ -1,4 +1,4 @@
-package com.example.reader;
+package com.example.librarian.controller;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,7 +22,7 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Locale;
 
-public class HelloController {
+public class ReaderManagementController {
     @FXML
     private ComboBox<String> groupFilter;
     @FXML

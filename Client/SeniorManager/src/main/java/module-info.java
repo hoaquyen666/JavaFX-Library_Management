@@ -13,5 +13,5 @@ module com.example.seniormanager {
     requires jakarta.activation;
 
     exports com.example.seniormanager;
-    opens com.example.seniormanager.controller to javafx.fxml;
+    opens com.example.seniormanager.controller to javafx.fxml, javafx.base;
 }
