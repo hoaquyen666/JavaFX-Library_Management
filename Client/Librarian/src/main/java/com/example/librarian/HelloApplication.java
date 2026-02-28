@@ -10,9 +10,9 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("libra-main-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/librarian/Library_Main_View/libra-main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 500);
-        stage.setTitle("Hello!");
+        stage.setTitle("CMCU Library");
         stage.setScene(scene);
         stage.show();
     }
