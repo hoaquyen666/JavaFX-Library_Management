@@ -2,6 +2,8 @@ CREATE DATABASE IF NOT EXISTS library
 CHARACTER SET utf8mb4 
 COLLATE utf8mb4_unicode_ci;
 
+use library;
+
 create table CategoryGroup (
     CategoryGroupId int auto_increment primary key,
     CategoryGroupCode varchar(20) not null unique,
@@ -82,11 +84,17 @@ create table Staff (
     StaffId int auto_increment primary key,
     StaffCode varchar(20) not null unique comment 'Mã nhân viên',
     
+    Role varchar(20) not null,
+    
     FullName varchar(100) not null,
     DoB date not null,
     Email varchar(100) not null unique,
     Phone varchar(15) not null unique,
-    Note text
+    Note text,
+    
+    constraint ck_staff_role
+		check (Role in ('Librarian','Admin','Senior'))
+    
 ) comment = 'Nhân viên thư viện (Librarian, Senior Manager, Administrator)';
 
 create table Reader (
@@ -145,8 +153,8 @@ create table BorrowDetail (
 
 create table Account (
     AccountId int auto_increment primary key,
-    -- Random 36 ký tự siêu bảo mật <(") (Yêu cầu MySQL 8.0+)
-    AccountCode varchar(36) default (uuid()) unique,
+    -- Random 36 ký tự siêu bảo mật <(") - xử lý trong client
+    AccountCode varchar(36),
 
     StaffId int null,
     ReaderId int null,
@@ -170,6 +178,33 @@ create table Account (
         )
 ) comment='Account: đăng nhập vào client chỉ cần username và password - đăng kí cần đầy đủ các trường dữ liệu. 
 			Riêng trường [Role] tùy client sẽ tự động truyền chuỗi đăng nhập tích hợp sẵn';
+
+create table shift (
+    ShiftId int primary key auto_increment,
+    ShiftName varchar(50) not null,
+    start_time time not null,
+    end_time time not null
+) comment='Định nghĩa ca làm';
+
+CREATE TABLE librarian_shift (
+    Assignment_id int primary key auto_increment,
+    Librarian_id INT NOT NULL,
+    ShiftId INT NOT NULL,
+    Work_date DATE NOT NULL,
+    Assigned_by INT NOT NULL,
+    Assigned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    unique(Librarian_id, Work_date, ShiftId),
+
+    constraint FK_LS_Librarian
+        foreign key (Librarian_id) references Staff(StaffId),
+
+    constraint FK_LS_Shift
+        foreign key (ShiftId) references shift(ShiftId),
+
+    constraint FK_LS_AssignedBy
+        foreign key (Assigned_by) references Staff(StaffId)
+) comment= 'Phân công ca làm';
 
 ########
 # Dưới đây là các dữ liệu cơ bản được thêm
