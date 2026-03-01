@@ -11,6 +11,7 @@ module com.example.seniormanager {
     requires eu.hansolo.tilesfx;
     requires jakarta.mail;
     requires jakarta.activation;
+    requires java.sql;
 
     exports com.example.seniormanager;
     opens com.example.seniormanager.controller to javafx.fxml, javafx.base;
