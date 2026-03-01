@@ -55,6 +55,10 @@ dependencies {
         implementation("com.sun.mail:jakarta.mail:2.0.1") // jakarta.mail
         implementation("com.sun.activation:jakarta.activation:2.0.1") // jakarta.activation
     }
+
+    dependencies {
+        implementation("com.mysql:mysql-connector-j:8.3.0")
+    }
 }
 
 tasks.withType<Test> {
