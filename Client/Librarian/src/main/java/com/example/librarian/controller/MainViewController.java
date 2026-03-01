@@ -93,12 +93,12 @@ public class MainViewController implements Initializable {
 
     @FXML
     void handleQuanLyNhapXuat(ActionEvent event){
-        loadGiaoDienCon("/com/example/librarian/import-export-management-view.fxml");
+        loadGiaoDienCon("/com/example/librarian/Import_Export_Management/import-export-management-view.fxml");
     }
 
     @FXML
     void handleQuanLyThongKe(ActionEvent event){
-        loadGiaoDienCon("/com/example/librarian/statistical-management-view.fxml");
+        loadGiaoDienCon("/com/example/librarian/Statistical_Management/statistical-management-view.fxml");
     }
 
     private void loadGiaoDienCon(String fileName){
