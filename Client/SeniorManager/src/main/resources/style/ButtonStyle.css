@@ -1,0 +1,17 @@
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 15;
+}
+
+.sidebar-btn:hover {
+    -fx-background-color: #2f4a99;
+}
+
+.sidebar-logout {
+    -fx-background-color: #e53935;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+}
