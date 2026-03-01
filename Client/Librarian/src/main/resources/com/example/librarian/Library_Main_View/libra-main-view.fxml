@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+
+<BorderPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #233771;" stylesheets="@libra-main.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarian.controller.MainViewController">
+
+    <left>
+        <VBox fx:id="sidebar" prefWidth="70.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+            <children>
+                <StackPane prefHeight="80.0">
+                    <ImageView fx:id="logoImage" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../../../../images/Logo-Dai-hoc-CMC-V.png" />
+                        </image>
+                    </ImageView>
+                </StackPane>
+
+                <Button alignment="CENTER_LEFT" onAction="#handleQuanLySach" styleClass="menu-btn" text="Quản lý sách">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2b-book" iconSize="20" />
+                    </graphic>
+                </Button>
+
+                <Button alignment="CENTER_LEFT" onAction="#handleQuanLyDocGia" styleClass="menu-btn" text="Quản lý Độc giả">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2a-account-group" iconSize="20" />
+                    </graphic>
+                </Button>
+
+                <Button alignment="CENTER_LEFT" onAction="#handleQuanLyMuonTra" styleClass="menu-btn" text="Quản lý mượn trả">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2r-refresh" iconSize="20" />
+                    </graphic>
+                </Button>
+
+                <VBox fx:id="muonTraSubMenu" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
+                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyMuon" styleClass="sub-menu-btn" text="• Mượn sách" />
+                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyTra" styleClass="sub-menu-btn" text="• Trả sách" />
+                </VBox>
+
+                <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhapXuat" styleClass="menu-btn" text="Quản lý xuất nhập">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0"><image><Image url="@../../../../images/icon-import.png" /></image></ImageView>
+                    </graphic>
+                </Button>
+
+                <Button alignment="CENTER_LEFT" onAction="#handleQuanLyThongKe" styleClass="menu-btn" text="Quản lý thống kê">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0"><image><Image url="@../../../../images/icon-chart.png" /></image></ImageView>
+                    </graphic>
+                </Button>
+            </children>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="30.0" right="30.0" top="50.0" />
+            </padding>
+            <children>
+                <StackPane fx:id="mainContentArea" styleClass="main-content-card">
+                    <children>
+                        <Label text="CHỌN CHỨC NĂNG BÊN TRÁI" textFill="#a1a1a1">
+                            <font>
+                                <Font name="System Bold" size="20.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </StackPane>
+            </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+        </StackPane>
+    </center>
+</BorderPane>
