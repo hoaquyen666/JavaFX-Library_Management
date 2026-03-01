@@ -116,7 +116,7 @@
 }
 
 .reader-table .table-cell {
-    -fx-text-fill: #5d6f89;
+   -fx-text-fill: #5d6f89;
     -fx-font-size: 12px;
     -fx-padding: 6 6;
     -fx-border-color: transparent #c7e8fb transparent transparent;

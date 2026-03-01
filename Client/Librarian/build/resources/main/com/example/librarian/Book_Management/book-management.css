@@ -1,0 +1,42 @@
+/* Sidebar cơ bản */
+.sidebar {
+    -fx-background-color: #233771;
+    -fx-padding: 10 10 10 10;
+    -fx-spacing: 15;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 20; /* Bo góc phần nền trắng */
+    -fx-border-color: #e0e0e0; /* Màu viền xám nhạt để phân tách với nền */
+    -fx-border-radius: 12;     /* Độ bo góc của viền (phải bằng background-radius) */
+    -fx-border-width: 1;       /* Độ dày của viền */
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);
+}
+
+/* Nút bấm bo góc */
+.btn-primary {
+    -fx-background-color: #007bff; /* Hoặc màu cam của trường */
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 8 15 8 15;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.table-view .column-header-background {
+    -fx-background-color: #f8f9fa; /* Màu xám nhạt cho tiêu đề cột giống web */
+}
+
+.dynamic-island {
+    -fx-background-color: black;
+    -fx-background-radius: 20; /* Bo tròn thành hình viên thuốc */
+    -fx-padding: 10 20;
+    -fx-alignment: center;
+    -fx-translate-y: 15; /* Cách lề trên một chút */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);
+}
