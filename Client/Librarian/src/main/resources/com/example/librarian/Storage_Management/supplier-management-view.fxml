@@ -25,7 +25,7 @@
         </padding>
 
         <HBox alignment="CENTER_LEFT" spacing="10.0">
-            <Label text="Quản lý trả sách" textFill="WHITE">
+            <Label text="Quản lý nhà cung cấp" textFill="WHITE">
                 <font>
                     <Font name="System Bold" size="24.0" />
                 </font>
@@ -33,11 +33,11 @@
 
             <Region HBox.hgrow="ALWAYS" />
 
-            <Button style="-fx-background-color: #233771; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Xác nhận trả">
+            <Button style="-fx-background-color: #233771; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="+ Thêm">
                 <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
                 <font><Font name="System Bold" size="13.0" /></font>
             </Button>
-            <Button style="-fx-background-color: #f0ad4e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Gia hạn">
+            <Button style="-fx-background-color: #f0ad4e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Sửa">
                 <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
                 <font><Font name="System Bold" size="13.0" /></font>
             </Button>
@@ -54,10 +54,9 @@
                    -fx-padding: 20;">
 
             <HBox alignment="CENTER_LEFT" spacing="15.0">
-                <ComboBox fx:id="statusFilter" prefWidth="150.0" promptText="Tất cả trạng thái" style="-fx-background-radius: 8;" />
-                <ComboBox fx:id="dateFilter" prefWidth="150.0" promptText="Lọc theo ngày" style="-fx-background-radius: 8;" />
+                <ComboBox fx:id="statusFilter" prefWidth="180.0" promptText="Tất cả trạng thái" style="-fx-background-radius: 8;" />
 
-                <TextField fx:id="searchField" promptText="Tìm theo mã phiếu / tên sách..." style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-padding: 8;" HBox.hgrow="ALWAYS" />
+                <TextField fx:id="searchField" promptText="Tìm theo tên / SĐT / Email..." style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-padding: 8;" HBox.hgrow="ALWAYS" />
 
                 <Button style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Tìm kiếm">
                     <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
@@ -65,16 +64,14 @@
             </HBox>
 
             <VBox VBox.vgrow="ALWAYS">
-                <TableView fx:id="returnTable" style="-fx-background-color: transparent; -fx-border-color: #e0e0e0; -fx-border-radius: 8;" VBox.vgrow="ALWAYS">
+                <TableView fx:id="supplierTable" style="-fx-background-color: transparent; -fx-border-color: #e0e0e0; -fx-border-radius: 8;" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colNum" prefWidth="30.0" text="STT" />
-                        <TableColumn fx:id="colBorrowCode" prefWidth="100.0" text="Mã phiếu" />
-                        <TableColumn fx:id="colReaderName" prefWidth="150.0" text="Độc giả" />
-                        <TableColumn fx:id="colBookTitle" prefWidth="180.0" text="Tên sách" />
-                        <TableColumn fx:id="colBorrowDate" prefWidth="100.0" text="Ngày mượn" />
-                        <TableColumn fx:id="colDueDate" prefWidth="100.0" text="Hạn trả" />
-                        <TableColumn fx:id="colReturnDate" prefWidth="100.0" text="Ngày trả" />
-                        <TableColumn fx:id="colFine" prefWidth="100.0" text="Tiền phạt" />
+                        <TableColumn fx:id="colSelect" prefWidth="30.0" text="STT" />
+                        <TableColumn fx:id="colSupplierCode" prefWidth="80.0" text="Mã NCC" />
+                        <TableColumn fx:id="colSupplierName" prefWidth="200.0" text="Tên NCC" />
+                        <TableColumn fx:id="colPhone" prefWidth="120.0" text="Điện thoại" />
+                        <TableColumn fx:id="colEmail" prefWidth="160.0" text="Email" />
+                        <TableColumn fx:id="colAddress" prefWidth="180.0" text="Địa chỉ" />
                         <TableColumn fx:id="colStatus" prefWidth="90.0" text="Trạng thái" />
                     </columns>
                     <columnResizePolicy>

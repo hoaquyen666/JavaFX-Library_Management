@@ -20,7 +20,7 @@
                 <StackPane prefHeight="80.0">
                     <ImageView fx:id="logoImage" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../../../../images/Logo-Dai-hoc-CMC-V.png" />
+                            <Image url="@../../../../images/logo.png" />
                         </image>
                     </ImageView>
                 </StackPane>
@@ -48,11 +48,15 @@
                     <Button alignment="CENTER_LEFT" onAction="#handleQuanLyTra" styleClass="sub-menu-btn" text="• Trả sách" />
                 </VBox>
 
-                <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhapXuat" styleClass="menu-btn" text="Quản lý xuất nhập">
+                <Button alignment="CENTER_LEFT" onAction="#handleQuanLyKho" styleClass="menu-btn" text="Quản lý kho hàng">
                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0"><image><Image url="@../../../../images/icon-import.png" /></image></ImageView>
+                        <FontIcon iconLiteral="mdi2p-package-variant" iconSize="20" />
                     </graphic>
                 </Button>
+                <VBox fx:id="menuQuanLyKho" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
+                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhap" styleClass="sub-menu-btn" text="• Quản lý nhập" />
+                    <Button alignment="CENTER_LEFT" onAction="#handleNhaCungCap" styleClass="sub-menu-btn" text="• Nhà cung cấp" />
+                </VBox>
 
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLyThongKe" styleClass="menu-btn" text="Quản lý thống kê">
                     <graphic>
