@@ -1,11 +1,11 @@
 /* Sidebar */
 .sidebar {
-    -fx-background-color: #233771;
+    -fx-background-color: #111827;
     -fx-padding: 10 10 10 10;
     -fx-spacing: 30;
 }
 .title {
-    -fx-background-color: transparent;
+    -fx-background-color: #172747;
     -fx-icon-color: white;
     -fx-text-fill: white;
     -fx-font-size: 14px;
@@ -15,7 +15,7 @@
 
 /* Các nút menu trong Sidebar */
 .menu-btn  {
-    -fx-background-color: transparent;
+    -fx-background-color: #0f172a;
     -fx-icon-color: white;
     -fx-text-fill: white;
     -fx-font-size: 14px;
@@ -45,7 +45,7 @@
 
 /* Khối nội dung chính */
 .main-content-card {
-    -fx-background-color: #f4f6f9; /* Màu nền xám/trắng nhạt */
+    -fx-background-color: #1e293b; /* Màu nền xám/trắng nhạt */
     -fx-background-radius: 20; /* Bo góc to */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);
 }
