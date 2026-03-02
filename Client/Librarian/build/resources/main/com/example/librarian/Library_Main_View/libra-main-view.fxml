@@ -45,13 +45,21 @@
 
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLyMuonTra" styleClass="menu-btn" text="Quản lý mượn trả">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2r-refresh" iconSize="20" />
+                        <FontIcon iconLiteral="mdi2r-refresh" iconSize="20"/>
                     </graphic>
                 </Button>
 
                 <VBox fx:id="muonTraSubMenu" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
-                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyMuon" styleClass="sub-menu-btn" text="• Mượn sách" />
-                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyTra" styleClass="sub-menu-btn" text="• Trả sách" />
+                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyMuon" styleClass="sub-menu-btn" text="Mượn sách">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2b-book-arrow-right" iconSize="18"/>
+                        </graphic>
+                    </Button>
+                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyTra" styleClass="sub-menu-btn" text="Trả sách">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2b-book-arrow-left" iconSize="18"/>
+                        </graphic>
+                    </Button>
                 </VBox>
 
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLyKho" styleClass="menu-btn" text="Quản lý kho hàng">
@@ -60,8 +68,16 @@
                     </graphic>
                 </Button>
                 <VBox fx:id="menuQuanLyKho" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
-                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhap" styleClass="sub-menu-btn" text="• Quản lý nhập" />
-                    <Button alignment="CENTER_LEFT" onAction="#handleNhaCungCap" styleClass="sub-menu-btn" text="• Nhà cung cấp" />
+                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhap" styleClass="sub-menu-btn" text="Quản lý nhập">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2d-database-import" iconSize="18" />
+                        </graphic>
+                    </Button>
+                    <Button alignment="CENTER_LEFT" onAction="#handleNhaCungCap" styleClass="sub-menu-btn" text="Nhà cung cấp">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2d-domain" iconSize="18" />
+                        </graphic>
+                    </Button>
                 </VBox>
 
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLyThongKe" styleClass="menu-btn" text="Quản lý thống kê">

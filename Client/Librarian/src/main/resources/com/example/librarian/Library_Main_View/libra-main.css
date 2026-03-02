@@ -65,6 +65,12 @@
     -fx-background-color: rgba(255, 255, 255, 0.1);
     -fx-background-radius: 10;
 }
+.sub-menu-btn .ikonli-font-icon {
+    -fx-icon-color: white;
+}
+.sub-menu-btn:hover .ikonli-font-icon {
+    -fx-icon-color: #f8843d;
+}
 .quick-action-card {
     -fx-background-color: #1f2937;
     -fx-background-radius: 20;
