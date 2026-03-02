@@ -63,7 +63,7 @@
                     <TableColumn prefWidth="150.0" text="Tác Giả" />
                     <TableColumn prefWidth="120.0" text="Thể Loại" />
                     <TableColumn prefWidth="80.0" text="Số Lượng" />
-                    <TableColumn prefWidth="90.0" text="Trạng Thái" />
+                    <TableColumn prefWidth="100.0" text="Trạng Thái" />
                 </columns>
                 <columnResizePolicy>
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -71,4 +71,7 @@
             </TableView>
         </VBox>
     </VBox>
+
+
+
 </StackPane>
