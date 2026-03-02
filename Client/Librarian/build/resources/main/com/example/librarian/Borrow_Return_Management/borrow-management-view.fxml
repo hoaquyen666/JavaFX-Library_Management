@@ -70,7 +70,7 @@
                   <TableColumn prefWidth="90.0" text="Ngày Mượn" />
                   <TableColumn prefWidth="90.0" text="Hạn Trả" />
                   <TableColumn prefWidth="90.0" text="Số lượng" />
-                  <TableColumn prefWidth="100.0" text="Trạng Thái" />
+                  <TableColumn prefWidth="90.0" text="Trạng Thái" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

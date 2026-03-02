@@ -20,10 +20,16 @@
                 <StackPane prefHeight="80.0">
                     <ImageView fx:id="logoImage" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../../../../images/logo.png" />
+                            <Image url="@../../../../images/Logo-Dai-hoc-CMC-V.png" />
                         </image>
                     </ImageView>
                 </StackPane>
+
+                <Button alignment="CENTER_LEFT" onAction="#handleTrangChu" styleClass="menu-btn" text="Trang chủ">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2h-home" iconSize="20" />
+                    </graphic>
+                </Button>
 
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLySach" styleClass="menu-btn" text="Quản lý sách">
                     <graphic>
@@ -60,7 +66,7 @@
 
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLyThongKe" styleClass="menu-btn" text="Quản lý thống kê">
                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0"><image><Image url="@../../../../images/icon-chart.png" /></image></ImageView>
+                        <FontIcon iconLiteral="mdi2c-chart-bar" iconSize="20" />
                     </graphic>
                 </Button>
             </children>
@@ -74,13 +80,13 @@
             </padding>
             <children>
                 <StackPane fx:id="mainContentArea" styleClass="main-content-card">
-                    <children>
-                        <Label text="CHỌN CHỨC NĂNG BÊN TRÁI" textFill="#a1a1a1">
-                            <font>
-                                <Font name="System Bold" size="20.0" />
-                            </font>
-                        </Label>
-                    </children>
+<!--                    <children>-->
+<!--                        <Label text="HỆ THỐNG QUẢN LÝ THƯ VIỆN" textFill="#a1a1a1">-->
+<!--                            <font>-->
+<!--                                <Font name="System Bold" size="20.0" />-->
+<!--                            </font>-->
+<!--                        </Label>-->
+<!--                    </children>-->
                 </StackPane>
             </children>
          <opaqueInsets>

@@ -42,6 +42,7 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        handleTrangChu(null);
         // Đảm bảo sidebar bắt đầu ở trạng thái thu gọn
         if (sidebar != null) {
             sidebar.setPrefWidth(COLLAPSED_WIDTH);
@@ -68,6 +69,12 @@ public class MainViewController implements Initializable {
                         new KeyValue(sidebar.prefWidthProperty(), COLLAPSED_WIDTH))
         );
         timeline.play();
+    }
+
+
+    @FXML
+    void handleTrangChu(ActionEvent event) {
+        loadGiaoDienCon("/com/example/librarian/Library_Main_View/home-main-view.fxml");
     }
 
     @FXML
