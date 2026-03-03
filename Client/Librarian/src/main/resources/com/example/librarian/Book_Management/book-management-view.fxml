@@ -16,7 +16,7 @@
             <Insets bottom="20.0" left="30.0" right="30.0" top="60.0" />
         </padding>
 
-        <Label text="Quản lý sách" textFill="#233771">
+        <Label text="Quản lý sách" textFill="#ffffff">
             <font>
                 <Font name="System Bold" size="24.0" />
             </font>
@@ -32,7 +32,7 @@
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
                 </padding>
                 <font>
-                    <Font name="System Bold" size="12.0" />
+                    <Font name="System Bold" size="13.0" />
                 </font>
             </Button>
 
@@ -40,11 +40,17 @@
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
                 </padding>
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
             </Button>
             <Button style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Xóa">
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
                 </padding>
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
             </Button>
         </HBox>
 
