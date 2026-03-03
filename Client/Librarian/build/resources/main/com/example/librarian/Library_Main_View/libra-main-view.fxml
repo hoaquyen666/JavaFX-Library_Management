@@ -70,7 +70,7 @@
                 <VBox fx:id="menuQuanLyKho" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
                     <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhap" styleClass="sub-menu-btn" text="Quản lý nhập">
                         <graphic>
-                            <FontIcon iconLiteral="mdi2t-truck-delivery" iconSize="18" />
+                            <FontIcon iconLiteral="mdi2d-database-import" iconSize="18" />
                         </graphic>
                     </Button>
                     <Button alignment="CENTER_LEFT" onAction="#handleNhaCungCap" styleClass="sub-menu-btn" text="Nhà cung cấp">

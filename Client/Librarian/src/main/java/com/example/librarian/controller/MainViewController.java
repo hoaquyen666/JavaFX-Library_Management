@@ -1,8 +1,11 @@
 package com.example.librarian.controller;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,6 +31,10 @@ public class MainViewController implements Initializable {
     private VBox muonTraSubMenu;
     private boolean isMuonTraExpanded = false;
 
+    @FXML
+    private VBox menuQuanLyKho;
+    private boolean isKhoExpanded = false;
+
     // Chiều rộng khi thu gọn (chỉ hiện icon)
     private final double COLLAPSED_WIDTH = 70.0;
     // Chiều rộng khi mở rộng (hiện cả text)
@@ -35,6 +42,7 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        handleTrangChu(null);
         // Đảm bảo sidebar bắt đầu ở trạng thái thu gọn
         if (sidebar != null) {
             sidebar.setPrefWidth(COLLAPSED_WIDTH);
@@ -61,6 +69,12 @@ public class MainViewController implements Initializable {
                         new KeyValue(sidebar.prefWidthProperty(), COLLAPSED_WIDTH))
         );
         timeline.play();
+    }
+
+
+    @FXML
+    void handleTrangChu(ActionEvent event) {
+        loadGiaoDienCon("/com/example/librarian/Library_Main_View/home-main-view.fxml");
     }
 
     @FXML
@@ -92,8 +106,20 @@ public class MainViewController implements Initializable {
     }
 
     @FXML
-    void handleQuanLyNhapXuat(ActionEvent event){
-        loadGiaoDienCon("/com/example/librarian/Import_Export_Management/import-export-management-view.fxml");
+    void handleQuanLyKho(ActionEvent event){
+        isKhoExpanded = !isKhoExpanded;
+        menuQuanLyKho.setVisible(isKhoExpanded);
+        menuQuanLyKho.setManaged(isKhoExpanded);
+    }
+
+    @FXML
+    void handleQuanLyNhap(ActionEvent event){
+        loadGiaoDienCon("/com/example/librarian/Storage_Management/import-management-view.fxml");
+    }
+
+    @FXML
+    void handleNhaCungCap(ActionEvent event){
+        loadGiaoDienCon("/com/example/librarian/Storage_Management/supplier-management-view.fxml");
     }
 
     @FXML
@@ -115,6 +141,16 @@ public class MainViewController implements Initializable {
             mainContentArea.getChildren().clear();
             mainContentArea.getChildren().add(subView);
 
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(350), subView);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+
+            TranslateTransition slideUp = new TranslateTransition(Duration.millis(350), subView);
+            slideUp.setFromY(30);
+            slideUp.setToY(0);
+
+            ParallelTransition transition = new ParallelTransition(fadeIn, slideUp);
+            transition.play();
         }catch (IOException e){
             System.err.println("Lỗi khi đọc file FXML: " + e.getMessage());
             e.printStackTrace();
