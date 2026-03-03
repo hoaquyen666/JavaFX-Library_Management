@@ -1,0 +1,117 @@
+/* ================= BỐ CỤC CHUNG ================= */
+.app-container {
+    /* Thay ảnh nền. Bạn có thể thay bằng ảnh tải về máy: url("images/bg-1.jpg") */
+    -fx-background-image: url("https://ilib.cmcu.edu.vn/pages/opac/img/bg-1.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+.bg-overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.6); /* Lớp phủ đen mờ như HTML của bạn */
+}
+
+.content {
+    -fx-padding: 20 60 20 60;
+}
+
+/* ================= HEADER & TITLE ================= */
+.authen-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+.authen-btn:hover {
+    -fx-text-fill: #a0c4ff;
+    -fx-underline: true;
+}
+
+.content-title {
+    -fx-border-color: transparent transparent #999999 transparent;
+    -fx-border-width: 0 0 1.5 0; /* Chỉ có viền dưới */
+    -fx-padding: 0 0 20 0;
+}
+.header-title {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: 300;
+}
+
+/* ================= DANH MỤC TÌM KIẾM ================= */
+.search-category {
+    -fx-pref-height: 120px;
+}
+.search-item {
+    -fx-cursor: hand;
+}
+/* Hiệu ứng phóng to và đổi màu khi lướt chuột */
+.search-item:hover .icon-label, .search-item:hover .text-label {
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+    -fx-text-fill: #569aff;
+}
+.icon-label {
+    -fx-font-size: 32px;
+    -fx-text-fill: white;
+    -fx-padding: 0 0 10 0;
+}
+.text-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
+.divider {
+    -fx-background-color: white;
+    -fx-pref-width: 2px;
+    -fx-pref-height: 40px;
+    -fx-max-height: 40px;
+    -fx-margin: 0 20 0 20;
+}
+
+/* ================= FORM TÌM KIẾM ================= */
+.search-form-container {
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+    -fx-border-color: #034cab transparent transparent transparent;
+    -fx-border-width: 5 0 0 0;
+    -fx-padding: 20;
+}
+
+.search-form-inner {
+    -fx-background-color: white;
+    -fx-padding: 15;
+}
+
+/* Đường gạch đứt chân (Dashed border bottom) */
+.input-box {
+    -fx-border-color: transparent transparent #1034aa transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-style: dashed;
+    -fx-padding: 5 0 5 0;
+}
+
+.search-combo, .search-field {
+    -fx-background-color: transparent;
+    -fx-font-size: 18px;
+}
+.search-combo {
+    -fx-cursor: hand;
+}
+
+/* Nút bấm có Gradient và Bóng đổ */
+.button-search {
+    -fx-background-color: linear-gradient(to bottom right, #0034de, #006eff);
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 2);
+}
+
+.button-search:hover {
+    -fx-background-color: linear-gradient(to bottom right, #1a55ff, #3388ff);
+}
+
+.button-search:pressed {
+    -fx-background-color: #002cbb;
+    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 4); /* Hiệu ứng lún sâu xuống */
+}
