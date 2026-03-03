@@ -59,7 +59,13 @@
         </HBox>
 
         <VBox VBox.vgrow="ALWAYS">
-            <TableView fx:id="readerTable" editable="true" styleClass="reader-table" style="-fx-background-color: transparent; -fx-border-color: #e0e0e0; -fx-border-radius: 8;" VBox.vgrow="ALWAYS">
+            <TableView fx:id="readerTable"
+                       editable="true"
+                       styleClass="reader-table"
+                       style="-fx-background-color: transparent;
+                       -fx-border-color: #e0e0e0;
+                       -fx-border-radius: 8;"
+                       VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="colSelect" prefWidth="40.0" text="" />
                     <TableColumn fx:id="colAvatar" prefWidth="50.0" text="" />

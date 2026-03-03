@@ -25,6 +25,12 @@
                     </ImageView>
                 </StackPane>
 
+                <Button alignment="CENTER_LEFT" onAction="#handleTrangChu" styleClass="menu-btn" text="Trang chủ">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2h-home" iconSize="20" />
+                    </graphic>
+                </Button>
+
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLySach" styleClass="menu-btn" text="Quản lý sách">
                     <graphic>
                         <FontIcon iconLiteral="mdi2b-book" iconSize="20" />
@@ -39,24 +45,44 @@
 
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLyMuonTra" styleClass="menu-btn" text="Quản lý mượn trả">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2r-refresh" iconSize="20" />
+                        <FontIcon iconLiteral="mdi2r-refresh" iconSize="20"/>
                     </graphic>
                 </Button>
 
                 <VBox fx:id="muonTraSubMenu" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
-                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyMuon" styleClass="sub-menu-btn" text="• Mượn sách" />
-                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyTra" styleClass="sub-menu-btn" text="• Trả sách" />
+                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyMuon" styleClass="sub-menu-btn" text="Mượn sách">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2b-book-arrow-right" iconSize="18"/>
+                        </graphic>
+                    </Button>
+                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyTra" styleClass="sub-menu-btn" text="Trả sách">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2b-book-arrow-left" iconSize="18"/>
+                        </graphic>
+                    </Button>
                 </VBox>
 
-                <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhapXuat" styleClass="menu-btn" text="Quản lý xuất nhập">
+                <Button alignment="CENTER_LEFT" onAction="#handleQuanLyKho" styleClass="menu-btn" text="Quản lý kho hàng">
                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0"><image><Image url="@../../../../images/icon-import.png" /></image></ImageView>
+                        <FontIcon iconLiteral="mdi2p-package-variant" iconSize="20" />
                     </graphic>
                 </Button>
+                <VBox fx:id="menuQuanLyKho" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
+                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhap" styleClass="sub-menu-btn" text="Quản lý nhập">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2t-truck-delivery" iconSize="18" />
+                        </graphic>
+                    </Button>
+                    <Button alignment="CENTER_LEFT" onAction="#handleNhaCungCap" styleClass="sub-menu-btn" text="Nhà cung cấp">
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2d-domain" iconSize="18" />
+                        </graphic>
+                    </Button>
+                </VBox>
 
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLyThongKe" styleClass="menu-btn" text="Quản lý thống kê">
                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0"><image><Image url="@../../../../images/icon-chart.png" /></image></ImageView>
+                        <FontIcon iconLiteral="mdi2c-chart-bar" iconSize="20" />
                     </graphic>
                 </Button>
             </children>
@@ -70,13 +96,13 @@
             </padding>
             <children>
                 <StackPane fx:id="mainContentArea" styleClass="main-content-card">
-                    <children>
-                        <Label text="CHỌN CHỨC NĂNG BÊN TRÁI" textFill="#a1a1a1">
-                            <font>
-                                <Font name="System Bold" size="20.0" />
-                            </font>
-                        </Label>
-                    </children>
+<!--                    <children>-->
+<!--                        <Label text="HỆ THỐNG QUẢN LÝ THƯ VIỆN" textFill="#a1a1a1">-->
+<!--                            <font>-->
+<!--                                <Font name="System Bold" size="20.0" />-->
+<!--                            </font>-->
+<!--                        </Label>-->
+<!--                    </children>-->
                 </StackPane>
             </children>
          <opaqueInsets>
