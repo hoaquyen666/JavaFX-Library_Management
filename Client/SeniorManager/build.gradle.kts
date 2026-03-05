@@ -58,6 +58,7 @@ dependencies {
 
     dependencies {
         implementation("com.mysql:mysql-connector-j:8.3.0")
+        implementation("org.kordamp.ikonli:ikonli-materialdesign2-pack:12.3.1")
     }
 }
 

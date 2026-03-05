@@ -1,4 +1,4 @@
-package com.example.administrator.controller;
+package com.example.seniormanager.controller;
 
 import javafx.animation.*;
 import javafx.event.ActionEvent;
@@ -62,17 +62,17 @@ public class MainViewController implements Initializable
 
     @FXML
     void handleAccount(ActionEvent event) {
-        loadGiaoDienCon("/com/example/administrator/staff-management/account-view/Account.fxml");
+        loadGiaoDienCon("/com/example/seniormanager/staff-management/account-view/Account.fxml");
     }
 
     @FXML
     void handleStaff(ActionEvent event){
-        loadGiaoDienCon("/com/example/administrator/staff-management/account-view/Account.fxml");
+        loadGiaoDienCon("/com/example/seniormanager/staff-management/account-view/Account.fxml");
     }
 
     @FXML
     void handleShift(ActionEvent event){
-        loadGiaoDienCon("/com/example/administrator/staff-management/account-view/Account.fxml");
+        loadGiaoDienCon("/com/example/seniormanager/staff-management/account-view/Account.fxml");
     }
 
     private void loadGiaoDienCon(String fileName){

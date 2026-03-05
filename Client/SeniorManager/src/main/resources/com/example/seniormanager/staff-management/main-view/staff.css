@@ -1,0 +1,105 @@
+/* Sidebar cơ bản */
+.sidebar {
+    -fx-background-color: #233771;
+    -fx-padding: 10 10 10 10;
+    -fx-spacing: 15;
+}
+
+.title {
+    -fx-background-color: #172747;
+    -fx-icon-color: white;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 15 10 15;
+}
+
+/* Các nút menu trong Sidebar */
+.menu-btn {
+    -fx-background-color: #0f172a;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 15 12 15; /* Tăng padding trên/dưới một chút cho nút béo lên */
+    -fx-graphic-text-gap: 15;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+    -fx-max-width: infinity;
+}
+
+/* Hiệu ứng khi di chuột vào nút menu */
+.menu-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-text-fill: #f8843d;
+}
+
+.menu-btn .ikonli-font-icon {
+    -fx-icon-color: white;
+}
+
+.menu-btn:hover .ikonli-font-icon {
+    -fx-icon-color: #f8843d;
+}
+
+/* Khối nội dung chính */
+.main-content-card {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);
+}
+
+/* Nút menu con */
+.sub-menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #f4f6f9;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-alignment: center-left;
+    -fx-padding: 10 15 10 15;
+    -fx-cursor: hand;
+    -fx-max-width: infinity;
+}
+
+.sub-menu-btn:hover {
+    -fx-text-fill: #f8843d;
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 10;
+}
+
+.sub-menu-btn .ikonli-font-icon {
+    -fx-icon-color: white;
+}
+
+.sub-menu-btn:hover .ikonli-font-icon {
+    -fx-icon-color: #f8843d;
+}
+
+/* Card phụ */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);
+}
+
+/* Nút bấm bo góc (Dành cho nội dung bên trong) */
+.btn-primary {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 8 15 8 15;
+}
+
+/* Table View */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.table-view .column-header-background {
+    -fx-background-color: #f8f9fa;
+}

@@ -9,7 +9,7 @@ public class SendMail {
     public static void sendTicket(String title,  String seniorCode, String description) throws MessagingException {
         String fromEmail = "";
         String pass = "squcyynfxeibscdw";
-        String toEmail = "BIT240104@st.cmcu.edu.vn"; // ae tự điền sp mail nhận
+        String toEmail = "thanhan1552006@gmail.com"; // ae tự điền sp mail nhận
 
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.gmail.com"); // ip gg
