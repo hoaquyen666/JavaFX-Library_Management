@@ -40,7 +40,7 @@ public class LoginController {
         if (account != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/com/example/seniormanager/main-view.fxml"));
+                        getClass().getResource("/com/example/seniormanager/staff-management/main-view/staff-management-view.fxml"));
                 Scene scene = new Scene(loader.load());
                 scene.getStylesheets().add(getClass().getResource("/style/ButtonStyle.css").toExternalForm());
                 Stage stage = (Stage) txtUsername.getScene().getWindow();

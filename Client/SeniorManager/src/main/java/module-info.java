@@ -7,6 +7,7 @@ module com.example.seniormanager {
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.materialdesign2;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires jakarta.mail;
@@ -15,4 +16,5 @@ module com.example.seniormanager {
 
     exports com.example.seniormanager;
     opens com.example.seniormanager.controller to javafx.fxml, javafx.base;
+    opens com.example.seniormanager.util to javafx.base, javafx.fxml;
 }

@@ -4,7 +4,6 @@ import com.example.seniormanager.util.MessageBox;
 import com.example.seniormanager.util.SendMail;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 

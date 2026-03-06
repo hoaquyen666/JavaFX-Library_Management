@@ -11,5 +11,9 @@ module com.example.administrator {
     requires eu.hansolo.tilesfx;
 
     opens com.example.administrator to javafx.fxml;
+
+    // THÊM DÒNG NÀY: Cấp quyền cho JavaFX truy cập vào package controller của bạn
+    opens com.example.administrator.controller to javafx.fxml;
+
     exports com.example.administrator;
 }
