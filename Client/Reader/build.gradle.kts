@@ -50,6 +50,9 @@ dependencies {
     }
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    dependencies {
+        implementation("com.mysql:mysql-connector-j:8.3.0")
+    }
 }
 
 tasks.withType<Test> {
