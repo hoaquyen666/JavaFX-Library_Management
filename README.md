@@ -21,5 +21,4 @@ ___
  + Module 4: Senior Manager
   -> Chịu trách nhiệm kiểm soát dữ liệu ngoài lề, xem thống kê, báo cáo, hỗ trợ Librarian mới vào làm. 
     Liên hệ Adminstrator tạo tài khoản Librarian
- 
  ```
