@@ -40,6 +40,10 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
     implementation("org.kordamp.ikonli:ikonli-javafx:12.3.1")
     implementation("org.kordamp.ikonli:ikonli-materialdesign2-pack:12.3.1")
+
+    dependencies{
+        implementation("com.mysql:mysql-connector-j:8.3.0")
+    }
 }
 
 tasks.withType<Test> {

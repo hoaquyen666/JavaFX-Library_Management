@@ -12,16 +12,18 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane stylesheets="@search-style.css" styleClass="app-container" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane stylesheets="@search-style.css" styleClass="app-container"
+           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="com.example.reader.controller.SearchMainViewController">
 
     <Region styleClass="bg-overlay" />
 
     <VBox maxWidth="1100.0" spacing="10.0" styleClass="content">
 
         <HBox alignment="CENTER_RIGHT" spacing="15.0">
-            <Button styleClass="authen-btn" text="Đăng nhập" />
+            <Button fx:id="btnLogin" styleClass="authen-btn" text="Đăng nhập" onAction="#onLoginForm"/>
             <Label text="|" textFill="#cccccc" />
-            <Button styleClass="authen-btn" text="Đăng ký" />
+            <Button  fx:id="btnRegister" styleClass="authen-btn" text="Đăng ký" onAction="#onRegisterForm"/>
             <VBox.margin>
                 <Insets top="20.0" />
             </VBox.margin>
