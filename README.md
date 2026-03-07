@@ -19,6 +19,6 @@ ___
  + Module 3: Reader
   -> Người dùng có thể đăng kí/đăng nhập xem thông tin và tìm kiếm các loại sách, số lượng còn lại của bản sao
  + Module 4: Senior Manager
-  -> Chịu trách nhiệm kiểm soát dữ liệu ngoài lề, xem thống kê, báo cáo, hỗ trợ Librarian mới vào làm. 
+  -> Chịu trách nhiệm kiểm soát dữ liệu ngoài lề, xem thống kê, báo cáo, hỗ trợ Librarian mới vào làm.
     Liên hệ Adminstrator tạo tài khoản Librarian
  ```
