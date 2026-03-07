@@ -5,7 +5,7 @@ ___
 ```
 1. Project setting
  - SDK: 21
- - Language level: SDK default
+ - Language level: 21
 
 2. Database
  - MySQL
