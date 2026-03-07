@@ -70,10 +70,10 @@ fx:controller="com.example.reader.controller.SearchMainViewController">
                 </VBox>
 
                 <VBox styleClass="input-box" HBox.hgrow="ALWAYS">
-                    <TextField promptText="Nhập nội dung tìm kiếm..." styleClass="search-field" />
+                    <TextField fx:id="txtSearch" promptText="Nhập nội dung tìm kiếm..." styleClass="search-field" />
                 </VBox>
 
-                <Button styleClass="button-search" text="Tìm kiếm" prefHeight="60.0" prefWidth="180.0" />
+                <Button onAction="#onSearchAction" styleClass="button-search" text="Tìm kiếm" prefHeight="60.0" prefWidth="180.0" />
             </HBox>
         </VBox>
     </VBox>
