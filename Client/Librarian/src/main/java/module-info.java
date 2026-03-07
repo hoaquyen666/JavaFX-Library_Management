@@ -4,6 +4,7 @@ module com.example.librarian {
 
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.ikonli.materialdesign2;
+    requires java.sql;
 
 
     opens com.example.librarian.controller to javafx.fxml, javafx.base;

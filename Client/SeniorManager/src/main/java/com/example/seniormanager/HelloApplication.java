@@ -11,12 +11,12 @@ import java.io.IOException;
 public class HelloApplication extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
 
         try {
 
                 FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication
-                        .class.getResource("login-view.fxml"));
+                        .class.getResource("/com/example/seniormanager/login-view.fxml"));
                 Scene scene = new Scene(fxmlLoader.load(), 400, 370);
                 stage.setTitle("Đăng nhập");
                 stage.setScene(scene);

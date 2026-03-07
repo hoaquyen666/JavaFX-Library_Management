@@ -273,6 +273,22 @@ create table ImportDetail
     unique (ImportId, BookId)
 ) comment = 'Chi tiết từng sách trong phiếu nhập';
 
+create table librarian_shift
+(
+    Assignment_id int primary key auto_increment,
+    Librarian_id int not null,   -- Librarian được phân công
+    ShiftId int not null,   -- Ca làm (tham chiếu bảng shift)
+    Work_date datetime not null,   -- Ngày làm việc cụ thể
+    Assigned_by int not null,   -- Senior phân công (tham chiếu Staff)
+    Assigned_at datetime default current_timestamp,
+
+    unique (Librarian_id, Work_date, ShiftId), -- Tránh phân công trùng
+
+    constraint FK_LS_Librarian  foreign key (Librarian_id) references Staff(StaffId),
+    constraint FK_LS_Shift      foreign key (ShiftId)      references shift(ShiftId),
+    constraint FK_LS_AssignedBy foreign key (Assigned_by)  references Staff(StaffId)
+);
+
 ########
 # Dưới đây là các dữ liệu cơ bản được thêm
 ########
