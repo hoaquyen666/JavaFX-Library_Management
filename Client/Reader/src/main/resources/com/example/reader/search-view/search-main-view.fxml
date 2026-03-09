@@ -47,14 +47,14 @@ fx:controller="com.example.reader.controller.SearchMainViewController">
             <Region styleClass="divider" />
 
             <VBox alignment="CENTER" styleClass="search-item" HBox.hgrow="ALWAYS">
-                <Label styleClass="icon-label" text="🔍" />
+                <Button styleClass="icon-label" text="🔍" />
                 <Label styleClass="text-label" text="Tìm cơ bản" />
             </VBox>
 
             <Region styleClass="divider" />
 
             <VBox alignment="CENTER" styleClass="search-item" HBox.hgrow="ALWAYS">
-                <Label styleClass="icon-label" text="✨" />
+                <Button styleClass="icon-label" text="✨"/>
                 <Label styleClass="text-label" text="Tìm nâng cao" />
             </VBox>
             <VBox.margin>
