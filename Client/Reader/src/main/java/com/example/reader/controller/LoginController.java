@@ -35,20 +35,18 @@ public class LoginController {
 
 
         Account account = accountDAO.login(username, password, ROLE);
-
-        return;
-//        if (account != null) {
-//            try {
-//                FXMLLoader loader = new FXMLLoader(
-//                        getClass().getResource("/com/example/reader/search-view/search-main-view.fxml"));
-//                Scene scene = new Scene(loader.load(), 1500, 1000);
-//                // scene.getStylesheets().add(getClass().getResource("/style/ButtonStyle.css").toExternalForm());
-//                Stage stage = (Stage) txtUsername.getScene().getWindow();
-//                stage.setScene(scene);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        if (account != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/com/example/reader/search-view/search-main-view.fxml"));
+                Scene scene = new Scene(loader.load(), 1500, 1000);
+                // scene.getStylesheets().add(getClass().getResource("/style/ButtonStyle.css").toExternalForm());
+                Stage stage = (Stage) txtUsername.getScene().getWindow();
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
