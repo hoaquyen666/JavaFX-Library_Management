@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
 import java.net.URL;
@@ -67,12 +68,17 @@ public class MainViewController implements Initializable
 
     @FXML
     void handleStaff(ActionEvent event){
-        loadGiaoDienCon("/com/example/seniormanager/staff-management/account-view/Account.fxml");
+        loadGiaoDienCon("/com/example/seniormanager/staff-management/staff-view/staff-main-view.fxml");
     }
 
     @FXML
     void handleShift(ActionEvent event){
-        loadGiaoDienCon("/com/example/seniormanager/staff-management/account-view/Account.fxml");
+        loadGiaoDienCon("/com/example/seniormanager/staff-management/shift-view/shift.fxml");
+    }
+
+    @FXML
+    void addAccount(ActionEvent event){
+
     }
 
     private void loadGiaoDienCon(String fileName){

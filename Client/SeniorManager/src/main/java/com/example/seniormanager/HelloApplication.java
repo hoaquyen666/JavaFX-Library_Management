@@ -4,6 +4,7 @@ import com.example.seniormanager.util.MessageBox;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,9 +17,10 @@ public class HelloApplication extends Application {
         try {
 
                 FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication
-                        .class.getResource("/com/example/seniormanager/login-view.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 400, 370);
+                        .class.getResource("/com/example/seniormanager/staff-management/main-view/staff-management-view.fxml"));
+                Scene scene = new Scene(fxmlLoader.load());
                 stage.setTitle("Đăng nhập");
+                stage.fullScreenProperty();
                 stage.setScene(scene);
                 stage.show();
 
