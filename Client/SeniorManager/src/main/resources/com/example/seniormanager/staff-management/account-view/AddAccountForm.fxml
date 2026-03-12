@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 5px" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.seniormanager.controller.AccountView.AddAccountController" stylesheets="@/style/style.css">
+
+    <Label text="Thêm Tài Khoản Mới" textFill="#233771">
+        <font>
+            <Font name="System Bold" size="20.0" />
+        </font>
+        <VBox.margin>
+            <Insets bottom="10.0" />
+        </VBox.margin>
+    </Label>
+
+    <GridPane hgap="10" vgap="15">
+        <Label text="ID Nhân Viên:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <ComboBox fx:id="cbStaff" prefWidth="200.0" promptText="Nhập ID Nhân viên..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Tên đăng nhập:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="txtUsername" promptText="Nhập tên đăng nhập..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Mật khẩu:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <PasswordField fx:id="txtPassword" promptText="Nhập mật khẩu..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Quyền (Role):" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <ComboBox fx:id="cbRole" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+
+    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+        <VBox.margin>
+            <Insets top="15.0" />
+        </VBox.margin>
+        <Button onAction="#handleCancel"  text="Hủy" styleClass="btn-delete"/>
+        <Button onAction="#handleSave" text="Lưu Tài Khoản" styleClass="btn-add"/>
+    </HBox>
+
+</VBox>

@@ -8,12 +8,13 @@ public class Account {
     private String username;
     private String passwordHash;
     private String role;
+    private String staffName;
 
     public Account() {
     }
 
-    public int getAccountId() {
-        return accountId;
+    public int getAccountId(int accountId) {
+        return this.accountId;
     }
 
     public void setAccountId(int accountId) {
@@ -66,5 +67,13 @@ public class Account {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 }
