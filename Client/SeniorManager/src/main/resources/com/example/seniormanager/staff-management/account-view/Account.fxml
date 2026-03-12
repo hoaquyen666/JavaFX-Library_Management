@@ -5,12 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="1.7976931348623157E308"
-           maxWidth="1.7976931348623157E308"
-           style="-fx-background-color: transparent;"
-           xmlns="http://javafx.com/javafx/17.0.12"
-           xmlns:fx="http://javafx.com/fxml/1"
-            stylesheets="@account.css">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: transparent;" stylesheets="@../../../../../style/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.seniormanager.controller.AccountView.AccountController">
 
     <VBox spacing="20.0" styleClass="main-content-card">
         <padding>
@@ -24,11 +19,8 @@
         </Label>
 
         <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card">
-            <TextField prefWidth="300.0" promptText="Tìm kiếm nhân viên" style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-padding: 8;" />
 
-            <Region HBox.hgrow="ALWAYS" />
-
-            <Button style="-fx-background-color: #233771; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Thêm Tài khoản">
+            <Button onAction="#addAccount" styleClass="btn-add" text="Thêm Tài khoản">
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
                 </padding>
@@ -37,7 +29,7 @@
                 </font>
             </Button>
 
-            <Button style="-fx-background-color: #f0ad4e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Sửa">
+            <Button styleClass="btn-edit" text="Sửa" onAction="#editAccount">
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
                 </padding>
@@ -45,24 +37,17 @@
                     <Font name="System Bold" size="13.0" />
                 </font>
             </Button>
-            <Button style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Xóa">
-                <padding>
-                    <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
-                </padding>
-                <font>
-                    <Font name="System Bold" size="13.0" />
-                </font>
-            </Button>
+
         </HBox>
 
         <VBox style="-fx-background-color: white;         -fx-background-radius: 20;         -fx-padding: 15;         -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5); " VBox.vgrow="ALWAYS">
             <TableView fx:id="accountTable" prefHeight="400.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
                 <columns>
-                    <TableColumn prefWidth="50.0" text="STT" />
-                    <TableColumn prefWidth="100.0" text="Mã Nhân Viên" />
-                    <TableColumn prefWidth="250.0" text="Tên Nhân viên" />
-                    <TableColumn prefWidth="150.0" text="Tên đăng nhập" />
-                    <TableColumn prefWidth="120.0" text="Mật khẩu" />
+                    <TableColumn fx:id="colSTT" prefWidth="50.0" text="STT" />
+                    <TableColumn fx:id="colStaffId" prefWidth="100.0" text="Mã Nhân Viên" />
+                    <TableColumn fx:id="colStaffName" prefWidth="250.0" text="Tên Nhân viên" />
+                    <TableColumn fx:id="colUsername" prefWidth="150.0" text="Tên đăng nhập" />
+                    <TableColumn fx:id="colPassword" prefWidth="120.0" text="Mật khẩu" />
                 </columns>
                 <columnResizePolicy>
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
