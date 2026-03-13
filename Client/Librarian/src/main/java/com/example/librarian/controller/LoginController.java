@@ -14,15 +14,15 @@ import java.io.IOException;
 
 public class LoginController {
 
+    private static final String ROLE = "Librarian";
+
     @FXML
     private TextField txtUsername;
 
     @FXML
     private PasswordField txtPassword;
 
-    private AccountDAO accountDAO = new AccountDAO();
-
-    private static String ROLE = "Librarian";
+    private final AccountDAO accountDAO = new AccountDAO();
 
     @FXML
     protected void onLoginClick() {
@@ -30,27 +30,34 @@ public class LoginController {
         String password = txtPassword.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Tài khoản hoặc mật khẩu không chính xác");
-            alert.showAndWait();
+            showError("Tài khoản hoặc mật khẩu không chính xác");
             return;
         }
 
-        Account account = accountDAO.login(username, password, ROLE);
-
-        if (account != null) {
-            try {
-                FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/com/example/librarian/Library_Main_View/libra-main-view.fxml"));
-                Scene scene = new Scene(loader.load());
-                // scene.getStylesheets().add(getClass().getResource("/com/example/librarian/Library_Main_Viewe/libra-main.css").toExternalForm());
-                Stage stage = (Stage) txtUsername.getScene().getWindow();
-                stage.setScene(scene);
-            } catch (IOException e) {
-                       e.printStackTrace();
+        try {
+            Account account = accountDAO.login(username, password, ROLE);
+            if (account == null) {
+                showError("Tài khoản hoặc mật khẩu không chính xác");
+                return;
             }
+
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/librarian/Library_Main_View/libra-main-view.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = (Stage) txtUsername.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (RuntimeException e) {
+            showError("Không kết nối được cơ sở dữ liệu");
+        } catch (IOException e) {
+            showError("Không mở được màn hình chính");
         }
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Lỗi");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
