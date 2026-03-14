@@ -19,14 +19,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
-
+import javafx.scene.control.Button;
 import java.util.Locale;
+import com.example.librarian.dao.ReaderDAO;
+import com.example.librarian.model.ReaderRecord;
+import javafx.scene.control.TextInputDialog;
+import java.util.Optional;
+import java.util.List;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ComboBox;
+import javafx.scene.layout.GridPane;
+import java.util.Optional;
 
 public class ReaderManagementController {
     @FXML
     private ComboBox<String> groupFilter;
-    @FXML
-    private ComboBox<String> departmentFilter;
     @FXML
     private TextField searchField;
     @FXML
@@ -53,6 +62,14 @@ public class ReaderManagementController {
     private Label totalCountLabel;
     @FXML
     private ComboBox<String> pageSizeCombo;
+    @FXML
+    private Button btnAdd;
+
+    @FXML
+    private Button btnEdit;
+
+    @FXML
+    private Button btnResetPassword;
 
     private final ObservableList<ReaderRow> masterRows = FXCollections.observableArrayList();
     private FilteredList<ReaderRow> filteredRows;
@@ -61,8 +78,8 @@ public class ReaderManagementController {
     private void initialize() {
         setupFilters();
         setupTable();
-        loadMockData();
         bindTableData();
+        loadReadersFromDatabase();
         applyFilter();
     }
 
@@ -77,16 +94,12 @@ public class ReaderManagementController {
         ));
         groupFilter.getSelectionModel().selectFirst();
 
-        departmentFilter.setItems(FXCollections.observableArrayList(
-                "Tất cả phòng ban", "Hành chính", "CNTT", "Kinh tế", "Ngoại ngữ"
-        ));
-        departmentFilter.getSelectionModel().selectFirst();
 
         pageSizeCombo.setItems(FXCollections.observableArrayList("20 / trang", "50 / trang", "100 / trang"));
         pageSizeCombo.getSelectionModel().selectFirst();
 
         groupFilter.valueProperty().addListener((obs, oldValue, newValue) -> applyFilter());
-        departmentFilter.valueProperty().addListener((obs, oldValue, newValue) -> applyFilter());
+
         searchField.textProperty().addListener((obs, oldValue, newValue) -> applyFilter());
     }
 
@@ -131,7 +144,6 @@ public class ReaderManagementController {
         colFullName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colDepartment.setCellValueFactory(new PropertyValueFactory<>("department"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
 
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -152,22 +164,34 @@ public class ReaderManagementController {
         });
     }
 
-    private void loadMockData() {
-        masterRows.setAll(
-                new ReaderRow("A001", "Admin", "Administrator", "0912345678", "administrator@gmail.com", "Hành chính", "Hà Nội", "Kích hoạt"),
-                new ReaderRow("SV1001", "demo", "demo", "0987654321", "abc@itsoft.vn", "CNTT", "Cơ sở 1", "Kích hoạt"),
-                new ReaderRow("SV1002", "521TCN1001", "Nguyễn Thị Vân Anh", "012345", "521TCN1001@school.edu", "CNTT", "DHHB", "Kích hoạt"),
-                new ReaderRow("SV1003", "520YCT1001", "Phó Long An", "0395025459", "pholongan@school.edu", "Kinh tế", "DHHB", "Kích hoạt"),
-                new ReaderRow("GV2001", "nguyenhai", "Trần Nguyên Hải", "012345", "nahai.haui@gmail.com", "Ngoại ngữ", "Hà Nội", "Kích hoạt"),
-                new ReaderRow("SV1004", "521TCN1002", "Trần Thị Ngọc Ánh", "012345", "521TCN1002@school.edu", "CNTT", "DHHB", "Kích hoạt")
-        );
-    }
 
     private void bindTableData() {
         filteredRows = new FilteredList<>(masterRows, row -> true);
         SortedList<ReaderRow> sortedRows = new SortedList<>(filteredRows);
         sortedRows.comparatorProperty().bind(readerTable.comparatorProperty());
         readerTable.setItems(sortedRows);
+    }
+
+    private void loadReadersFromDatabase() {
+
+        ReaderDAO dao = new ReaderDAO();
+        List<ReaderRecord> readers = dao.findAllReaders();
+
+        masterRows.clear();
+
+        for (ReaderRecord r : readers) {
+
+            masterRows.add(new ReaderRow(
+                    r.getReaderCode(),
+                    r.getUsername(),
+                    r.getFullName(),
+                    r.getPhone(),
+                    r.getEmail(),
+                    "",
+                    "",
+                    r.getStatus()
+            ));
+        }
     }
 
     private void applyFilter() {
@@ -177,15 +201,12 @@ public class ReaderManagementController {
 
         String keyword = normalize(searchField.getText());
         String group = groupFilter.getValue();
-        String department = departmentFilter.getValue();
+
 
         filteredRows.setPredicate(row -> {
             boolean groupMatched = group == null
                     || "Tất cả nhóm quyền".equals(group)
                     || group.equals(row.getGroup());
-            boolean departmentMatched = department == null
-                    || "Tất cả phòng ban".equals(department)
-                    || department.equals(row.getDepartment());
             boolean keywordMatched = keyword.isBlank()
                     || normalize(row.getAccount()).contains(keyword)
                     || normalize(row.getFullName()).contains(keyword)
@@ -194,7 +215,7 @@ public class ReaderManagementController {
                     || normalize(row.getDepartment()).contains(keyword)
                     || normalize(row.getAddress()).contains(keyword);
 
-            return groupMatched && departmentMatched && keywordMatched;
+            return groupMatched && keywordMatched;
         });
 
         totalCountLabel.setText(filteredRows.size() + " bản ghi");
@@ -203,6 +224,100 @@ public class ReaderManagementController {
     private static String normalize(String value) {
         return value == null ? "" : value.toLowerCase(Locale.ROOT).trim();
     }
+
+    @FXML
+    private void onAddReader(){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Thêm độc giả");
+
+        TextField txtName = new TextField();
+        TextField txtPhone = new TextField();
+        TextField txtEmail = new TextField();
+
+        ComboBox<String> cbStatus = new ComboBox<>();
+        cbStatus.getItems().addAll("Kích hoạt", "Khóa");
+        cbStatus.getSelectionModel().selectFirst();
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        grid.add(new Label("Họ tên:"),0,0);
+        grid.add(txtName,1,0);
+
+        grid.add(new Label("Điện thoại:"),0,1);
+        grid.add(txtPhone,1,1);
+
+        grid.add(new Label("Email:"),0,2);
+        grid.add(txtEmail,1,2);
+
+        grid.add(new Label("Trạng thái:"),0,3);
+        grid.add(cbStatus,1,3);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK,ButtonType.CANCEL);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if(result.isPresent() && result.get() == ButtonType.OK){
+
+            ReaderRecord reader = new ReaderRecord(
+                    "SV" + System.currentTimeMillis(),
+                    "",
+                    txtName.getText(),
+                    txtPhone.getText(),
+                    txtEmail.getText(),
+                    cbStatus.getValue()
+            );
+
+            ReaderDAO dao = new ReaderDAO();
+            dao.addReader(reader);
+
+            loadReadersFromDatabase();
+        }
+    }
+
+    @FXML
+    private void onEditReader(){
+        ReaderRow selected = readerTable.getSelectionModel().getSelectedItem();
+
+        if(selected == null) return;
+
+        TextInputDialog dialog = new TextInputDialog(selected.getFullName());
+        dialog.setTitle("Sửa độc giả");
+        dialog.setHeaderText("Sửa họ tên");
+
+        Optional<String> result = dialog.showAndWait();
+
+        if(result.isPresent()){
+
+            String newName = result.get();
+
+            ReaderRecord reader = new ReaderRecord(
+                    selected.getAccount(),
+                    selected.getAccount(),
+                    newName,
+                    selected.getPhone(),
+                    selected.getEmail(),
+                    selected.getStatus()
+            );
+
+            ReaderDAO dao = new ReaderDAO();
+            dao.updateReader(reader);
+
+            loadReadersFromDatabase();
+        }
+    }
+
+    @FXML
+    private void onResetPassword(){
+        ReaderRow selected = readerTable.getSelectionModel().getSelectedItem();
+        if(selected == null) return;
+
+        System.out.println("Reset password: " + selected.getAccount());
+    }
+
 
     public static class ReaderRow {
         private final BooleanProperty selected = new SimpleBooleanProperty(false);
@@ -252,6 +367,8 @@ public class ReaderManagementController {
             }
             return "Khách";
         }
+
+
 
         public BooleanProperty selectedProperty() {
             return selected;

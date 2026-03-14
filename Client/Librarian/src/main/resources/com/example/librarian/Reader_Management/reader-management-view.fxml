@@ -43,15 +43,29 @@
 
             <Region HBox.hgrow="ALWAYS" />
 
-            <Button styleClass="btn-primary" style="-fx-background-color: #233771; -fx-text-fill: white; -fx-background-radius: 8;" text="+ Thêm" />
-            <Button disable="true" styleClass="btn-disabled" text="Sửa" />
-            <Button disable="true" styleClass="btn-disabled" text="Reset password" />
-            <Button disable="true" styleClass="btn-disabled" text="Xóa" />
+            <Button fx:id="btnAdd"
+                    text="+ Thêm"
+                    styleClass="btn-primary"
+                    style="-fx-background-color: #233771; -fx-text-fill: white; -fx-background-radius: 8;"
+                    onAction="#onAddReader"/>
+
+            <Button fx:id="btnEdit"
+                    text="Sửa"
+                    disable="true"
+                    styleClass="btn-edit"
+                    onAction="#onEditReader"/>
+
+            <Button fx:id="btnResetPassword"
+                    text="Reset password"
+                    disable="true"
+                    styleClass="btn-reset"
+                    onAction="#onResetPassword"/>
+
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="15.0">
             <ComboBox fx:id="groupFilter" prefWidth="170.0" promptText="Tất cả nhóm quyền" styleClass="filter-combo" style="-fx-background-radius: 8;" />
-            <ComboBox fx:id="departmentFilter" prefWidth="170.0" promptText="Tất cả phòng ban" styleClass="filter-combo" style="-fx-background-radius: 8;" />
+
 
             <TextField fx:id="searchField" promptText="Tìm kiếm tài khoản, họ tên..." styleClass="search-field" style="-fx-background-radius: 8; -fx-padding: 8;" HBox.hgrow="ALWAYS" />
 
@@ -73,7 +87,6 @@
                     <TableColumn fx:id="colFullName" prefWidth="160.0" text="Họ tên" />
                     <TableColumn fx:id="colPhone" prefWidth="110.0" text="Điện thoại" />
                     <TableColumn fx:id="colEmail" prefWidth="180.0" text="Email" />
-                    <TableColumn fx:id="colDepartment" prefWidth="130.0" text="Phòng ban" />
                     <TableColumn fx:id="colAddress" prefWidth="110.0" text="Địa chỉ" />
                     <TableColumn fx:id="colStatus" prefWidth="100.0" text="Trạng thái" />
                 </columns>
