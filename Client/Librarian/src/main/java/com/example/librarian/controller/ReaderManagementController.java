@@ -13,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -28,10 +29,8 @@ import java.util.Optional;
 import java.util.List;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
-import java.util.Optional;
+
 
 public class ReaderManagementController {
     @FXML
@@ -52,8 +51,7 @@ public class ReaderManagementController {
     private TableColumn<ReaderRow, String> colPhone;
     @FXML
     private TableColumn<ReaderRow, String> colEmail;
-    @FXML
-    private TableColumn<ReaderRow, String> colDepartment;
+
     @FXML
     private TableColumn<ReaderRow, String> colAddress;
     @FXML
@@ -81,6 +79,16 @@ public class ReaderManagementController {
         bindTableData();
         loadReadersFromDatabase();
         applyFilter();
+
+        readerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)->{
+
+            boolean disable = newVal == null;
+
+            btnEdit.setDisable(disable);
+            btnResetPassword.setDisable(disable);
+        });
+
+
     }
 
     @FXML
@@ -212,7 +220,6 @@ public class ReaderManagementController {
                     || normalize(row.getFullName()).contains(keyword)
                     || normalize(row.getPhone()).contains(keyword)
                     || normalize(row.getEmail()).contains(keyword)
-                    || normalize(row.getDepartment()).contains(keyword)
                     || normalize(row.getAddress()).contains(keyword);
 
             return groupMatched && keywordMatched;
@@ -284,23 +291,47 @@ public class ReaderManagementController {
 
         if(selected == null) return;
 
-        TextInputDialog dialog = new TextInputDialog(selected.getFullName());
+        Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Sửa độc giả");
-        dialog.setHeaderText("Sửa họ tên");
 
-        Optional<String> result = dialog.showAndWait();
+        TextField txtName = new TextField(selected.getFullName());
+        TextField txtPhone = new TextField(selected.getPhone());
+        TextField txtEmail = new TextField(selected.getEmail());
 
-        if(result.isPresent()){
+        ComboBox<String> cbStatus = new ComboBox<>();
+        cbStatus.getItems().addAll("Kích hoạt","Khóa");
+        cbStatus.setValue(selected.getStatus());
 
-            String newName = result.get();
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        grid.add(new Label("Họ tên:"),0,0);
+        grid.add(txtName,1,0);
+
+        grid.add(new Label("Điện thoại:"),0,1);
+        grid.add(txtPhone,1,1);
+
+        grid.add(new Label("Email:"),0,2);
+        grid.add(txtEmail,1,2);
+
+        grid.add(new Label("Trạng thái:"),0,3);
+        grid.add(cbStatus,1,3);
+
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK,ButtonType.CANCEL);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if(result.isPresent() && result.get()==ButtonType.OK){
 
             ReaderRecord reader = new ReaderRecord(
+                    selected.getReaderCode(),
                     selected.getAccount(),
-                    selected.getAccount(),
-                    newName,
-                    selected.getPhone(),
-                    selected.getEmail(),
-                    selected.getStatus()
+                    txtName.getText(),
+                    txtPhone.getText(),
+                    txtEmail.getText(),
+                    cbStatus.getValue()
             );
 
             ReaderDAO dao = new ReaderDAO();
@@ -313,14 +344,25 @@ public class ReaderManagementController {
     @FXML
     private void onResetPassword(){
         ReaderRow selected = readerTable.getSelectionModel().getSelectedItem();
+
         if(selected == null) return;
 
-        System.out.println("Reset password: " + selected.getAccount());
+        ReaderDAO dao = new ReaderDAO();
+        dao.resetPassword(selected.getAccount());
+
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Reset Password");
+        dialog.setContentText("Password đã reset về: 123456");
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.showAndWait();
+
+        loadReadersFromDatabase();
     }
 
 
     public static class ReaderRow {
         private final BooleanProperty selected = new SimpleBooleanProperty(false);
+        private final StringProperty readerCode = new SimpleStringProperty();
         private final StringProperty account = new SimpleStringProperty();
         private final StringProperty fullName = new SimpleStringProperty();
         private final StringProperty phone = new SimpleStringProperty();
@@ -333,6 +375,7 @@ public class ReaderManagementController {
 
         public ReaderRow(String id, String account, String fullName, String phone, String email,
                          String department, String address, String status) {
+            this.readerCode.set(id);
             this.account.set(account);
             this.fullName.set(fullName);
             this.phone.set(phone);
@@ -409,5 +452,7 @@ public class ReaderManagementController {
         public String getGroup() {
             return group.get();
         }
+
+        public String getReaderCode(){ return readerCode.get(); }
     }
 }
