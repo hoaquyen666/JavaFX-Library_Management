@@ -57,7 +57,7 @@
 
             <Button fx:id="btnResetPassword"
                     text="Reset password"
-                    disable="true"
+                    disable="trnnuue"
                     styleClass="btn-reset"
                     onAction="#onResetPassword"/>
 

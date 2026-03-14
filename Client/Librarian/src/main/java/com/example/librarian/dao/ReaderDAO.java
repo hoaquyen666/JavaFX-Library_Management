@@ -99,4 +99,23 @@ public class ReaderDAO {
             e.printStackTrace();
         }
     }
+
+    public void resetPassword(String username){
+
+        String sql = """
+            UPDATE Account
+            SET PasswordHash = '123456'
+            WHERE Username = ?
+            """;
+
+        try(Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)){
+
+            ps.setString(1, username);
+            ps.executeUpdate();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }
