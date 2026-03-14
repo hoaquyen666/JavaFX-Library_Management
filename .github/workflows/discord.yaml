@@ -14,7 +14,12 @@ jobs:
           -H "Content-Type: application/json" \
           -d "{
             \"embeds\": [{
+              \"author\": {
+                \"name\": \"${{ github.actor }} vừa push code\",
+                \"icon_url\": \"https://github.com/${{ github.actor }}.png\"
+              },
               \"title\": \"🚀 Có người vừa push code kia!\",
+              \"url\": \"https://github.com/${{ github.repository }}/commit/${{ github.sha }}\",
               \"color\": 5763719,
               \"fields\": [
                 {
@@ -33,7 +38,7 @@ jobs:
                 }
               ],
               \"footer\": {
-                \"text\": \"${{ github.actor }} • GitHub Actions\"
+                \"text\": \"GitHub Actions\"
               }
             }]
           }"
