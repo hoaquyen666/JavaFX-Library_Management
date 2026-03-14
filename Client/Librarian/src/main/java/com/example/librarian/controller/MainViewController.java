@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainViewController implements Initializable {
+public class MainViewController  implements Initializable {
+
+    public static MainViewController instance;
 
     @FXML
     private StackPane mainContentArea;
@@ -42,6 +44,7 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        instance = this;
         handleTrangChu(null);
         // Đảm bảo sidebar bắt đầu ở trạng thái thu gọn
         if (sidebar != null) {
@@ -73,57 +76,57 @@ public class MainViewController implements Initializable {
 
 
     @FXML
-    void handleTrangChu(ActionEvent event) {
+    public void handleTrangChu(ActionEvent event) {
         loadGiaoDienCon("/com/example/librarian/Library_Main_View/home-main-view.fxml");
     }
 
     @FXML
-    void handleQuanLySach(ActionEvent event){
+    public void handleQuanLySach(ActionEvent event){
         loadGiaoDienCon("/com/example/librarian/Book_Management/book-management-view.fxml");
     }
 
     @FXML
-    void handleQuanLyDocGia(ActionEvent event){
+    public void handleQuanLyDocGia(ActionEvent event){
         loadGiaoDienCon("/com/example/librarian/Reader_Management/reader-management-view.fxml");
     }
 
 
     @FXML
-    void handleQuanLyMuonTra(ActionEvent event) {
+    public void handleQuanLyMuonTra(ActionEvent event) {
         isMuonTraExpanded = !isMuonTraExpanded;
         muonTraSubMenu.setVisible(isMuonTraExpanded);
         muonTraSubMenu.setManaged(isMuonTraExpanded);
     }
 
     @FXML
-    void handleQuanLyMuon(ActionEvent event){
+    public void handleQuanLyMuon(ActionEvent event){
         loadGiaoDienCon("/com/example/librarian/Borrow_Return_Management/borrow-management-view.fxml");
     }
 
     @FXML
-    void handleQuanLyTra(ActionEvent event){
+    public void handleQuanLyTra(ActionEvent event){
         loadGiaoDienCon("/com/example/librarian/Borrow_Return_Management/return-management-view.fxml");
     }
 
     @FXML
-    void handleQuanLyKho(ActionEvent event){
+    public void handleQuanLyKho(ActionEvent event){
         isKhoExpanded = !isKhoExpanded;
         menuQuanLyKho.setVisible(isKhoExpanded);
         menuQuanLyKho.setManaged(isKhoExpanded);
     }
 
     @FXML
-    void handleQuanLyNhap(ActionEvent event){
+    public void handleQuanLyNhap(ActionEvent event){
         loadGiaoDienCon("/com/example/librarian/Storage_Management/import-management-view.fxml");
     }
 
     @FXML
-    void handleNhaCungCap(ActionEvent event){
+    public void handleNhaCungCap(ActionEvent event){
         loadGiaoDienCon("/com/example/librarian/Storage_Management/supplier-management-view.fxml");
     }
 
     @FXML
-    void handleQuanLyThongKe(ActionEvent event){
+    public void handleQuanLyThongKe(ActionEvent event){
         loadGiaoDienCon("/com/example/librarian/Statistical_Management/statistical-management-view.fxml");
     }
 

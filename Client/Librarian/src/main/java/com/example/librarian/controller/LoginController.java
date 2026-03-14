@@ -30,6 +30,36 @@ public class LoginController {
         String password = txtPassword.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
+            showAlert("Vui lòng nhập đầy đủ Tài khoản và Mật khẩu!");
+            return;
+        }
+
+        Account account = accountDAO.login(username, password, ROLE);
+
+        if (account != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/com/example/librarian/Library_Main_View/libra-main-view.fxml"));
+                Scene scene = new Scene(loader.load());
+                // scene.getStylesheets().add(getClass().getResource("/com/example/librarian/Library_Main_Viewe/libra-main.css").toExternalForm());
+                Stage stage = (Stage) txtUsername.getScene().getWindow();
+                stage.setScene(scene);
+                // căn center cho cửa sổ và fullscreen
+                stage.setTitle("Hệ thống Quản lý Thư viện CMCU");
+                stage.setWidth(1200);
+                stage.setHeight(700);
+                stage.centerOnScreen();
+                stage.setMaximized(true);
+            } catch (IOException e) {
+                       e.printStackTrace();
+            }
+        } else {
+            showAlert("Tài khoản hoặc mật khẩu không chính xác!");
+        }
+    }
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Lỗi đăng nhập");
             showError("Tài khoản hoặc mật khẩu không chính xác");
             return;
         }

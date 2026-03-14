@@ -63,10 +63,11 @@
          <VBox VBox.vgrow="ALWAYS">
             <TableView fx:id="borrowTable" style="-fx-background-color: transparent; -fx-border-color: #e0e0e0; -fx-border-radius: 8;" VBox.vgrow="ALWAYS">
                <columns>
-                  <TableColumn prefWidth="40.0" text="STT" />
-                  <TableColumn prefWidth="90.0" text="Mã Phiếu" />
-                  <TableColumn prefWidth="130.0" text="Độc Giả" />
-                  <TableColumn prefWidth="180.0" text="Tên Sách" />
+                  <TableColumn prefWidth="30.0" text="STT" />
+                  <TableColumn prefWidth="30.0" text="ID" />
+                  <TableColumn prefWidth="90.0" text="Mã Phiếu Mượn" />
+                  <TableColumn prefWidth="130.0" text="Mã Độc Giả" />
+                  <TableColumn prefWidth="180.0" text="Mã Nhân Viên" />
                   <TableColumn prefWidth="90.0" text="Ngày Mượn" />
                   <TableColumn prefWidth="90.0" text="Hạn Trả" />
                   <TableColumn prefWidth="90.0" text="Số lượng" />

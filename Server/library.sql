@@ -309,7 +309,7 @@ insert into Author (AuthorCode, AuthorName)
 values ('A1', 'Nguyễn Nhật Ánh'),
        ('A2', 'J. K. Rowling');
 
-insert into Book (BookCode, Title, ISBN)
+insert into Book (BookCode, Title, ISBN, Publisher, PublishYear)
 values ('B1', 'Tôi thấy hoa vàng trên cỏ xanh', '123456'),
        ('B2', 'Hạ đỏ', '123457'),
        ('B3', 'Harry Potter', '654321'),
