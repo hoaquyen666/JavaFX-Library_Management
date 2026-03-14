@@ -45,4 +45,58 @@ public class ReaderDAO {
 
         return readers;
     }
+
+    // =========================
+    // THÊM READER
+    // =========================
+    public void addReader(ReaderRecord reader) {
+
+        String sql = """
+                INSERT INTO Reader (ReaderCode, FullName, Phone, Email, Status)
+                VALUES (?, ?, ?, ?, ?)
+                """;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, reader.getReaderCode());
+            ps.setString(2, reader.getFullName());
+            ps.setString(3, reader.getPhone());
+            ps.setString(4, reader.getEmail());
+            ps.setString(5, reader.getStatus());
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // =========================
+    // UPDATE READER
+    // =========================
+    public void updateReader(ReaderRecord reader) {
+
+        String sql = """
+                UPDATE Reader
+                SET FullName = ?, Phone = ?, Email = ?, Status = ?
+                WHERE ReaderCode = ?
+                """;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, reader.getFullName());
+            ps.setString(2, reader.getPhone());
+            ps.setString(3, reader.getEmail());
+            ps.setString(4, reader.getStatus());
+            ps.setString(5, reader.getReaderCode());
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
