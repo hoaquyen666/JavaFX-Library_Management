@@ -18,9 +18,10 @@ jobs:
                 \"name\": \"${{ github.actor }} vừa push code\",
                 \"icon_url\": \"https://github.com/${{ github.actor }}.png\"
               },
-              \"title\": \"🚀 Có người vừa push code kia!\",
+              \"title\": \"🚀 Có người vừa push code kìa!\",
               \"url\": \"https://github.com/${{ github.repository }}/commit/${{ github.sha }}\",
               \"color\": 5763719,
+              \"timestamp\": \"${{ github.event.head_commit.timestamp }}\",
               \"fields\": [
                 {
                   \"name\": \"📁 Dự án\",
@@ -38,7 +39,7 @@ jobs:
                 }
               ],
               \"footer\": {
-                \"text\": \"GitHub Actions\"
+                \"text\": \"GitHub Actions - LycoReco Bot\"
               }
             }]
           }"
