@@ -1,0 +1,217 @@
+.root {
+    -fx-font-family: "Segoe UI";
+}
+
+.reader-page {
+    -fx-background-color: #eef2f6;
+}
+
+.page-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #354f7b;
+    -fx-padding: 4 0 6 0;
+}
+
+.button {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+}
+
+.btn-primary {
+    -fx-background-color: #2591ff;
+    -fx-text-fill: white;
+    -fx-padding: 8 16;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1d83e8;
+}
+
+.btn-disabled {
+    -fx-background-color: #f3f4f6;
+    -fx-border-color: #e4e7ec;
+    -fx-text-fill: #b8bec8;
+    -fx-padding: 8 14;
+}
+
+.btn-disabled:disabled {
+    -fx-opacity: 1.0;
+}
+
+.filter-combo,
+.search-field {
+    -fx-pref-height: 30;
+    -fx-background-color: white;
+    -fx-background-radius: 4;
+    -fx-border-color: #d8e3ef;
+    -fx-border-radius: 4;
+    -fx-border-width: 1;
+}
+
+.filter-combo {
+    -fx-pref-width: 198;
+}
+
+.filter-combo .list-cell,
+.filter-combo .text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #54657f;
+}
+
+.search-field {
+    -fx-padding: 0 10;
+    -fx-font-size: 12px;
+}
+
+.btn-search {
+    -fx-background-color: #1f88f3;
+    -fx-text-fill: white;
+    -fx-padding: 7 14;
+    -fx-pref-height: 30;
+}
+
+.reader-table {
+    -fx-background-color: white;
+    -fx-border-color: #bfe5ff;
+    -fx-border-width: 1;
+    -fx-table-cell-border-color: #c7e8fb;
+    -fx-selection-bar: #edf7ff;
+    -fx-selection-bar-non-focused: #edf7ff;
+    -fx-fixed-cell-size: 40;
+}
+
+.reader-table .column-header-background {
+    -fx-background-color: #d7f2ff;
+}
+
+.reader-table .column-header {
+    -fx-background-color: #d7f2ff;
+    -fx-border-color: #bfe5ff;
+    -fx-border-width: 0 1 1 0;
+    -fx-padding: 4 6;
+}
+
+.reader-table .column-header .label {
+    -fx-text-fill: #4b6786;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-alignment: CENTER;
+}
+
+.reader-table .filler {
+    -fx-background-color: #d7f2ff;
+}
+
+.reader-table .table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #c7e8fb transparent;
+}
+
+.reader-table .table-row-cell:filled:hover {
+    -fx-background-color: #f7fcff;
+}
+
+.reader-table .table-cell {
+   -fx-text-fill: #5d6f89;
+    -fx-font-size: 12px;
+    -fx-padding: 6 6;
+    -fx-border-color: transparent #c7e8fb transparent transparent;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.reader-table .table-cell:last-visible {
+    -fx-border-color: transparent;
+}
+
+.reader-table .check-box {
+    -fx-padding: 0 0 0 4;
+}
+
+.reader-table .check-box .box {
+    -fx-background-color: white;
+    -fx-border-color: #ced8e4;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+}
+
+.avatar-wrapper {
+    -fx-min-width: 26;
+    -fx-max-width: 26;
+    -fx-min-height: 26;
+    -fx-max-height: 26;
+    -fx-background-color: #dfe5ee;
+    -fx-background-radius: 13;
+    -fx-border-color: #d1d9e4;
+    -fx-border-radius: 13;
+}
+
+.avatar-text {
+    -fx-font-size: 10px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #6a7f9a;
+}
+
+.status-chip {
+    -fx-padding: 2 8;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-background-radius: 3;
+}
+
+.status-active {
+    -fx-background-color: #8be05f;
+    -fx-text-fill: white;
+}
+
+.footer-bar {
+    -fx-padding: 2 2 4 2;
+}
+
+.footer-label {
+    -fx-text-fill: #6a7f9a;
+    -fx-font-size: 12px;
+}
+
+.footer-count {
+    -fx-text-fill: #4f6784;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+}
+
+.pager-arrow {
+    -fx-text-fill: #8ea3bc;
+    -fx-font-size: 16px;
+    -fx-padding: 0 2;
+}
+
+.pager-current {
+    -fx-min-width: 24;
+    -fx-alignment: CENTER;
+    -fx-padding: 1 6;
+    -fx-background-color: white;
+    -fx-border-color: #b7d9fb;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+    -fx-text-fill: #4b93e5;
+    -fx-font-weight: 700;
+    -fx-font-size: 12px;
+}
+
+.page-size-combo {
+    -fx-pref-width: 92;
+    -fx-pref-height: 26;
+    -fx-background-color: white;
+    -fx-background-radius: 3;
+    -fx-border-color: #d8e3ef;
+    -fx-border-radius: 3;
+}
+
+.page-size-combo .list-cell,
+.page-size-combo .text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #586c85;
+}

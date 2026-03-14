@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="15.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.seniormanager.controller.LoginController"
+      style="-fx-background-color: #f0f2f5;">
+
+  <!-- khung chứa thẻ (Nền trắng, bo góc, đổ bóng) -->
+  <VBox alignment="CENTER" spacing="12.0" maxWidth="360"
+        style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+    <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+    </padding>
+
+    <!-- Tiêu đề -->
+    <Label text="Thư Viện" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #1a73e8;"/>
+    <Label text="Đăng nhập tài khoản quản lý cấp cao" style="-fx-font-size: 13; -fx-text-fill: #666;"/>
+
+    <!-- Khoảng cách -->
+    <Region prefHeight="5"/>
+
+    <!-- Username -->
+    <TextField fx:id="txtUsername" promptText="Tên đăng nhập"
+               style="-fx-padding: 10; -fx-font-size: 13; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ddd;"/>
+
+    <!-- Password -->
+    <PasswordField fx:id="txtPassword" promptText="Mật khẩu"
+                   style="-fx-padding: 10; -fx-font-size: 13; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ddd;"/>
+
+    <!-- Label báo lỗi -->
+    <Label fx:id="lblError" text="" style="-fx-text-fill: red; -fx-font-size: 12;"
+           visible="false" managed="false"/>
+
+    <!-- Nút login -->
+    <Button text="Đăng nhập" onAction="#onLoginClick" maxWidth="Infinity"
+            style="-fx-background-color: #1a73e8; -fx-text-fill: white; -fx-font-size: 14; -fx-font-weight: bold; -fx-padding: 10; -fx-background-radius: 5; -fx-cursor: hand;"/>
+
+    <!-- Separator ngăn cách -->
+    <Separator/>
+
+    <!-- Hyperlink dẫn sang form help -->
+    <Hyperlink fx:id="linkHelp" text="Cần hỗ trợ? Liên hệ hỗ trợ" onAction="#onTicketHelpClick"
+               style="-fx-font-size: 12; -fx-text-fill: #1a73e8;"/>
+  </VBox>
+</VBox>

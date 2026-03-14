@@ -1,0 +1,15 @@
+name: Discord Notify
+
+on:
+  push:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send commit info
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d "{\"content\":\"📦 Repo: ${{ github.repository }}\n🌿 Branch: ${{ github.ref_name }}\n💬 Commit: ${{ github.event.head_commit.message }}\"}" \
+          ${{ secrets.DISCORD_WEBHOOK }}
