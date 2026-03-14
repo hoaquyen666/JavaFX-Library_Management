@@ -47,14 +47,14 @@ fx:controller="com.example.reader.controller.SearchMainViewController">
             <Region styleClass="divider" />
 
             <VBox alignment="CENTER" styleClass="search-item" HBox.hgrow="ALWAYS">
-                <Button styleClass="icon-label" text="🔍" />
+                <Label styleClass="icon-label" text="🔍" />
                 <Label styleClass="text-label" text="Tìm cơ bản" />
             </VBox>
 
             <Region styleClass="divider" />
 
             <VBox alignment="CENTER" styleClass="search-item" HBox.hgrow="ALWAYS">
-                <Button styleClass="icon-label" text="✨"/>
+                <Label styleClass="icon-label" text="✨" />
                 <Label styleClass="text-label" text="Tìm nâng cao" />
             </VBox>
             <VBox.margin>
@@ -70,10 +70,10 @@ fx:controller="com.example.reader.controller.SearchMainViewController">
                 </VBox>
 
                 <VBox styleClass="input-box" HBox.hgrow="ALWAYS">
-                    <TextField fx:id="txtSearch" promptText="Nhập nội dung tìm kiếm..." styleClass="search-field" />
+                    <TextField promptText="Nhập nội dung tìm kiếm..." styleClass="search-field" />
                 </VBox>
 
-                <Button onAction="#onSearchAction" styleClass="button-search" text="Tìm kiếm" prefHeight="60.0" prefWidth="180.0" />
+                <Button styleClass="button-search" text="Tìm kiếm" prefHeight="60.0" prefWidth="180.0" />
             </HBox>
         </VBox>
     </VBox>

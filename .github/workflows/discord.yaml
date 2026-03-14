@@ -1,0 +1,45 @@
+name: Discord Notify
+
+on:
+  push:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send embed to Discord
+        run: |
+          curl -X POST "${{ secrets.DISCORD_WEBHOOK }}" \
+          -H "Content-Type: application/json" \
+          -d "{
+            \"embeds\": [{
+              \"author\": {
+                \"name\": \"${{ github.actor }} vừa push code\",
+                \"icon_url\": \"https://github.com/${{ github.actor }}.png\"
+              },
+              \"title\": \"🚀 Có người vừa push code kìa!\",
+              \"url\": \"https://github.com/${{ github.repository }}/commit/${{ github.sha }}\",
+              \"color\": 5763719,
+              \"timestamp\": \"${{ github.event.head_commit.timestamp }}\",
+              \"fields\": [
+                {
+                  \"name\": \"📁 Dự án\",
+                  \"value\": \"${{ github.repository }}\",
+                  \"inline\": true
+                },
+                {
+                  \"name\": \"🌿 Nhánh\",
+                  \"value\": \"${{ github.ref_name }}\",
+                  \"inline\": true
+                },
+                {
+                  \"name\": \"💬 Commit\",
+                  \"value\": \"${{ github.event.head_commit.message }}\"
+                }
+              ],
+              \"footer\": {
+                \"text\": \"GitHub Actions - LycoReco Bot\"
+              }
+            }]
+          }"

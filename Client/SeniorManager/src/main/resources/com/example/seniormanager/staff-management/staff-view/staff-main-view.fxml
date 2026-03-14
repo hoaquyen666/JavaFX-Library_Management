@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@/style/style.css" style="-fx-background-color: transparent; -fx-background-radius: 20px;"  xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.seniormanager.controller.StaffView.StaffInfoController">
+
+    <VBox spacing="20.0" styleClass="main-content-card">
+        <padding>
+            <Insets bottom="20.0" left="30.0" right="30.0" top="60.0" />
+        </padding>
+
+        <Label text="Quản lý nhân viên" textFill="#ffffff">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+
+        <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card">
+
+            <Button styleClass="btn-add" text="Thêm Nhân viên" onAction="#addStaff">
+                <padding>
+                    <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
+                </padding>
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+
+            </Button>
+
+            <Button styleClass="btn-edit" text="Sửa" onAction="#editStaff">
+                <padding>
+                    <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
+                </padding>
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+            </Button>
+
+        </HBox>
+
+        <VBox style="-fx-background-color: white;-fx-background-radius: 20; -fx-padding: 15;  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5); " VBox.vgrow="ALWAYS">
+            <TableView fx:id="StaffTable" prefHeight="400.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                <columns>
+                    <TableColumn fx:id="colSTT" prefWidth="50.0" text="STT" />
+                    <TableColumn fx:id="colStaffId" prefWidth="100.0" text="Mã Nhân Viên" />
+                    <TableColumn fx:id="colStaffName" prefWidth="250.0" text="Tên Nhân viên" />
+                    <TableColumn fx:id="colEmail" prefWidth="150.0" text="Email" />
+                    <TableColumn fx:id="colPhone" prefWidth="120.0" text="Số điện thoại" />
+                    <TableColumn fx:id="colDob" prefWidth="120.0" text="Ngày sinh" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+        </VBox>
+    </VBox>
+</StackPane>
