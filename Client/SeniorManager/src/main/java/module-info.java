@@ -17,4 +17,9 @@ module com.example.seniormanager {
     exports com.example.seniormanager;
     opens com.example.seniormanager.controller to javafx.fxml, javafx.base;
     opens com.example.seniormanager.util to javafx.base, javafx.fxml;
+    opens com.example.seniormanager.model to javafx.base;
+    opens com.example.seniormanager.controller.StaffView to javafx.base, javafx.fxml;
+    opens com.example.seniormanager.controller.AccountView to javafx.base, javafx.fxml;
+    opens com.example.seniormanager.controller.Shift to javafx.base, javafx.fxml;
+
 }

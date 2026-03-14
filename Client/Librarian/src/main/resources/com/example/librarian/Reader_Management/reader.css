@@ -215,3 +215,25 @@
     -fx-font-size: 12px;
     -fx-text-fill: #586c85;
 }
+
+/* Nút Sửa - màu vàng */
+.btn-edit {
+    -fx-background-color: #ffc107;
+    -fx-text-fill: black;
+    -fx-background-radius: 8;
+}
+
+.btn-edit:hover {
+    -fx-background-color: #e0a800;
+}
+
+/* Nút Reset password - màu đỏ */
+.btn-reset {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+
+.btn-reset:hover {
+    -fx-background-color: #c82333;
+}

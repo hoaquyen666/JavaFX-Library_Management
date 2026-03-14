@@ -14,10 +14,25 @@ public class BookDAO {
         List<Book> list = new ArrayList<>();
         String column = "Title"; // Mặc định
 
-        if ("Mã sách".equals(type)) column = "BookCode";
-        else if ("ISBN".equals(type)) column = "ISBN";
+        if ("Tác Giả".equals(type)) column = "AuthorName";
+        else if ("Thể loại".equals(type)) column = "CategoryName";
 
-        String sql = "SELECT BookCode, Title, ISBN FROM Book WHERE " + column + " LIKE ?";
+        String sql = "SELECT \n" +
+                "\tb.BookId,\n" +
+                "\tb.Title,\n" +
+                "    b.ISBN,\n" +
+                "    b.Publisher,\n" +
+                "    b.PublishYear,\n" +
+                "    a.AuthorName,\n" +
+                "    c.CategoryName,\n" +
+                "    cg.CategoryGroupName\n" +
+                "FROM Book b\n" +
+                "LEFT JOIN BookAuthor ba ON b.BookId = ba.BookId\n" +
+                "LEFT JOIN Author a ON ba.AuthorId = a.AuthorId\n" +
+                "-- Kết nối với bảng Thể loại\n" +
+                "LEFT JOIN BookCategory bc ON b.BookId = bc.BookId\n" +
+                "LEFT JOIN Category c ON bc.CategoryId = c.CategoryId\n" +
+                "LEFT JOIN CategoryGroup cg ON cg.CategoryGroupId = c.CategoryGroupId WHERE " + column + " LIKE ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -27,9 +42,14 @@ public class BookDAO {
 
             while (rs.next()) {
                 Book book = new Book(
-                        rs.getString("BookCode"),
+                        rs.getInt("BookId"),
                         rs.getString("Title"),
-                        rs.getString("ISBN")
+                        rs.getString("ISBN"),
+                        rs.getString("Publisher"),
+                        rs.getInt("PublishYear"),
+                        rs.getString("AuthorName"),
+                        rs.getString("CategoryName"),
+                        rs.getString("CategoryGroupName")
                 );
                 list.add(book);
             }

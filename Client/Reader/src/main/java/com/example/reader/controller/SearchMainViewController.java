@@ -5,6 +5,7 @@ import com.example.reader.model.Book;
 import com.example.reader.util.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;     // Import ComboBox của JavaFX
@@ -55,7 +56,7 @@ public class SearchMainViewController {
     @FXML
     public void initialize() {
         if (searchType != null) {
-            searchType.getItems().addAll("Tên sách", "Mã sách", "ISBN");
+            searchType.getItems().addAll("Tên sách", "Tác Giả", "Thể loại");
             searchType.getSelectionModel().selectFirst();
         }
     }
@@ -73,12 +74,27 @@ public class SearchMainViewController {
         // Gọi sang lớp DAO để lấy dữ liệu
         List<Book> results = bookDAO.searchBooks(type, keyword);
 
-        // Hiển thị kết quả
-        if (results.isEmpty()) {
-            System.out.println("Không tìm thấy kết quả.");
-        } else {
-            System.out.println("Kết quả tìm kiếm");
-            results.forEach(System.out::println);
+        if(results.isEmpty()){
+            System.out.println("Không thấy kết quả. ");
+        }else {
+            try{
+                //Tải FXML cửa sổ kết quả
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/reader/search-view/search-results-view.fxml"));
+                Parent root = loader.load();
+
+                //Lấy controller của cửa sổ kết quả
+                SearchResultController controller = loader.getController();
+                controller.setResults(results);
+
+                //Cửa số mới
+                Stage stage= new Stage();
+                stage.setTitle("Kết quả tìm kiếm cho "+ keyword);
+                stage.setScene(new Scene(root, 600, 500));
+                stage.show();
+            }catch (IOException e){
+                e.printStackTrace();
+                System.out.println("KO MỞ ĐƯỢC CỬA SỐ KẾT QUẢ! ");
+            }
         }
     }
 }

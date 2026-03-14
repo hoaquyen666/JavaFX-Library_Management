@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 5px"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.seniormanager.controller.StaffView.EditStaffController"
+      stylesheets="@/style/style.css">
+
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Sửa Thông Tin Nhân Viên" textFill="#233771">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+        </Label>
+        <Label fx:id="lblStaffCode" text="(Mã NV: )" textFill="#7f8c8d">
+            <font><Font name="System Italic" size="14.0" /></font>
+        </Label>
+    </HBox>
+
+    <GridPane hgap="10" vgap="15">
+        <Label text="Tên Nhân viên:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="txtFullName" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Ngày sinh:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <DatePicker fx:id="dpDob" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Số điện thoại:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField fx:id="txtPhone" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+
+    </GridPane>
+
+    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+        <VBox.margin><Insets top="15.0" /></VBox.margin>
+        <Button onAction="#handleCancel" styleClass="btn-delete" text="Hủy" />
+        <Button onAction="#handleUpdate" styleClass="btn-add" text="Lưu Thay Đổi" />
+    </HBox>
+</VBox>
