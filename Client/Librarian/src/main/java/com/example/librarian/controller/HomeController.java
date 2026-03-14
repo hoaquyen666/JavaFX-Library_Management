@@ -18,6 +18,8 @@ public class HomeController {
     @FXML
     void openTaoPhieu(MouseEvent event) {
         if (MainViewController.instance != null) {
+            com.example.librarian.controller.BorrowManagementController.openAddPopupOnLoad = true;
+
             MainViewController.instance.handleQuanLyMuon(null);
         }
     }
@@ -29,5 +31,4 @@ public class HomeController {
             MainViewController.instance.handleQuanLyThongKe(null);
         }
     }
-
 }
