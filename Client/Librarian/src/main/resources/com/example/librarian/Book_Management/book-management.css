@@ -15,6 +15,14 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);
 }
 
+.book-table {
+    -fx-border-color: #bfe5ff;
+    -fx-border-width: 1;
+    -fx-table-cell-border-color: #c7e8fb;
+    -fx-selection-bar: #edf7ff;
+    -fx-selection-bar-non-focused: #edf7ff;
+    -fx-fixed-cell-size: 40;
+}
 /* Nút bấm bo góc */
 .btn-primary {
     -fx-background-color: #007bff; /* Hoặc màu cam của trường */
@@ -39,4 +47,27 @@
     -fx-alignment: center;
     -fx-translate-y: 15; /* Cách lề trên một chút */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);
+}
+
+.book-table .column-header-background {
+    -fx-background-color: #d7f2ff;
+    -fx-background-radius: 8 8 0 0; /* Bo tròn nhẹ 2 góc trên cùng */
+    -fx-background-insets: 0 0 1 0;
+}
+
+.book-table .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent #c7e8fb transparent transparent;
+    -fx-border-width: 1px;
+}
+
+.book-table .column-header .label {
+    -fx-text-fill: #233771;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+}
+
+.book-table .filler {
+    -fx-background-color: #d7f2ff;
 }

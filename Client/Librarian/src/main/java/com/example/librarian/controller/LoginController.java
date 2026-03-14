@@ -30,11 +30,7 @@ public class LoginController {
         String password = txtPassword.getText().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Tài khoản hoặc mật khẩu không chính xác");
-            alert.showAndWait();
+            showAlert("Vui lòng nhập đầy đủ Tài khoản và Mật khẩu!");
             return;
         }
 
@@ -48,9 +44,24 @@ public class LoginController {
                 // scene.getStylesheets().add(getClass().getResource("/com/example/librarian/Library_Main_Viewe/libra-main.css").toExternalForm());
                 Stage stage = (Stage) txtUsername.getScene().getWindow();
                 stage.setScene(scene);
+                // căn center cho cửa sổ và fullscreen
+                stage.setTitle("Hệ thống Quản lý Thư viện CMCU");
+                stage.setWidth(1200);
+                stage.setHeight(700);
+                stage.centerOnScreen();
+                stage.setMaximized(true);
             } catch (IOException e) {
                        e.printStackTrace();
             }
+        } else {
+            showAlert("Tài khoản hoặc mật khẩu không chính xác!");
         }
+    }
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Lỗi đăng nhập");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

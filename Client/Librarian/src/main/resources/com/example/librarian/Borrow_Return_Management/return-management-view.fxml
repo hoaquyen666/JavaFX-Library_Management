@@ -85,7 +85,7 @@
 
             <HBox alignment="CENTER_LEFT" spacing="10.0">
                 <Label text="Tổng cộng:" textFill="#666666" />
-                <Label fx:id="totalCountLabel" text="0 bản ghi" textFill="#233771">
+                <Label fx:id="totalCountLabel" textFill="#233771">
                     <font><Font name="System Bold" size="13.0" /></font>
                 </Label>
 
