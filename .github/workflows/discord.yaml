@@ -13,8 +13,6 @@ jobs:
           curl -X POST "${{ secrets.DISCORD_WEBHOOK }}" \
           -H "Content-Type: application/json" \
           -d "{
-            \"username\": \"GitHub Bot\",
-            \"avatar_url\": \"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png\",
             \"embeds\": [{
               \"title\": \"🚀 Có người vừa push code kia!\",
               \"color\": 5763719,
