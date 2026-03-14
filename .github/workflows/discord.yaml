@@ -8,8 +8,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send commit info to Discord
+      - name: Send embed to Discord
         run: |
           curl -X POST "${{ secrets.DISCORD_WEBHOOK }}" \
           -H "Content-Type: application/json" \
-          -d "{\"content\":\"📦 Repo: ${{ github.repository }}\n🌿 Branch: ${{ github.ref_name }}\n💬 Commit: ${{ github.event.head_commit.message }}\n👤 Author: ${{ github.actor }}\"}"
+          -d "{
+            \"username\": \"GitHub Bot\",
+            \"avatar_url\": \"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png\",
+            \"embeds\": [{
+              \"title\": \"🚀 Có người vừa push code kia!\",
+              \"color\": 5763719,
+              \"fields\": [
+                {
+                  \"name\": \"📁 Dự án\",
+                  \"value\": \"${{ github.repository }}\",
+                  \"inline\": true
+                },
+                {
+                  \"name\": \"🌿 Nhánh\",
+                  \"value\": \"${{ github.ref_name }}\",
+                  \"inline\": true
+                },
+                {
+                  \"name\": \"💬 Commit\",
+                  \"value\": \"${{ github.event.head_commit.message }}\"
+                }
+              ],
+              \"footer\": {
+                \"text\": \"${{ github.actor }} • GitHub Actions\"
+              }
+            }]
+          }"
