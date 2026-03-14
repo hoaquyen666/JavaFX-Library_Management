@@ -17,7 +17,8 @@
            maxWidth="1.7976931348623157E308"
            maxHeight="1.7976931348623157E308"
            xmlns="http://javafx.com/javafx/21"
-           xmlns:fx="http://javafx.com/fxml/1">
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.example.librarian.controller.SupplierManagementController">
 
     <VBox spacing="20.0">
         <padding>
@@ -33,15 +34,15 @@
 
             <Region HBox.hgrow="ALWAYS" />
 
-            <Button style="-fx-background-color: #233771; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="+ Thêm">
+            <Button style="-fx-background-color: #233771; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="+ Thêm" onAction="#handleAddSupplier">
                 <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
                 <font><Font name="System Bold" size="13.0" /></font>
             </Button>
-            <Button style="-fx-background-color: #f0ad4e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Sửa">
+            <Button style="-fx-background-color: #f0ad4e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Sửa" onAction="#handleEditSupplier">
                 <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
                 <font><Font name="System Bold" size="13.0" /></font>
             </Button>
-            <Button style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Xóa">
+            <Button style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Xóa"  onAction="#handleDeleteSupplier">
                 <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
                 <font><Font name="System Bold" size="13.0" /></font>
             </Button>
@@ -58,7 +59,7 @@
 
                 <TextField fx:id="searchField" promptText="Tìm theo tên / SĐT / Email..." style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-padding: 8;" HBox.hgrow="ALWAYS" />
 
-                <Button style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Tìm kiếm">
+                <Button style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Tìm kiếm" onAction="#onSearchAction">
                     <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
                 </Button>
             </HBox>
