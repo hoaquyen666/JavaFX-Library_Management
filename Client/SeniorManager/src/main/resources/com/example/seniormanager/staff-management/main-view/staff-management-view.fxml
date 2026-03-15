@@ -12,9 +12,9 @@
         <VBox fx:id="sidebar" prefWidth="260.0" styleClass="sidebar" BorderPane.alignment="CENTER">
             <children>
                 <StackPane prefHeight="80.0">
-                    <ImageView fx:id="logoImage" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fx:id="logoImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="/images/logoCMCU.png" />
+                            <Image url = "/images/img_1.png"/>
                         </image>
                     </ImageView>
                 </StackPane>

@@ -12,8 +12,8 @@ public class HelloApplication extends Application {
     public void start(Stage stage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication
-                    .class.getResource("/login-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 400, 370);
+                    .class.getResource("/com/example/librarian/Library_Main_View/libra-main-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
             stage.setTitle("Đăng nhập");
             stage.setScene(scene);
             stage.show();

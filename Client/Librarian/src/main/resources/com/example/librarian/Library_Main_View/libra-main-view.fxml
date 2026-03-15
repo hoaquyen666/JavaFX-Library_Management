@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #111827;" stylesheets="@/style/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarian.controller.MainViewController">
+<BorderPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #111827;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarian.controller.MainViewController">
 
     <left>
         <VBox fx:id="sidebar" prefWidth="260.0" styleClass="sidebar" BorderPane.alignment="CENTER">
@@ -14,7 +14,7 @@
                 <StackPane prefHeight="80.0">
                     <ImageView fx:id="logoImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../../../../images/Logo-Dai-hoc-CMC-V.png" />
+                            <Image url="@img_1.png" />
                         </image>
                     </ImageView>
                 </StackPane>
