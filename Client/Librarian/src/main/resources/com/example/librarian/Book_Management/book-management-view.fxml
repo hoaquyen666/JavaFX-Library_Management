@@ -7,7 +7,7 @@
 
 <StackPane maxHeight="1.7976931348623157E308"
            maxWidth="1.7976931348623157E308"
-
+           stylesheets="@book-management.css"
            style="-fx-background-color: transparent;"
            xmlns="http://javafx.com/javafx/17.0.12"
            xmlns:fx="http://javafx.com/fxml/1"
@@ -28,7 +28,7 @@
             <TextField fx:id="searchField" prefWidth="300.0" promptText="Tìm kiếm theo tên sách..." style="-fx-background-radius: 8;                        -fx-border-color: #e0e0e0;                        -fx-border-radius: 8;                        -fx-padding: 8;" />
             <Region HBox.hgrow="ALWAYS" />
 
-            <Button onAction="#handleAddBook" style="-fx-background-color: #233771; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="+ Thêm sách">
+            <Button onAction="#handleAddBook" styleClass="btn-add" text="+ Thêm sách">
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
                 </padding>
@@ -37,7 +37,7 @@
                 </font>
             </Button>
 
-            <Button onAction="#handleEditBook" style="-fx-background-color: #f0ad4e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Sửa">
+            <Button onAction="#handleEditBook" styleClass="btn-edit" text="Sửa">
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
                 </padding>
@@ -45,7 +45,7 @@
                     <Font name="System Bold" size="13.0" />
                 </font>
             </Button>
-            <Button onAction="#handleDeleteBook" style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Xóa">
+            <Button onAction="#handleDeleteBook" styleClass="btn-delete" text="Xóa">
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
                 </padding>
