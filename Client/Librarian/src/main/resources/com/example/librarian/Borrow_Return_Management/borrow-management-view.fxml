@@ -17,6 +17,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.control.DatePicker?>
 
+<?import javafx.scene.control.ListView?>
 <StackPane style="-fx-background-color: transparent;"
            stylesheets="@borrow.css"
            maxWidth="1.7976931348623157E308"
@@ -82,8 +83,8 @@
                   <TableColumn fx:id="colStt" prefWidth="30.0" text="STT" />
                   <TableColumn fx:id="colBorrowId" prefWidth="30.0" text="ID" />
                   <TableColumn fx:id="colBorrowCode" prefWidth="90.0" text="Mã Phiếu Mượn" />
-                  <TableColumn fx:id="colReaderCode" prefWidth="130.0" text="Mã Độc Giả" />
-                  <TableColumn fx:id="colStaffCode" prefWidth="180.0" text="Mã Nhân Viên" />
+                  <TableColumn fx:id="colReaderCode" prefWidth="130.0" text="Độc Giả" />
+                  <TableColumn fx:id="colStaffCode" prefWidth="180.0" text="Nhân Viên" />
                   <TableColumn fx:id="colBorrowDate" prefWidth="90.0" text="Ngày Mượn" />
                   <TableColumn fx:id="colDueDate" prefWidth="90.0" text="Hạn Trả" />
                   <TableColumn fx:id="colQuantity" prefWidth="90.0" text="Số lượng" />
@@ -130,19 +131,19 @@
                <ColumnConstraints hgrow="ALWAYS" />
             </columnConstraints>
 
-            <Label text="Mã Độc Giả:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <TextField fx:id="txtPopupReaderCode" promptText="VD: R1" style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="Độc Giả:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <ComboBox fx:id="cbPopupReader" promptText="-- Chọn Độc giả --" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-            <Label text="Mã Nhân Viên:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <TextField fx:id="txtPopupStaffCode" promptText="VD: S1" style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Nhân Viên:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cbPopupStaff" promptText="-- Chọn Nhân viên --" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
             <Label text="Ngày hẹn trả:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
             <DatePicker fx:id="dpPopupDueDate" promptText="Chọn ngày trả" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-            <Label text="Mã vạch sách:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-            <TextField fx:id="txtPopupBarcodes" promptText="VD: BC0001, BC0002" style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="ID Bản sao sách:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="txtPopupCopyIds" promptText="VD: 1, 1, 2" style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-            <Label text="(Nhập các mã vạch cách nhau bằng dấu phẩy)" textFill="#888888" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Label text="(Nhập các CopyID cách nhau bằng dấu phẩy)" textFill="#888888" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <font><Font size="11.0" /></font>
             </Label>
          </GridPane>
@@ -150,6 +151,37 @@
          <HBox alignment="CENTER_RIGHT" spacing="15.0">
             <Button onAction="#handleClosePopup" style="-fx-background-color: #f1f5f9; -fx-text-fill: #64748b; -fx-padding: 8 20; -fx-background-radius: 5; -fx-cursor: hand;" text="Hủy bỏ" />
             <Button onAction="#handleSaveBorrow" style="-fx-background-color: #1a73e8; -fx-text-fill: white; -fx-padding: 8 20; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold;" text="Lưu phiếu" />
+         </HBox>
+      </VBox>
+   </StackPane>
+   <StackPane fx:id="detailPopupOverlay" visible="false" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-background-radius: 20;">
+      <VBox maxWidth="550.0" maxHeight="-Infinity" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 20, 0, 0, 5);">
+
+         <Label fx:id="lblDetailTitle" text="Chi Tiết Phiếu Mượn" textFill="#233771">
+            <font><Font name="System Bold" size="22.0" /></font>
+         </Label>
+
+         <GridPane vgap="10.0" hgap="15.0">
+            <columnConstraints>
+               <ColumnConstraints minWidth="100.0" />
+               <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+            <Label text="Người mượn:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-weight: bold; -fx-text-fill: #555;"/>
+            <Label fx:id="lblDetailReader" text="..." GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-text-fill: #000;"/>
+
+            <Label text="Nhân viên:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-weight: bold; -fx-text-fill: #555;"/>
+            <Label fx:id="lblDetailStaff" text="..." GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-text-fill: #000;"/>
+
+            <Label text="Thời gian:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-weight: bold; -fx-text-fill: #555;"/>
+            <Label fx:id="lblDetailTime" text="..." GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-text-fill: #000;"/>
+         </GridPane>
+
+         <Label text="Danh sách sách đã mượn:" style="-fx-font-weight: bold; -fx-padding: 10 0 0 0;" />
+
+         <ListView fx:id="lvDetailBooks" prefHeight="150.0" style="-fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" />
+
+         <HBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-padding: 10 0 0 0;">
+            <Button onAction="#handleCloseDetailPopup" style="-fx-background-color: #1a73e8; -fx-text-fill: white; -fx-padding: 8 20; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold;" text="Đóng" />
          </HBox>
       </VBox>
    </StackPane>

@@ -15,21 +15,22 @@ public class BorrowDAO {
     public List<Borrow> getAllBorrows() {
         List<Borrow> borrowList = new ArrayList<>();
 
+
         String query = "SELECT " +
                 "    b.BorrowId, " +
                 "    b.BorrowCode, " +
-                "    r.ReaderCode, " +
-                "    s.StaffCode, " +
+                "    r.FullName AS ReaderCode, " +
+                "    s.FullName AS StaffCode, " +
                 "    b.BorrowDate, " +
                 "    b.DueDate, " +
                 "    b.Status, " +
-                "    COUNT(bd.BorrowDetailId) AS Quantity " + // Đếm số dòng trong chi tiết
+                "    COUNT(bd.BorrowDetailId) AS Quantity " +
                 "FROM Borrow b " +
                 "JOIN Reader r ON b.ReaderId = r.ReaderId " +
                 "JOIN Staff s ON b.StaffId = s.StaffId " +
                 "LEFT JOIN BorrowDetail bd ON b.BorrowId = bd.BorrowId " +
                 "GROUP BY " +
-                "    b.BorrowId, b.BorrowCode, r.ReaderCode, s.StaffCode, b.BorrowDate, b.DueDate, b.Status";
+                "    b.BorrowId, b.BorrowCode, r.FullName, s.FullName, b.BorrowDate, b.DueDate, b.Status";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query);
@@ -160,6 +161,101 @@ public class BorrowDAO {
             System.err.println("Lỗi khi cập nhật phiếu mượn: " + e.getMessage());
             e.printStackTrace();
             return false;
+        }
+    }
+
+    // Hàm lấy danh sách tên các cuốn sách trong 1 phiếu mượn
+    public List<String> getBorrowedBooks(int borrowId) {
+        List<String> books = new ArrayList<>();
+        String query = "SELECT bc.CopyId, bk.Title, bd.Status " +
+                "FROM BorrowDetail bd " +
+                "JOIN BookCopy bc ON bd.CopyId = bc.CopyId " +
+                "JOIN Book bk ON bc.BookId = bk.BookId " +
+                "WHERE bd.BorrowId = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, borrowId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String status = rs.getString("Status").equals("Returned") ? "Đã trả" : "Đang mượn";
+                    books.add("CopyID: " + rs.getInt("CopyId") + " | Sách: " + rs.getString("Title") + " | " + status);
+                }
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return books;
+    }
+
+    // Lấy danh sách Độc giả để nhét vào ComboBox
+    public List<String> getReaderListForCombo() {
+        List<String> list = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT ReaderId, FullName FROM Reader");
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                list.add(rs.getInt("ReaderId") + " - " + rs.getString("FullName"));
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+
+    // Lấy danh sách Nhân viên để nhét vào ComboBox
+    public List<String> getStaffListForCombo() {
+        List<String> list = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT StaffId, FullName FROM Staff");
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                list.add(rs.getInt("StaffId") + " - " + rs.getString("FullName"));
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return list;
+    }
+
+    // Hàm Insert (Dùng trực tiếp ID số nguyên thay vì Sub-query tìm Mã chữ)
+    public boolean insertBorrowWithDetailsById(Borrow borrow, int readerId, int staffId, List<Integer> copyIds) {
+        String insertBorrowQuery = "INSERT INTO Borrow (BorrowCode, ReaderId, StaffId, DueDate, Status) VALUES (?, ?, ?, ?, 'Borrowing')";
+        String insertDetailQuery = "INSERT INTO BorrowDetail (BorrowId, CopyId, Status) VALUES (?, ?, 'Borrowing')";
+        String updateCopyQuery = "UPDATE BookCopy SET Status = 'Borrowed' WHERE CopyId = ?";
+
+        Connection conn = null;
+        try {
+            conn = DatabaseConnection.getConnection();
+            conn.setAutoCommit(false);
+            int newBorrowId = -1;
+
+            try (PreparedStatement pstmtBorrow = conn.prepareStatement(insertBorrowQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                pstmtBorrow.setString(1, borrow.getBorrowCode());
+                pstmtBorrow.setInt(2, readerId);
+                pstmtBorrow.setInt(3, staffId);
+                pstmtBorrow.setString(4, borrow.getDueDate());
+                if (pstmtBorrow.executeUpdate() == 0) throw new Exception("Lỗi tạo phiếu!");
+
+                try (ResultSet generatedKeys = pstmtBorrow.getGeneratedKeys()) {
+                    if (generatedKeys.next()) newBorrowId = generatedKeys.getInt(1);
+                }
+            }
+            try (PreparedStatement pstmtDetail = conn.prepareStatement(insertDetailQuery);
+                 PreparedStatement pstmtUpdateCopy = conn.prepareStatement(updateCopyQuery)) {
+                for (Integer copyId : copyIds) {
+                    pstmtDetail.setInt(1, newBorrowId);
+                    pstmtDetail.setInt(2, copyId);
+                    pstmtDetail.addBatch();
+
+                    pstmtUpdateCopy.setInt(1, copyId);
+                    pstmtUpdateCopy.addBatch();
+                }
+                pstmtDetail.executeBatch();
+                pstmtUpdateCopy.executeBatch();
+            }
+
+            conn.commit();
+            return true;
+        } catch (Exception e) {
+            if (conn != null) try { conn.rollback(); } catch (Exception ex) {}
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (conn != null) try { conn.setAutoCommit(true); conn.close(); } catch (Exception e) {}
         }
     }
 }
