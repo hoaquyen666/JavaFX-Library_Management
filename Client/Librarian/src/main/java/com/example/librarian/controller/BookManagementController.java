@@ -212,6 +212,12 @@ public class BookManagementController implements Initializable {
             addPopupOverlay.setVisible(true);
             showAddPopupOnLoad = false;
         }
+        //click bất kì để đóng form
+        addPopupOverlay.setOnMouseClicked(event -> {
+            if (event.getTarget() == addPopupOverlay) {
+                handleClosePopup();
+            }
+        });
 
         //Phân trang
         // Setup ComboBox chọn số dòng
