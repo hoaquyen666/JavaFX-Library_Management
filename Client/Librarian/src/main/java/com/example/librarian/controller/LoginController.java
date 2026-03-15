@@ -1,8 +1,8 @@
 package com.example.librarian.controller;
 
+import com.example.librarian.dao.AccountDAO;
 import com.example.librarian.model.Account;
 import com.example.librarian.util.MessageBox;
-import com.example.librarian.dao.AccountDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -38,8 +38,6 @@ public class LoginController {
         try {
             // 2. Gọi DAO kiểm tra Database
             Account account = accountDAO.login(username, password, ROLE);
-        // Gửi kèm role librarian tự động
-        Account account = accountDAO.login(username, password, ROLE);
 
             if (account != null) {
                 // 3. Đăng nhập thành công -> Mở màn hình chính
@@ -57,33 +55,15 @@ public class LoginController {
                 stage.centerOnScreen();
                 stage.setMaximized(true);
             } else {
-                showAlert("Tài khoản hoặc mật khẩu không chính xác!");
+                MessageBox.showError("Tài khoản hoặc mật khẩu không chính xác!", "Hệ thống");
             }
 
         } catch (RuntimeException e) {
-            showAlert("Không kết nối được cơ sở dữ liệu!");
+            MessageBox.showError("Không kết nối được cơ sở dữ liệu!");
             e.printStackTrace();
         } catch (IOException e) {
-            showAlert("Không mở được màn hình chính!");
+            MessageBox.showError("Không mở được màn hình chính!");
             e.printStackTrace();
-        }
-    }
-
-    // Hàm phụ trợ để hiển thị thông báo lỗi ngắn gọn
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Lỗi");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-                Stage stage = (Stage) txtUsername.getScene().getWindow();
-                stage.setScene(scene);
-            } catch (IOException e) {
-                MessageBox.showError("Không thể mở trang chính.", e.getMessage() != null
-                        ? e.getMessage() : "Lỗi không xác định");
-            }
-        } else {
-            MessageBox.showError("Sai tên đăng nhập.");
         }
     }
 }
