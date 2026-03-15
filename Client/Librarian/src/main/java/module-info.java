@@ -6,7 +6,7 @@ module com.example.librarian {
     requires org.kordamp.ikonli.materialdesign2;
     requires java.sql;
 
-
     opens com.example.librarian.controller to javafx.fxml, javafx.base;
+    opens com.example.librarian.model to javafx.base;
     exports com.example.librarian;
 }
