@@ -83,7 +83,7 @@ public class LoginController {
                         ? e.getMessage() : "Lỗi không xác định");
             }
         } else {
-            MessageBox.showError("Sai tên đăng nhập hoặc mật khẩu.");
+            MessageBox.showError("Sai tên đăng nhập.");
         }
     }
 }
