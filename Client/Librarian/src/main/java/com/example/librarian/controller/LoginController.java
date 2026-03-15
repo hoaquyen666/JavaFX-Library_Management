@@ -1,8 +1,8 @@
 package com.example.librarian.controller;
 
+import com.example.librarian.dao.AccountDAO;
 import com.example.librarian.model.Account;
 import com.example.librarian.util.MessageBox;
-import com.example.librarian.dao.AccountDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,27 +29,41 @@ public class LoginController {
         String username = txtUsername.getText().trim();
         String password = txtPassword.getText().trim();
 
+        // 1. Validate trống
         if (username.isEmpty() || password.isEmpty()) {
             MessageBox.showWarning("Vui lòng nhập tên đăng nhập và mật khẩu.");
             return;
         }
 
-        // Gửi kèm role librarian tự động
-        Account account = accountDAO.login(username, password, ROLE);
+        try {
+            // 2. Gọi DAO kiểm tra Database
+            Account account = accountDAO.login(username, password, ROLE);
 
-        if (account != null) {
-            try {
+            if (account != null) {
+                // 3. Đăng nhập thành công -> Mở màn hình chính
                 FXMLLoader loader = new FXMLLoader(
                         getClass().getResource("/com/example/librarian/Library_Main_View/libra-main-view.fxml"));
                 Scene scene = new Scene(loader.load());
+
                 Stage stage = (Stage) txtUsername.getScene().getWindow();
                 stage.setScene(scene);
-            } catch (IOException e) {
-                MessageBox.showError("Không thể mở trang chính.", e.getMessage() != null
-                        ? e.getMessage() : "Lỗi không xác định");
+
+                // Căn center cho cửa sổ và fullscreen
+                stage.setTitle("Hệ thống Quản lý Thư viện CMCU");
+                stage.setWidth(1200);
+                stage.setHeight(700);
+                stage.centerOnScreen();
+                stage.setMaximized(true);
+            } else {
+                MessageBox.showError("Tài khoản hoặc mật khẩu không chính xác!", "Hệ thống");
             }
-        } else {
-            MessageBox.showError("Sai tên đăng nhập.");
+
+        } catch (RuntimeException e) {
+            MessageBox.showError("Không kết nối được cơ sở dữ liệu!");
+            e.printStackTrace();
+        } catch (IOException e) {
+            MessageBox.showError("Không mở được màn hình chính!");
+            e.printStackTrace();
         }
     }
 }
