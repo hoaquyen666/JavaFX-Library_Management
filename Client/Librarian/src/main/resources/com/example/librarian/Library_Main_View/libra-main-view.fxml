@@ -4,23 +4,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane prefHeight="700.0"
-            prefWidth="1200.0"
-            style="-fx-background-color: #111827;"
-            stylesheets="@libra-main.css" xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.librarian.controller.MainViewController">
+<BorderPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #111827;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarian.controller.MainViewController">
 
     <left>
-        <VBox fx:id="sidebar" prefWidth="70.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+        <VBox fx:id="sidebar" prefWidth="260.0" styleClass="sidebar" BorderPane.alignment="CENTER">
             <children>
                 <StackPane prefHeight="80.0">
-                    <ImageView fx:id="logoImage" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fx:id="logoImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../../../../images/Logo-Dai-hoc-CMC-V.png" />
+                            <Image url="@img_1.png" />
                         </image>
                     </ImageView>
                 </StackPane>
@@ -45,19 +39,19 @@
 
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLyMuonTra" styleClass="menu-btn" text="Quản lý mượn trả">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2r-refresh" iconSize="20"/>
+                        <FontIcon iconLiteral="mdi2r-refresh" iconSize="20" />
                     </graphic>
                 </Button>
 
                 <VBox fx:id="muonTraSubMenu" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
                     <Button alignment="CENTER_LEFT" onAction="#handleQuanLyMuon" styleClass="sub-menu-btn" text="Mượn sách">
                         <graphic>
-                            <FontIcon iconLiteral="mdi2b-book-arrow-right" iconSize="18"/>
+                            <FontIcon iconLiteral="mdi2b-book-arrow-right" iconSize="18" />
                         </graphic>
                     </Button>
                     <Button alignment="CENTER_LEFT" onAction="#handleQuanLyTra" styleClass="sub-menu-btn" text="Trả sách">
                         <graphic>
-                            <FontIcon iconLiteral="mdi2b-book-arrow-left" iconSize="18"/>
+                            <FontIcon iconLiteral="mdi2b-book-arrow-left" iconSize="18" />
                         </graphic>
                     </Button>
                 </VBox>
@@ -67,6 +61,7 @@
                         <FontIcon iconLiteral="mdi2p-package-variant" iconSize="20" />
                     </graphic>
                 </Button>
+
                 <VBox fx:id="menuQuanLyKho" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
                     <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhap" styleClass="sub-menu-btn" text="Quản lý nhập">
                         <graphic>
@@ -96,18 +91,8 @@
             </padding>
             <children>
                 <StackPane fx:id="mainContentArea" styleClass="main-content-card">
-<!--                    <children>-->
-<!--                        <Label text="HỆ THỐNG QUẢN LÝ THƯ VIỆN" textFill="#a1a1a1">-->
-<!--                            <font>-->
-<!--                                <Font name="System Bold" size="20.0" />-->
-<!--                            </font>-->
-<!--                        </Label>-->
-<!--                    </children>-->
                 </StackPane>
             </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
         </StackPane>
     </center>
 </BorderPane>

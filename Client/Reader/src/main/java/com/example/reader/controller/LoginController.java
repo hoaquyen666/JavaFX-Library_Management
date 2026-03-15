@@ -31,9 +31,6 @@ public class LoginController {
         if (username.isEmpty() || password.isEmpty()) {
             return;
         }
-
-
-
         Account account = accountDAO.login(username, password, ROLE);
         if (account != null) {
             try {
