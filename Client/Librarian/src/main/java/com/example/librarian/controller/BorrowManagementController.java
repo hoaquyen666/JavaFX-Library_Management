@@ -44,10 +44,10 @@ public class BorrowManagementController implements Initializable {
 
     @FXML private StackPane addPopupOverlay;
     @FXML private javafx.scene.control.Label lblPopupTitle;
-    @FXML private javafx.scene.control.TextField txtPopupReaderCode;
-    @FXML private javafx.scene.control.TextField txtPopupStaffCode;
+    @FXML private javafx.scene.control.ComboBox<String> cbPopupReader;
+    @FXML private javafx.scene.control.ComboBox<String> cbPopupStaff;
     @FXML private DatePicker dpPopupDueDate;
-    @FXML private javafx.scene.control.TextField txtPopupBarcodes;
+    @FXML private javafx.scene.control.TextField txtPopupCopyIds;
 
     private Borrow editingBorrow = null;
 
@@ -68,16 +68,28 @@ public class BorrowManagementController implements Initializable {
     private List<Borrow> filteredBorrows;
     public static boolean openAddPopupOnLoad = false;
 
+    //popup cho bảng chi tiết phiếu mượn
+    @FXML private StackPane detailPopupOverlay;
+    @FXML private javafx.scene.control.Label lblDetailTitle;
+    @FXML private javafx.scene.control.Label lblDetailReader;
+    @FXML private javafx.scene.control.Label lblDetailStaff;
+    @FXML private javafx.scene.control.Label lblDetailTime;
+    @FXML private javafx.scene.control.ListView<String> lvDetailBooks;
+
     @FXML
     void handleAddBorrow() {
-        editingBorrow = null; // Chế độ Thêm mới
+        editingBorrow = null;
         lblPopupTitle.setText("Tạo Phiếu Mượn Mới");
 
-        txtPopupReaderCode.clear();
-        txtPopupStaffCode.clear();
-        dpPopupDueDate.setValue(LocalDate.now().plusDays(7)); // Mặc định cho mượn 7 ngày
-        txtPopupBarcodes.clear();
-        txtPopupBarcodes.setDisable(false); // Cho phép nhập mã vạch
+        // Đổ dữ liệu mới nhất từ DB lên ComboBox
+        cbPopupReader.setItems(FXCollections.observableArrayList(borrowDAO.getReaderListForCombo()));
+        cbPopupStaff.setItems(FXCollections.observableArrayList(borrowDAO.getStaffListForCombo()));
+
+        cbPopupReader.setValue(null);
+        cbPopupStaff.setValue(null);
+        dpPopupDueDate.setValue(LocalDate.now().plusDays(7));
+        txtPopupCopyIds.clear();
+        txtPopupCopyIds.setDisable(false);
 
         addPopupOverlay.setVisible(true);
     }
@@ -90,15 +102,29 @@ public class BorrowManagementController implements Initializable {
             return;
         }
 
-        //chế độ Sửa phiếu
         editingBorrow = selectedBorrow;
         lblPopupTitle.setText("Sửa Phiếu Mượn: " + selectedBorrow.getBorrowCode());
 
-        // Đổ dữ liệu cũ vào form
-        txtPopupReaderCode.setText(selectedBorrow.getReaderCode());
-        txtPopupStaffCode.setText(selectedBorrow.getStaffCode());
+        //load lại danh sách vào ComboBox trước
+        cbPopupReader.setItems(FXCollections.observableArrayList(borrowDAO.getReaderListForCombo()));
+        cbPopupStaff.setItems(FXCollections.observableArrayList(borrowDAO.getStaffListForCombo()));
 
-        // Parse ngày từ String (VD: 20/03/2026) sang LocalDate cho cái DatePicker
+
+        for (String item : cbPopupReader.getItems()) {
+            if (item != null && item.contains(selectedBorrow.getReaderCode())) {
+                cbPopupReader.setValue(item);
+                break;
+            }
+        }
+
+        //Tìm và chọn đúng Nhân viên
+        for (String item : cbPopupStaff.getItems()) {
+            if (item != null && item.contains(selectedBorrow.getStaffCode())) {
+                cbPopupStaff.setValue(item);
+                break;
+            }
+        }
+
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
             LocalDate date = LocalDate.parse(selectedBorrow.getDueDate(), formatter);
@@ -107,9 +133,9 @@ public class BorrowManagementController implements Initializable {
             dpPopupDueDate.setValue(LocalDate.now());
         }
 
-        // Khi sửa phiếu thì tạm thời khóa ô nhập mã vạch (Vì sách đã mượn rồi, việc trả sách/xóa sách sẽ làm ở chức năng Trả sách riêng)
-        txtPopupBarcodes.setText("Không thể sửa danh sách sách ở đây");
-        txtPopupBarcodes.setDisable(true);
+
+        txtPopupCopyIds.setText("Không thể sửa danh sách sách ở đây");
+        txtPopupCopyIds.setDisable(true);
 
         addPopupOverlay.setVisible(true);
     }
@@ -121,61 +147,47 @@ public class BorrowManagementController implements Initializable {
 
     @FXML
     void handleSaveBorrow() {
-        // 1. Lấy dữ liệu từ form
-        String readerCode = txtPopupReaderCode.getText().trim();
-        String staffCode = txtPopupStaffCode.getText().trim();
+        String selectedReader = cbPopupReader.getValue();
+        String selectedStaff = cbPopupStaff.getValue();
         LocalDate dueDate = dpPopupDueDate.getValue();
-        String barcodesStr = txtPopupBarcodes.getText().trim();
+        String copyIdsStr = txtPopupCopyIds.getText().trim();
 
-        // 2. Validate bỏ trống
-        if (readerCode.isEmpty() || staffCode.isEmpty() || dueDate == null || (editingBorrow == null && barcodesStr.isEmpty())) {
+        if (selectedReader == null || selectedStaff == null || dueDate == null || (editingBorrow == null && copyIdsStr.isEmpty())) {
             showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng điền đầy đủ thông tin!");
             return;
         }
 
-        // Chuyển ngày trên lịch thành chuỗi chuẩn MySQL (Mặc định bắt trả sách lúc 17:00:00)
         String dueDateStr = dueDate.toString() + " 17:00:00";
 
         if (editingBorrow == null) {
-            // TẠO PHIẾU MỚI
-            // Tự động sinh mã phiếu mượn (Ví dụ: PM-9823)
-            String borrowCode = "PM-" + (System.currentTimeMillis() % 10000);
+            try {
+                int readerId = Integer.parseInt(selectedReader.split(" - ")[0]);
+                int staffId = Integer.parseInt(selectedStaff.split(" - ")[0]);
 
-            // Tách chuỗi "BC001, BC002" thành danh sách List
-            List<String> barcodes = java.util.Arrays.asList(barcodesStr.split(","));
+                // Biến chuỗi "1, 1, 2" thành danh sách số nguyên [1, 1, 2]
+                List<Integer> copyIds = new ArrayList<>();
+                for (String idStr : copyIdsStr.split(",")) {
+                    copyIds.add(Integer.parseInt(idStr.trim()));
+                }
 
-            // Đóng gói dữ liệu vào Object Borrow
-            Borrow newBorrow = new Borrow(0, borrowCode, readerCode, staffCode, null, dueDateStr, 0, "Borrowing");
+                String borrowCode = "PM-" + (System.currentTimeMillis() % 10000);
+                Borrow newBorrow = new Borrow(0, borrowCode, "", "", null, dueDateStr, 0, "Borrowing");
 
-            // Đẩy xuống DAO
-            boolean isSuccess = borrowDAO.insertBorrowWithDetails(newBorrow, barcodes);
+                // Gọi hàm Insert 
+                boolean isSuccess = borrowDAO.insertBorrowWithDetailsById(newBorrow, readerId, staffId, copyIds);
 
-            if (isSuccess) {
-                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã tạo phiếu mượn và xuất sách khỏi kho!");
-                handleClosePopup();
-                loadDataToTable(); // Load lại bảng
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Thất bại", "Lỗi tạo phiếu! Kiểm tra lại mã Độc giả/Nhân viên hoặc xem sách này đã có người mượn chưa.");
+                if (isSuccess) {
+                    showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã tạo phiếu mượn!");
+                    handleClosePopup();
+                    loadDataToTable();
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Thất bại", "Lỗi tạo phiếu! Có thể CopyID không tồn tại.");
+                }
+            } catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi cú pháp", "CopyID chỉ được nhập số (VD: 1, 2, 3)!");
             }
-
         } else {
-
-            // Cập nhật dữ liệu mới từ form vào object đang sửa
-            editingBorrow.setReaderCode(readerCode);
-            editingBorrow.setStaffCode(staffCode);
-            editingBorrow.setDueDate(dueDateStr);
-
-            // Đẩy xuống Database qua DAO
-            boolean isSuccess = borrowDAO.updateBorrow(editingBorrow);
-
-            if (isSuccess) {
-                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã cập nhật thông tin phiếu mượn!");
-                handleClosePopup();
-                loadDataToTable();     // Kéo data mới từ DB
-                borrowTable.refresh(); // Ép giao diện vẽ lại
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Thất bại", "Không thể cập nhật! Kiểm tra lại mã Độc giả hoặc Nhân viên có tồn tại hay không.");
-            }
+            showAlert(Alert.AlertType.INFORMATION, "Tính năng", "Sửa phiếu đang bảo trì để nâng cấp!");
         }
     }
 
@@ -248,6 +260,20 @@ public class BorrowManagementController implements Initializable {
                 handleClosePopup();
             }
         });
+
+        borrowTable.setRowFactory(tv -> {
+            javafx.scene.control.TableRow<Borrow> row = new javafx.scene.control.TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    showDetailPopup(row.getItem());
+                }
+            });
+            return row;
+        });
+        detailPopupOverlay.setOnMouseClicked(event -> {
+            if (event.getTarget() == detailPopupOverlay) detailPopupOverlay.setVisible(false);
+        });
+
         // Load dữ liệu lên bảng
         loadDataToTable();
     }
@@ -386,6 +412,24 @@ public class BorrowManagementController implements Initializable {
         btnNextPage.setDisable(currentPage == totalPages - 1); // Đang ở trang cuối thì khóa nút Next
     }
 
+    // Hàm đẩy dữ liệu lên Pop-up chi tiết
+    private void showDetailPopup(Borrow borrow) {
+        lblDetailTitle.setText("Chi Tiết: " + borrow.getBorrowCode());
+        lblDetailReader.setText(borrow.getReaderCode());
+        lblDetailStaff.setText(borrow.getStaffCode());
+        lblDetailTime.setText("Từ: " + borrow.getBorrowDate() + "  ->  Đến: " + borrow.getDueDate());
+
+        // Kéo list sách từ Database
+        List<String> books = borrowDAO.getBorrowedBooks(borrow.getBorrowId());
+        lvDetailBooks.setItems(FXCollections.observableArrayList(books));
+
+        detailPopupOverlay.setVisible(true);
+    }
+
+    @FXML
+    void handleCloseDetailPopup() {
+        detailPopupOverlay.setVisible(false);
+    }
 
 
 }
