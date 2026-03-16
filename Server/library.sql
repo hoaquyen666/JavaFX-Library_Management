@@ -307,10 +307,10 @@ values ('A1', 'Nguyễn Nhật Ánh'),
        ('A2', 'J. K. Rowling');
 
 insert into Book (BookCode, Title, ISBN, Publisher, PublishYear)
-values ('B1', 'Tôi thấy hoa vàng trên cỏ xanh', '123456'),
-       ('B2', 'Hạ đỏ', '123457'),
-       ('B3', 'Harry Potter', '654321'),
-       ('B4', 'Quidditch qua các thời đại', '754321');
+values ('B1', 'Tôi thấy hoa vàng trên cỏ xanh', '123456', 'NXB Trẻ', 2010),
+       ('B2', 'Hạ đỏ', '123457', 'NXB Kim Đồng', 1991),
+       ('B3', 'Harry Potter', '654321', 'Bloomsbury', 1997),
+       ('B4', 'Quidditch qua các thời đại', '754321', 'Bloomsbury', 2001);
 
 insert into BookCategory (BookId, CategoryId)
 values (1, 16), -- thiếu nhi
