@@ -107,18 +107,16 @@ public class StatisticalManagementController {
         xAxis.setStyle("-fx-font-size:20px; -fx-font-weight:bold;");
         yAxis.setStyle("-fx-font-size:20px; -fx-font-weight:bold;");
 
-
-
         categoryChart.setStyle("-fx-font-size:16px;");
-        categoryChart.setCategoryGap(5);
-        categoryChart.setBarGap(1);
+        categoryChart.setCategoryGap(15);
+        categoryChart.setBarGap(2);
+
+        categoryChart.setLegendVisible(false);
 
         categoryChart.getData().clear();
         categoryChart.getData().add(series);
-        categoryChart.setLegendVisible(false);
-        categoryChart.setStyle("-fx-font-size:16px;");
-        categoryChart.setCategoryGap(20);
-        categoryChart.setBarGap(3);
+
+
     }
 
     private void loadBorrowTrendChart(){
