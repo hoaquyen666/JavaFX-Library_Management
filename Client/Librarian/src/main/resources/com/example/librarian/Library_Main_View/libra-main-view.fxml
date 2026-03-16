@@ -12,10 +12,13 @@
         <VBox fx:id="sidebar" prefWidth="260.0" styleClass="sidebar" BorderPane.alignment="CENTER">
             <children>
                 <StackPane prefHeight="80.0">
-                    <ImageView fx:id="logoImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fx:id="logoImage" fitHeight="150.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@img_1.png" />
                         </image>
+                        <StackPane.margin>
+                            <Insets bottom="20.0" top="30.0" />
+                        </StackPane.margin>
                     </ImageView>
                 </StackPane>
 

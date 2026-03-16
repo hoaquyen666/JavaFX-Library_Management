@@ -258,4 +258,32 @@ public class BorrowDAO {
             if (conn != null) try { conn.setAutoCommit(true); conn.close(); } catch (Exception e) {}
         }
     }
+    // Hàm kiểm tra xem danh sách sách có đủ điều kiện để mượn không
+    public String checkCopiesAvailable(List<Integer> copyIds) {
+        if (copyIds == null || copyIds.isEmpty()) return "Chưa nhập ID sách.";
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            for (Integer id : copyIds) {
+                String query = "SELECT Status FROM BookCopy WHERE CopyId = ?";
+                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                    pstmt.setInt(1, id);
+                    try (ResultSet rs = pstmt.executeQuery()) {
+                        if (rs.next()) {
+                            String status = rs.getString("Status");
+                            // Nếu sách không khả dụng (Ví dụ: Borrowed, Lost...)
+                            if (!"Available".equalsIgnoreCase(status)) {
+                                return "Bản sao ID " + id + " đang ở trạng thái '" + status + "', không thể mượn!";
+                            }
+                        } else {
+                            return "Bản sao ID " + id + " không tồn tại trong kho!";
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Lỗi CSDL khi kiểm tra tình trạng sách.";
+        }
+        return "OK"; // Trả về OK nếu tất cả sách đều rảnh
+    }
 }
