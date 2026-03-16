@@ -80,7 +80,7 @@
                 </columnResizePolicy>
             </TableView>
             <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-padding: 10 0 0 0;">
-                <Label text="Tổng cộng:" textFill="#666666" />
+                <Label textFill="#666666" />
                 <Label fx:id="lblTotalRecords" textFill="#233771" >
                     <font><Font name="System Bold" size="13.0" /></font>
                 </Label>

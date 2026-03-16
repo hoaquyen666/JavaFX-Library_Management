@@ -23,12 +23,13 @@ public class MainViewController implements Initializable
     @FXML
     private VBox sidebar;
 
+    private javafx.scene.control.Button currentActiveButton;
 
 
     // Chiều rộng khi thu gọn (chỉ hiện icon)
     private final double COLLAPSED_WIDTH = 70.0;
     // Chiều rộng khi mở rộng (hiện cả text)
-    private final double EXPANDED_WIDTH = 220.0;
+    private final double EXPANDED_WIDTH = 250.0;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,17 +46,17 @@ public class MainViewController implements Initializable
     }
 
     private void openSidebar() {
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0.2),
-                        new KeyValue(sidebar.prefWidthProperty(), EXPANDED_WIDTH))
+        javafx.animation.Timeline timeline = new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(0.2),
+                        new javafx.animation.KeyValue(sidebar.prefWidthProperty(), EXPANDED_WIDTH))
         );
         timeline.play();
     }
 
     private void closeSidebar() {
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0.2),
-                        new KeyValue(sidebar.prefWidthProperty(), COLLAPSED_WIDTH))
+        javafx.animation.Timeline timeline = new javafx.animation.Timeline(
+                new javafx.animation.KeyFrame(javafx.util.Duration.seconds(0.2),
+                        new javafx.animation.KeyValue(sidebar.prefWidthProperty(), COLLAPSED_WIDTH))
         );
         timeline.play();
     }
@@ -63,16 +64,19 @@ public class MainViewController implements Initializable
 
     @FXML
     void handleAccount(ActionEvent event) {
+        setActive(event);
         loadGiaoDienCon("/com/example/seniormanager/staff-management/account-view/Account.fxml");
     }
 
     @FXML
     void handleStaff(ActionEvent event){
+        setActive(event);
         loadGiaoDienCon("/com/example/seniormanager/staff-management/staff-view/staff-main-view.fxml");
     }
 
     @FXML
     void handleShift(ActionEvent event){
+        setActive(event);
         loadGiaoDienCon("/com/example/seniormanager/staff-management/shift-view/shift.fxml");
     }
 
@@ -114,4 +118,16 @@ public class MainViewController implements Initializable
         }
     }
 
+    private void setActive(ActionEvent event) {
+        if (event != null && event.getSource() instanceof javafx.scene.control.Button) {
+            javafx.scene.control.Button clickedBtn = (javafx.scene.control.Button) event.getSource();
+            if (currentActiveButton != null) {
+                currentActiveButton.getStyleClass().remove("active-nav");
+            }
+            if (!clickedBtn.getStyleClass().contains("active-nav")) {
+                clickedBtn.getStyleClass().add("active-nav");
+            }
+            currentActiveButton = clickedBtn;
+        }
+    }
 }
