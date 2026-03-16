@@ -239,41 +239,6 @@ create table Supplier
         check (Status in ('Active', 'Inactive'))
 ) comment = 'Nhà cung cấp sách';
 
-create table Import
-(
-    ImportId    int auto_increment primary key,
-    ImportCode  varchar(20) null unique comment 'Mã phiếu nhập',
-    SupplierId  int         null,
-    StaffId     int         null,
-    ImportDate  datetime       default current_timestamp,
-    TotalAmount decimal(12, 2) default 0,
-    Note        text,
-
-    constraint FK_Import_Supplier
-        foreign key (SupplierId) references Supplier (SupplierId),
-
-    constraint FK_Import_Staff
-        foreign key (StaffId) references Staff (StaffId)
-) comment = 'Phiếu nhập sách từ nhà cung cấp';
-
-create table ImportDetail
-(
-    ImportDetailId int auto_increment primary key,
-    ImportId       int            null,
-    BookId         int            null,
-    Quantity       int            null,
-    UnitPrice      decimal(10, 2) null,
-    TotalPrice     decimal(12, 2) generated always as (Quantity * UnitPrice) stored,
-
-    constraint FK_ImportDetail_Import
-        foreign key (ImportId) references Import (ImportId),
-
-    constraint FK_ImportDetail_Book
-        foreign key (BookId) references Book (BookId),
-
-    unique (ImportId, BookId)
-) comment = 'Chi tiết từng sách trong phiếu nhập';
-
 ########
 # Dưới đây là các dữ liệu cơ bản được thêm
 ########
