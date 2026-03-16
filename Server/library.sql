@@ -9,17 +9,17 @@ library;
 create table CategoryGroup
 (
     CategoryGroupId   int auto_increment primary key,
-    CategoryGroupCode varchar(20) not null unique,
-    CategoryGroupName varchar(45) not null,
+    CategoryGroupCode varchar(20) null unique,
+    CategoryGroupName varchar(45) null,
     Description       text
 ) comment = 'Các nhóm thể loại sách';
 
 create table Category
 (
     CategoryId      int auto_increment primary key,
-    CategoryCode    varchar(20) not null unique,
-    CategoryGroupId int         not null,
-    CategoryName    varchar(45) not null,
+    CategoryCode    varchar(20) null unique,
+    CategoryGroupId int         null,
+    CategoryName    varchar(45) null,
     Description     text,
 
     constraint fk_category_categorygroup
@@ -31,7 +31,7 @@ create table Author
 (
     AuthorId    int auto_increment primary key,
     AuthorCode  varchar(20) unique,
-    AuthorName  varchar(255) not null,
+    AuthorName  varchar(255) null,
     DoB         date null,
     Description text
 );
@@ -39,10 +39,10 @@ create table Author
 create table Book
 (
     BookId      int auto_increment primary key,
-    BookCode    varchar(20)  not null unique comment 'Mã sách logic',
-    Title       varchar(255) not null,
+    BookCode    varchar(20)  null unique comment 'Mã sách logic',
+    Title       varchar(255) null,
 
-    ISBN        varchar(20)  not null,
+    ISBN        varchar(20)  null,
     Publisher   varchar(255) null,
     PublishYear YEAR null,
     Description TEXT
@@ -50,8 +50,8 @@ create table Book
 
 create table BookAuthor
 (
-    BookId   int not null,
-    AuthorId int not null,
+    BookId   int null,
+    AuthorId int null,
 
     primary key (BookId, AuthorId),
 
@@ -63,8 +63,8 @@ create table BookAuthor
 
 create table BookCategory
 (
-    BookId     int not null,
-    CategoryId int not null,
+    BookId     int null,
+    CategoryId int null,
     primary key (BookId, CategoryId),
 
     constraint fk_bc_book
@@ -76,10 +76,10 @@ create table BookCategory
 create table BookCopy
 (
     CopyId   int auto_increment primary key,
-    CopyCode varchar(30) not null unique comment 'Mã cuốn vật lý (barcode)',
-    BookId   int         not null,
+    CopyCode varchar(30) null unique comment 'Mã cuốn vật lý (barcode)',
+    BookId   int         null,
 
-    Status   varchar(20) not null default 'Available' comment 'Available | Borrowed | Lost | Broken',
+    Status   varchar(20) null default 'Available' comment 'Available | Borrowed | Lost | Broken',
     Location varchar(100) null comment 'Vị trí kệ',
     Note     TEXT,
 
@@ -92,14 +92,14 @@ create table BookCopy
 create table Staff
 (
     StaffId   int auto_increment primary key,
-    StaffCode varchar(20)  not null unique comment 'Mã nhân viên',
+    StaffCode varchar(20)  null unique comment 'Mã nhân viên',
 
-    Role      varchar(20)  not null,
+    Role      varchar(20)  null,
 
-    FullName  varchar(100) not null,
-    DoB       date         not null,
-    Email     varchar(100) not null unique,
-    Phone     varchar(15)  not null unique,
+    FullName  varchar(100) null,
+    DoB       date         null,
+    Email     varchar(100) null unique,
+    Phone     varchar(15)  null unique,
     Note      text,
 
     constraint ck_staff_role
@@ -110,31 +110,31 @@ create table Staff
 create table Reader
 (
     ReaderId   int auto_increment primary key,
-    ReaderCode varchar(20)  not null unique comment 'Mã độc giả',
+    ReaderCode varchar(20)  null unique comment 'Mã độc giả',
 
-    FullName   varchar(100) not null,
+    FullName   varchar(100) null,
     DoB        date null,
-    Email      varchar(100) not null unique,
-    Phone      varchar(15)  not null unique,
+    Email      varchar(100) null unique,
+    Phone      varchar(15)  null unique,
 
     CreatedAt  datetime              default current_timestamp comment 'Ngày đăng kí',
 
-    Status     varchar(20)  not null default 'Active' comment 'Active | Locked | Expired',
+    Status     varchar(20)  null default 'Active' comment 'Active | Locked | Expired',
     Note       text
 ) COMMENT = 'Độc giả thư viện, mặc định Status: Active. Nếu: Active hoạt động bình thường - Locked khóa quyền mượn - Expired chưa gia hạn';
 
 create table Borrow
 (
     BorrowId   int auto_increment primary key,
-    BorrowCode varchar(20) not null unique comment 'Mã phiếu mượn',
+    BorrowCode varchar(20) null unique comment 'Mã phiếu mượn',
 
-    ReaderId   int         not null,
-    StaffId    int         not null,
+    ReaderId   int         null,
+    StaffId    int         null,
 
     BorrowDate datetime             default current_timestamp comment 'Ngày mượn',
-    DueDate    datetime    not null comment 'Ngày hẹn trả',
+    DueDate    datetime    null comment 'Ngày hẹn trả',
 
-    Status     varchar(20) not null default 'Borrowing' comment 'Borrowing | Returned | Overdue - Chỉ nên Returned khi tất cả BorrowDetail đã Returned',
+    Status     varchar(20) null default 'Borrowing' comment 'Borrowing | Returned | Overdue - Chỉ nên Returned khi tất cả BorrowDetail đã Returned',
     Note       text,
 
     constraint FK_Borrow_Reader
@@ -148,11 +148,11 @@ create table BorrowDetail
 (
     BorrowDetailId int auto_increment primary key,
 
-    BorrowId       int         not null,
-    CopyId         int         not null,
+    BorrowId       int         null,
+    CopyId         int         null,
 
     ReturnDate     datetime null,
-    Status         varchar(20) not null default 'Borrowing' comment 'Borrowing | Returned | Lost',
+    Status         varchar(20)  null default 'Borrowing' comment 'Borrowing | Returned | Lost',
     FineAmount     decimal(10, 2)       default 0 comment 'Tiền phạt',
     Note           text,
 
@@ -196,19 +196,20 @@ create table Account
 create table shift
 (
     ShiftId    int primary key auto_increment,
-    ShiftName  varchar(50) not null,
-    start_time time        not null,
-    end_time   time        not null
+    ShiftName  varchar(50) null,
+    start_time time        null,
+    end_time   time        null
 ) comment='Định nghĩa ca làm';
 
 CREATE TABLE librarian_shift
 (
     Assignment_id int primary key auto_increment,
-    Librarian_id  INT  NOT NULL,
-    ShiftId       INT  NOT NULL,
-    Work_date     DATE NOT NULL,
-    Assigned_by   INT  NOT NULL,
+    Librarian_id  INT  NULL,
+    ShiftId       INT  NULL,
+    Work_date     DATE NULL,
+    Assigned_by   INT  NULL,
     Assigned_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Attendance_Status BOOLEAN DEFAULT FALSE COMMENT '0: Vắng/Chưa làm, 1: Có mặt',
 
     unique (Librarian_id, Work_date, ShiftId),
 
@@ -225,13 +226,13 @@ CREATE TABLE librarian_shift
 create table Supplier
 (
     SupplierId    int auto_increment primary key,
-    SupplierCode  varchar(20)  not null unique comment 'Mã nhà cung cấp',
-    SupplierName  varchar(255) not null,
+    SupplierCode  varchar(20)  null unique comment 'Mã nhà cung cấp',
+    SupplierName  varchar(255) null,
     ContactPerson varchar(100) null,
-    Email         varchar(100) not null,
-    Phone         varchar(15) not null,
-    Address       varchar(255) not null,
-    Status        varchar(20)  not null default 'Active',
+    Email         varchar(100) null,
+    Phone         varchar(15) null,
+    Address       varchar(255) null,
+    Status        varchar(20)  null default 'Active',
     Note          text,
 
     constraint ck_supplier_status
@@ -241,9 +242,9 @@ create table Supplier
 create table Import
 (
     ImportId    int auto_increment primary key,
-    ImportCode  varchar(20) not null unique comment 'Mã phiếu nhập',
-    SupplierId  int         not null,
-    StaffId     int         not null,
+    ImportCode  varchar(20) null unique comment 'Mã phiếu nhập',
+    SupplierId  int         null,
+    StaffId     int         null,
     ImportDate  datetime       default current_timestamp,
     TotalAmount decimal(12, 2) default 0,
     Note        text,
@@ -258,10 +259,10 @@ create table Import
 create table ImportDetail
 (
     ImportDetailId int auto_increment primary key,
-    ImportId       int            not null,
-    BookId         int            not null,
-    Quantity       int            not null,
-    UnitPrice      decimal(10, 2) not null,
+    ImportId       int            null,
+    BookId         int            null,
+    Quantity       int            null,
+    UnitPrice      decimal(10, 2) null,
     TotalPrice     decimal(12, 2) generated always as (Quantity * UnitPrice) stored,
 
     constraint FK_ImportDetail_Import
@@ -272,10 +273,6 @@ create table ImportDetail
 
     unique (ImportId, BookId)
 ) comment = 'Chi tiết từng sách trong phiếu nhập';
-
-#Thêm cột điểm danh
-ALTER TABLE librarian_shift
-ADD COLUMN Attendance_Status BOOLEAN DEFAULT FALSE COMMENT '0: Vắng/Chưa làm, 1: Có mặt';
 
 ########
 # Dưới đây là các dữ liệu cơ bản được thêm
