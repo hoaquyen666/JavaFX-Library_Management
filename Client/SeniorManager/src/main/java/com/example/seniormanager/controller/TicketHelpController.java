@@ -57,6 +57,6 @@ public class TicketHelpController {
             ex.printStackTrace();
         });
 
-        new Thread(task).run();
+        new Thread(task).start();
     }
 }
