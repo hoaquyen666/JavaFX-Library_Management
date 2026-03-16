@@ -102,6 +102,11 @@ public class BorrowManagementController implements Initializable {
             return;
         }
 
+        String status = selectedBorrow.getStatus();
+        if ("Returned".equalsIgnoreCase(status) || "Đã trả".equalsIgnoreCase(status)) {
+            showAlert(Alert.AlertType.ERROR, "Đã khóa quyền chỉnh sửa", "Phiếu mượn này đã hoàn tất giao dịch. Không thể chỉnh sửa dữ liệu lịch sử!");
+            return;
+        }
         editingBorrow = selectedBorrow;
         lblPopupTitle.setText("Sửa Phiếu Mượn: " + selectedBorrow.getBorrowCode());
 
@@ -155,6 +160,11 @@ public class BorrowManagementController implements Initializable {
         // Kiểm tra bỏ trống
         if (selectedReader == null || selectedStaff == null || dueDate == null || (editingBorrow == null && copyIdsStr.isEmpty())) {
             showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+        // CHỐT CHẶN: Kiểm tra ngày hẹn trả phải từ ngày mai trở đi
+        if (!dueDate.isAfter(LocalDate.now())) {
+            showAlert(Alert.AlertType.WARNING, "Ngày không hợp lệ", "Ngày hẹn trả phải từ ngày mai trở đi!");
             return;
         }
 
@@ -286,6 +296,19 @@ public class BorrowManagementController implements Initializable {
         });
         detailPopupOverlay.setOnMouseClicked(event -> {
             if (event.getTarget() == detailPopupOverlay) detailPopupOverlay.setVisible(false);
+        });
+
+        //lock ngày trả sách trong quá khu và hiện tại
+        dpPopupDueDate.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
+            @Override
+            public void updateItem(java.time.LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                // Nếu ngày đó nhỏ hơn hoặc bằng ngày hôm nay -> Khóa lại
+                if (date != null && !date.isAfter(java.time.LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #eeeeee; -fx-text-fill: #999999;");
+                }
+            }
         });
 
         // Load dữ liệu lên bảng

@@ -1,12 +1,8 @@
-/* =========================================
-   1. SIDEBAR & MENU BUTTONS
-   ========================================= */
+
 .sidebar {
-    -fx-background-color: #1e293b; /* Màu xanh xám đậm hiện đại */
-    -fx-padding: 20 15 20 15;
-    -fx-spacing: 15;
-    /* Bóng đổ dọc sang phải để tách rời Sidebar và Main Content */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 15, 0, 5, 0);
+    -fx-background-color: #111827;
+    -fx-padding: 10 10 10 10;
+    -fx-spacing: 30;
 }
 
 .title {
@@ -17,37 +13,33 @@
     -fx-padding: 10 15 10 15;
 }
 
-.menu-btn {
-    -fx-background-color: transparent; /* Trong suốt để ăn nhập với nền sidebar */
-    -fx-text-fill: #94a3b8; /* Chữ xám nhạt khi chưa được chọn */
-    -fx-font-size: 15px;
+.menu-btn  {
+    -fx-background-color: #111827;
+    -fx-icon-color: white;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-padding: 12 20 12 20;
+    -fx-padding: 10 15 10 15;
     -fx-graphic-text-gap: 15;
-    -fx-background-radius: 12;
+    -fx-background-radius: 10;
     -fx-cursor: hand;
+    -fx-content-display: left;
     -fx-alignment: CENTER_LEFT;
     -fx-max-width: infinity;
 }
 
-/* Hiệu ứng khi lướt chuột qua (Hover) */
-.menu-btn:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.08);
-    -fx-text-fill: #ffffff;
+.menu-btn:hover{
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-text-fill: #f8843d;
+}
+.menu-btn .ikonli-font-icon {
+    -fx-icon-color: white;
 }
 .menu-btn:hover .ikonli-font-icon {
-    -fx-icon-color: #ffffff;
+    -fx-icon-color: #f8843d;
 }
 
-/* Hiệu ứng khi nhấp vào hoặc đang chọn (Focus/Active) */
-.menu-btn:focused, .menu-btn:pressed {
-    -fx-background-color: #3b82f6; /* Xanh dương sáng */
-    -fx-text-fill: #ffffff;
-    -fx-effect: dropshadow(three-pass-box, rgba(59, 130, 246, 0.4), 10, 0, 0, 4);
-}
-.menu-btn:focused .ikonli-font-icon, .menu-btn:pressed .ikonli-font-icon {
-    -fx-icon-color: #ffffff;
-}
+
 
 .menu-btn .ikonli-font-icon {
     -fx-icon-color: #94a3b8;
@@ -57,8 +49,17 @@
    2. MAIN CONTENT CARD & SUB-CARDS
    ========================================= */
 .main-content-card {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);
+}
+
+.active-nav {
+    -fx-text-fill: #f8843d;
     -fx-background-color: transparent;
-    -fx-padding: 10;
+}
+.active-nav .ikonli-font-icon {
+    -fx-icon-color: #f8843d;
 }
 
 /* Các Card nhỏ bên trong (Thanh tìm kiếm, v.v.) */
