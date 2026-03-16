@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane maxHeight="1.7976931348623157E308"
+           maxWidth="1.7976931348623157E308"
+           stylesheets="@book-management.css"
+           style="-fx-background-color: transparent;"
+           xmlns="http://javafx.com/javafx/17.0.12"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.example.librarian.controller.BookManagementController">
+
+    <VBox spacing="20.0" styleClass="main-content-card">
+        <padding>
+            <Insets bottom="20.0" left="30.0" right="30.0" top="60.0" />
+        </padding>
+
+        <Label text="Quản lý sách" textFill="#ffffff">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+
+        <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card">
+            <TextField fx:id="searchField" prefWidth="300.0" promptText="Tìm kiếm theo tên sách..." style="-fx-background-radius: 8;                        -fx-border-color: #e0e0e0;                        -fx-border-radius: 8;                        -fx-padding: 8;" />
+            <Region HBox.hgrow="ALWAYS" />
+
+            <Button onAction="#handleAddBook" styleClass="btn-add" text="+ Thêm sách">
+                <padding>
+                    <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
+                </padding>
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+            </Button>
+
+            <Button onAction="#handleEditBook" styleClass="btn-edit" text="Sửa">
+                <padding>
+                    <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
+                </padding>
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+            </Button>
+            <Button onAction="#handleDeleteBook" styleClass="btn-delete" text="Xóa">
+                <padding>
+                    <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
+                </padding>
+                <font>
+                    <Font name="System Bold" size="13.0" />
+                </font>
+            </Button>
+        </HBox>
+
+        <VBox  stylesheets="@book-management.css" style="-fx-background-color: white;
+        -fx-background-radius: 20;
+        -fx-padding: 15;
+        -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5); " VBox.vgrow="ALWAYS">
+            <TableView fx:id="bookTable"
+                       prefHeight="400.0"
+                       editable="true"
+                       styleClass="book-table"
+                       style="-fx-background-color: transparent;
+                       -fx-border-color: #e0e0e0;
+                       -fx-border-radius: 8;"
+                       VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colBookID" prefWidth="50.0" text="ID" />
+                    <TableColumn fx:id="colBookCode" prefWidth="100.0" text="Mã Sách" />
+                    <TableColumn fx:id="colTitle" prefWidth="250.0" text="Tên Sách" />
+                    <TableColumn fx:id="colISBN" prefWidth="150.0" text="ISBN" />
+                    <TableColumn fx:id="colPublisher" prefWidth="120.0" text="Nhà xuất bản" />
+                    <TableColumn fx:id="colPublishYear" prefWidth="80.0" text="Năm xuất bản" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+            <HBox alignment="CENTER_RIGHT" spacing="10.0" style="-fx-padding: 10 0 0 0;">
+                <Label textFill="#666666" />
+                <Label fx:id="lblTotalRecords" textFill="#233771" >
+                    <font><Font name="System Bold" size="13.0" /></font>
+                </Label>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button onAction="#handlePrevPage" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 3; -fx-cursor: hand;" text="&lt;" />
+
+                <Label fx:id="lblCurrentPage" style="-fx-font-weight: bold; -fx-text-fill: #1a73e8;" text="1" />
+
+                <Button onAction="#handleNextPage" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 3; -fx-cursor: hand;" text="&gt;" />
+
+                <ComboBox fx:id="cbRowsPerPage" prefWidth="100.0" style="-fx-background-radius: 8;"/>
+            </HBox>
+        </VBox>
+    </VBox>
+    <StackPane fx:id="addPopupOverlay"
+               maxHeight="1.7976931348623157E308"
+               maxWidth="1.7976931348623157E308"
+               style="-fx-background-color: rgba(0, 0, 0, 0.5);
+               -fx-background-radius: 20 ;">
+
+        <VBox maxHeight="-Infinity" maxWidth="500.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 20, 0, 0, 5);">
+            <padding>
+                <Insets bottom="20.0" left="30.0" right="30.0" top="60.0" />
+            </padding>
+            <Label fx:id="lblPopupTitle" text="Thêm Sách Mới" textFill="#233771">
+                <font><Font name="System Bold" size="22.0" /></font>
+            </Label>
+
+            <GridPane hgap="15.0" vgap="15.0">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="90.0" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                </columnConstraints>
+
+                <Label text="Mã sách:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="txtPopupBookCode" promptText="VD: B123" style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Tên sách:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="txtPopupTitle" promptText="Nhập tên sách..." style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Mã ISBN:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="txtPopupIsbn" promptText="Mã ISBN..." style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Nhà XB:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="txtPopupPublisher" promptText="Tên nhà xuất bản" style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label text="Năm XB:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <TextField fx:id="txtPopupPublishYear" promptText="VD: 2023" style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+            </GridPane>
+
+            <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                <Button onAction="#handleClosePopup" style="-fx-background-color: #f1f5f9; -fx-text-fill: #64748b; -fx-padding: 8 20; -fx-background-radius: 5; -fx-cursor: hand;" text="Hủy bỏ" />
+                <Button onAction="#handleSaveNewBook" style="-fx-background-color: #1a73e8; -fx-text-fill: white; -fx-padding: 8 20; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold;" text="Lưu sách" />
+            </HBox>
+        </VBox>
+      <padding>
+         <Insets bottom="20.0" left="30.0" right="30.0" top="60.0" />
+      </padding>
+    </StackPane>
+</StackPane>
