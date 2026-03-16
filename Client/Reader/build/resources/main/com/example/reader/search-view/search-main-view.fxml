@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane stylesheets="@search-style.css" styleClass="app-container"
+           xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="com.example.reader.controller.SearchMainViewController">
+
+    <Region styleClass="bg-overlay" />
+
+    <VBox maxWidth="1100.0" spacing="10.0" styleClass="content">
+
+        <HBox alignment="CENTER_RIGHT" spacing="15.0">
+            <Button fx:id="btnLogin" styleClass="authen-btn" text="Đăng nhập" onAction="#onLoginForm"/>
+            <Label text="|" textFill="#cccccc" />
+            <Button  fx:id="btnRegister" styleClass="authen-btn" text="Đăng ký" onAction="#onRegisterForm"/>
+            <VBox.margin>
+                <Insets top="20.0" />
+            </VBox.margin>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="content-title">
+            <ImageView fitHeight="70.0" preserveRatio="true">
+                <image>
+                    <Image url="@images/Logo-Dai-hoc-CMC-V.png" />
+                </image>
+            </ImageView>
+            <Label styleClass="header-title" text="TRA CỨU TÀI LIỆU THƯ VIỆN" />
+        </HBox>
+
+        <HBox alignment="CENTER" styleClass="search-category">
+            <VBox alignment="CENTER" styleClass="search-item" HBox.hgrow="ALWAYS">
+                <Label styleClass="icon-label" text="🚀" />
+                <Label styleClass="text-label" text="Tìm nhanh" />
+            </VBox>
+
+            <Region styleClass="divider" />
+
+            <VBox alignment="CENTER" styleClass="search-item" HBox.hgrow="ALWAYS">
+                <Button styleClass="icon-label" text="🔍" />
+                <Label styleClass="text-label" text="Tìm cơ bản" />
+            </VBox>
+
+            <Region styleClass="divider" />
+
+            <VBox alignment="CENTER" styleClass="search-item" HBox.hgrow="ALWAYS">
+                <Button styleClass="icon-label" text="✨"/>
+                <Label styleClass="text-label" text="Tìm nâng cao" />
+            </VBox>
+            <VBox.margin>
+                <Insets bottom="20.0" top="30.0" />
+            </VBox.margin>
+        </HBox>
+
+        <VBox styleClass="search-form-container">
+            <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="search-form-inner">
+
+                <VBox styleClass="input-box" prefWidth="200.0">
+                    <ComboBox fx:id="searchType" promptText="Tìm nhanh" styleClass="search-combo" prefWidth="200.0" />
+                </VBox>
+
+                <VBox styleClass="input-box" HBox.hgrow="ALWAYS">
+                    <TextField fx:id="txtSearch" promptText="Nhập nội dung tìm kiếm..." styleClass="search-field" />
+                </VBox>
+
+                <Button onAction="#onSearchAction" styleClass="button-search" text="Tìm kiếm" prefHeight="60.0" prefWidth="180.0" />
+            </HBox>
+        </VBox>
+    </VBox>
+</StackPane>
