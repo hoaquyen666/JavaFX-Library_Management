@@ -152,6 +152,7 @@ public class BorrowManagementController implements Initializable {
         LocalDate dueDate = dpPopupDueDate.getValue();
         String copyIdsStr = txtPopupCopyIds.getText().trim();
 
+        // Kiểm tra bỏ trống
         if (selectedReader == null || selectedStaff == null || dueDate == null || (editingBorrow == null && copyIdsStr.isEmpty())) {
             showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng điền đầy đủ thông tin!");
             return;
@@ -164,16 +165,28 @@ public class BorrowManagementController implements Initializable {
                 int readerId = Integer.parseInt(selectedReader.split(" - ")[0]);
                 int staffId = Integer.parseInt(selectedStaff.split(" - ")[0]);
 
-                // Biến chuỗi "1, 1, 2" thành danh sách số nguyên [1, 1, 2]
+                // BƯỚC 1: Lấy danh sách ID sách và kiểm tra xem có gõ trùng số không
                 List<Integer> copyIds = new ArrayList<>();
                 for (String idStr : copyIdsStr.split(",")) {
-                    copyIds.add(Integer.parseInt(idStr.trim()));
+                    int id = Integer.parseInt(idStr.trim());
+                    if (copyIds.contains(id)) {
+                        showAlert(Alert.AlertType.WARNING, "Lỗi nhập liệu", "Bạn đang nhập trùng ID " + id + " nhiều lần!");
+                        return; // Bắt buộc phải dừng lại ngay
+                    }
+                    copyIds.add(id);
                 }
 
+                // BƯỚC 2: CHỐT CHẶN BẢO VỆ (Phải kiểm tra TRƯỚC KHI TẠO PHIẾU)
+                String checkStatus = borrowDAO.checkCopiesAvailable(copyIds);
+                if (!checkStatus.equals("OK")) {
+                    showAlert(Alert.AlertType.WARNING, "Sách không sẵn sàng", checkStatus);
+                    return; // Sách đang bị mượn -> Lập tức Đuổi về, KHÔNG CHO CHẠY TIẾP XUỐNG DƯỚI
+                }
+
+                // BƯỚC 3: Nếu qua được bảo vệ an toàn -> Mới bắt đầu ghi vào Database
                 String borrowCode = "PM-" + (System.currentTimeMillis() % 10000);
                 Borrow newBorrow = new Borrow(0, borrowCode, "", "", null, dueDateStr, 0, "Borrowing");
 
-                // Gọi hàm Insert 
                 boolean isSuccess = borrowDAO.insertBorrowWithDetailsById(newBorrow, readerId, staffId, copyIds);
 
                 if (isSuccess) {
@@ -187,6 +200,7 @@ public class BorrowManagementController implements Initializable {
                 showAlert(Alert.AlertType.ERROR, "Lỗi cú pháp", "CopyID chỉ được nhập số (VD: 1, 2, 3)!");
             }
         } else {
+            // Chế độ Sửa
             showAlert(Alert.AlertType.INFORMATION, "Tính năng", "Sửa phiếu đang bảo trì để nâng cấp!");
         }
     }
