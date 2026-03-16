@@ -9,31 +9,34 @@
 <BorderPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #111827;" stylesheets="@/style/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.seniormanager.controller.MainViewController">
 
     <left>
-        <VBox fx:id="sidebar" prefWidth="260.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+        <VBox fx:id="sidebar" prefWidth="70.0" styleClass="sidebar" BorderPane.alignment="CENTER">
             <children>
                 <StackPane prefHeight="80.0">
-                    <ImageView fx:id="logoImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fx:id="logoImage" fitHeight="140.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url = "/images/img_1.png"/>
+                            <Image url="/images/img_1.png"/>
                         </image>
+                        <StackPane.margin>
+                            <Insets bottom="25.0" top="35.0" />
+                        </StackPane.margin>
                     </ImageView>
                 </StackPane>
 
                 <Button alignment="CENTER_LEFT" onAction="#handleAccount" styleClass="menu-btn" text="Quản lý tài khoản NV">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2h-home" iconSize="20" />
+                        <FontIcon iconLiteral="mdi2a-account-box" iconSize="20" />
                     </graphic>
                 </Button>
 
                 <Button alignment="CENTER_LEFT" onAction="#handleStaff" styleClass="menu-btn" text="Quản lý Nhân viên">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2b-book" iconSize="20" />
+                        <FontIcon iconLiteral="mdi2a-account-group" iconSize="20" />
                     </graphic>
                 </Button>
 
                 <Button alignment="CENTER_LEFT" onAction="#handleShift" styleClass="menu-btn" text="Quản lý Ca làm">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2a-account-group" iconSize="20" />
+                        <FontIcon iconLiteral="mdi2c-calendar-clock" iconSize="20" />
                     </graphic>
                 </Button>
             </children>

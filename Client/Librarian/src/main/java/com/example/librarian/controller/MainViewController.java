@@ -77,22 +77,26 @@ public class MainViewController  implements Initializable {
 
     @FXML
     public void handleTrangChu(ActionEvent event) {
+        setActive(event);
         loadGiaoDienCon("/com/example/librarian/Library_Main_View/home-main-view.fxml");
     }
 
     @FXML
     public void handleQuanLySach(ActionEvent event){
+        setActive(event);
         loadGiaoDienCon("/com/example/librarian/Book_Management/book-management-view.fxml");
     }
 
     @FXML
     public void handleQuanLyDocGia(ActionEvent event){
+        setActive(event);
         loadGiaoDienCon("/com/example/librarian/Reader_Management/reader-management-view.fxml");
     }
 
 
     @FXML
     public void handleQuanLyMuonTra(ActionEvent event) {
+        setActive(event);
         isMuonTraExpanded = !isMuonTraExpanded;
         muonTraSubMenu.setVisible(isMuonTraExpanded);
         muonTraSubMenu.setManaged(isMuonTraExpanded);
@@ -100,16 +104,19 @@ public class MainViewController  implements Initializable {
 
     @FXML
     public void handleQuanLyMuon(ActionEvent event){
+        setActive(event);
         loadGiaoDienCon("/com/example/librarian/Borrow_Return_Management/borrow-management-view.fxml");
     }
 
     @FXML
     public void handleQuanLyTra(ActionEvent event){
+        setActive(event);
         loadGiaoDienCon("/com/example/librarian/Borrow_Return_Management/return-management-view.fxml");
     }
 
     @FXML
     public void handleQuanLyKho(ActionEvent event){
+        setActive(event);
         isKhoExpanded = !isKhoExpanded;
         menuQuanLyKho.setVisible(isKhoExpanded);
         menuQuanLyKho.setManaged(isKhoExpanded);
@@ -117,16 +124,19 @@ public class MainViewController  implements Initializable {
 
     @FXML
     public void handleQuanLyNhap(ActionEvent event){
+        setActive(event);
         loadGiaoDienCon("/com/example/librarian/Storage_Management/import-management-view.fxml");
     }
 
     @FXML
     public void handleNhaCungCap(ActionEvent event){
+        setActive(event);
         loadGiaoDienCon("/com/example/librarian/Storage_Management/supplier-management-view.fxml");
     }
 
     @FXML
     public void handleQuanLyThongKe(ActionEvent event){
+        setActive(event);
         loadGiaoDienCon("/com/example/librarian/Statistical_Management/statistical-management-view.fxml");
     }
 
@@ -162,4 +172,23 @@ public class MainViewController  implements Initializable {
             e.printStackTrace();
         }
     }
+    // Biến lưu trữ nút đang được click
+    private javafx.scene.control.Button currentActiveButton;
+
+    // Hàm 1: Đổi màu nút đang chọn
+    private void setActive(ActionEvent event) {
+        if (event != null && event.getSource() instanceof javafx.scene.control.Button) {
+            javafx.scene.control.Button clickedBtn = (javafx.scene.control.Button) event.getSource();
+            // Xóa CSS active ở nút cũ
+            if (currentActiveButton != null) {
+                currentActiveButton.getStyleClass().remove("active-nav");
+            }
+            // Gắn CSS active vào nút mới
+            if (!clickedBtn.getStyleClass().contains("active-nav")) {
+                clickedBtn.getStyleClass().add("active-nav");
+            }
+            currentActiveButton = clickedBtn;
+        }
+    }
+
 }
