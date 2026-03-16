@@ -50,8 +50,8 @@ create table Book
 
 create table BookAuthor
 (
-    BookId   int null,
-    AuthorId int null,
+    BookId   int not null,
+    AuthorId int not null,
 
     primary key (BookId, AuthorId),
 
@@ -63,8 +63,8 @@ create table BookAuthor
 
 create table BookCategory
 (
-    BookId     int null,
-    CategoryId int null,
+    BookId     int not null,
+    CategoryId int not null,
     primary key (BookId, CategoryId),
 
     constraint fk_bc_book
