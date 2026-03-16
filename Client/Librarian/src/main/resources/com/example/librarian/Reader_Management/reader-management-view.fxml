@@ -63,7 +63,7 @@
                 </font>
             </Button>
 
-            <Button fx:id="btnResetPassword" text="Reset password" disable="true" styleClass="btn-reset" onAction="#onResetPassword">
+            <Button fx:id="btnResetPassword" text="Đặt laị mật khẩu" disable="true" styleClass="btn-reset" onAction="#onResetPassword">
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
                 </padding>
