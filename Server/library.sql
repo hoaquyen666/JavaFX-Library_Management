@@ -158,9 +158,7 @@ create table BorrowDetail
     Note           text,
 
     unique (BorrowId, CopyId),
-
-    constraint FK_Price_Book
-
+	
     constraint FK_BorrowDetail_Borrow
         foreign key (BorrowId) references Borrow (BorrowId),
     constraint FK_BorrowDetail_Copy
