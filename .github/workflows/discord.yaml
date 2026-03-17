@@ -2,13 +2,17 @@ name: Discord Notify
 
 on:
   push:
+  pull_request:
+    types: [closed]
 
 jobs:
   notify:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send embed to Discord
+
+      - name: Notify Push
+        if: github.event_name == 'push'
         run: |
           curl -X POST "${{ secrets.DISCORD_WEBHOOK }}" \
           -H "Content-Type: application/json" \
@@ -36,6 +40,48 @@ jobs:
                 {
                   \"name\": \"💬 Commit\",
                   \"value\": \"${{ github.event.head_commit.message }}\"
+                }
+              ],
+              \"footer\": {
+                \"text\": \"GitHub Actions - LycoReco Bot\"
+              }
+            }]
+          }"
+
+      - name: Notify Merge
+        if: github.event.pull_request.merged == true
+        run: |
+          curl -X POST "${{ secrets.DISCORD_WEBHOOK }}" \
+          -H "Content-Type: application/json" \
+          -d "{
+            \"embeds\": [{
+              \"author\": {
+                \"name\": \"${{ github.actor }} vừa merge Pull Request\",
+                \"icon_url\": \"https://github.com/${{ github.actor }}.png\"
+              },
+              \"title\": \"🔀 Pull Request đã được merge!\",
+              \"url\": \"${{ github.event.pull_request.html_url }}\",
+              \"color\": 3066993,
+              \"timestamp\": \"${{ github.event.pull_request.merged_at }}\",
+              \"fields\": [
+                {
+                  \"name\": \"📁 Dự án\",
+                  \"value\": \"${{ github.repository }}\",
+                  \"inline\": true
+                },
+                {
+                  \"name\": \"🌿 Nhánh nguồn\",
+                  \"value\": \"${{ github.event.pull_request.head.ref }}\",
+                  \"inline\": true
+                },
+                {
+                  \"name\": \"➡️ Nhánh đích\",
+                  \"value\": \"${{ github.event.pull_request.base.ref }}\",
+                  \"inline\": true
+                },
+                {
+                  \"name\": \"💬 Tiêu đề PR\",
+                  \"value\": \"${{ github.event.pull_request.title }}\"
                 }
               ],
               \"footer\": {
