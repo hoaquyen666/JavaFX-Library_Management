@@ -71,9 +71,12 @@
                     <TableColumn fx:id="colBookID" prefWidth="50.0" text="ID" />
                     <TableColumn fx:id="colBookCode" prefWidth="100.0" text="Mã Sách" />
                     <TableColumn fx:id="colTitle" prefWidth="250.0" text="Tên Sách" />
+                    <TableColumn fx:id="colAuthor" prefWidth="150.0" text="Tác giả" />
+                    <TableColumn fx:id="colCategory" prefWidth="150.0" text="Thể loại" />
                     <TableColumn fx:id="colISBN" prefWidth="150.0" text="ISBN" />
                     <TableColumn fx:id="colPublisher" prefWidth="120.0" text="Nhà xuất bản" />
                     <TableColumn fx:id="colPublishYear" prefWidth="80.0" text="Năm xuất bản" />
+                    <TableColumn fx:id="colPrice" prefWidth="80.0" text="Giá sách" />
                 </columns>
                 <columnResizePolicy>
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -131,7 +134,22 @@
 
                 <Label text="Năm XB:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                 <TextField fx:id="txtPopupPublishYear" promptText="VD: 2023" style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <rowConstraints>
+
+                <Label text="Tác giả:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <TextField fx:id="txtPopupAuthor" promptText="VD: Nguyễn Nhật Ánh, Nam Cao" style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                <Label text="Thể loại:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                <ComboBox fx:id="cbPopupCategory" prefWidth="300.0" promptText="-- Chọn thể loại sách --"
+                          style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 5;"
+                          GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                <Label text="Giá tiền:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                <TextField fx:id="txtPopupPrice" promptText="VD: 150000..." style="-fx-padding: 8; -fx-background-radius: 5; -fx-border-color: #ddd; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+
+
+
+                <rowConstraints>
                <RowConstraints />
                <RowConstraints />
                <RowConstraints />

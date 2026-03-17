@@ -45,7 +45,8 @@ create table Book
     ISBN        varchar(20)  null,
     Publisher   varchar(255) null,
     PublishYear YEAR null,
-    Description TEXT
+    Description TEXT,
+    Price DECIMAL(13,0) null
 ) comment = 'Thông tin sách';
 
 create table BookAuthor
@@ -157,6 +158,8 @@ create table BorrowDetail
     Note           text,
 
     unique (BorrowId, CopyId),
+
+    constraint FK_Price_Book
 
     constraint FK_BorrowDetail_Borrow
         foreign key (BorrowId) references Borrow (BorrowId),
