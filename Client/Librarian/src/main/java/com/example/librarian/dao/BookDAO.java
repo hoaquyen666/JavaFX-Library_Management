@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class BookDAO {
 
@@ -117,5 +119,53 @@ public class BookDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public Map<String, Integer> countBooksByCategory() {
+
+        Map<String, Integer> result = new HashMap<>();
+
+        String sql = """
+        SELECT c.CategoryName, COUNT(bc.BookId) AS total
+        FROM Category c
+        LEFT JOIN BookCategory bc ON c.CategoryId = bc.CategoryId
+        GROUP BY c.CategoryName
+    """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                result.put(
+                        rs.getString("CategoryName"),
+                        rs.getInt("total")
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public int countBooks(){
+
+        String sql = "SELECT COUNT(*) FROM Book";
+
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }
