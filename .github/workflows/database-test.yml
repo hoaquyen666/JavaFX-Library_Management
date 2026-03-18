@@ -31,4 +31,4 @@ jobs:
 
       - name: Import database
         run: |
-          mysql -h 127.0.0.1 -u root -proot library < Server/library.sql
+          mysql -h 127.0.0.1 -u root -proot < Server/library.sql
