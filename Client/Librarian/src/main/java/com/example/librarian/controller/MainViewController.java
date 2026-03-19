@@ -115,24 +115,30 @@ public class MainViewController  implements Initializable {
     }
 
     @FXML
-    public void handleQuanLyKho(ActionEvent event){
+    public void handleQuanLyBanSao(ActionEvent event){
         setActive(event);
-        isKhoExpanded = !isKhoExpanded;
-        menuQuanLyKho.setVisible(isKhoExpanded);
-        menuQuanLyKho.setManaged(isKhoExpanded);
+        loadGiaoDienCon("/com/example/librarian/Book_Management/bookcopy-management-view.fxml");
     }
 
-    @FXML
-    public void handleQuanLyNhap(ActionEvent event){
-        setActive(event);
-        loadGiaoDienCon("/com/example/librarian/Storage_Management/import-management-view.fxml");
-    }
-
-    @FXML
-    public void handleNhaCungCap(ActionEvent event){
-        setActive(event);
-        loadGiaoDienCon("/com/example/librarian/Storage_Management/supplier-management-view.fxml");
-    }
+//    @FXML
+//    public void handleQuanLyKho(ActionEvent event){
+//        setActive(event);
+//        isKhoExpanded = !isKhoExpanded;
+//        menuQuanLyKho.setVisible(isKhoExpanded);
+//        menuQuanLyKho.setManaged(isKhoExpanded);
+//    }
+//
+//    @FXML
+//    public void handleQuanLyNhap(ActionEvent event){
+//        setActive(event);
+//        loadGiaoDienCon("/com/example/librarian/Storage_Management/import-management-view.fxml");
+//    }
+//
+//    @FXML
+//    public void handleNhaCungCap(ActionEvent event){
+//        setActive(event);
+//        loadGiaoDienCon("/com/example/librarian/Storage_Management/supplier-management-view.fxml");
+//    }
 
     @FXML
     public void handleQuanLyThongKe(ActionEvent event){

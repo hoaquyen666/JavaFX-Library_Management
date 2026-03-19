@@ -34,6 +34,12 @@
                     </graphic>
                 </Button>
 
+                <Button alignment="CENTER_LEFT" onAction="#handleQuanLyBanSao" styleClass="menu-btn" text="Quản lý bản sao sách">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2b-book" iconSize="20" />
+                    </graphic>
+                </Button>
+
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLyDocGia" styleClass="menu-btn" text="Quản lý Độc giả">
                     <graphic>
                         <FontIcon iconLiteral="mdi2a-account-group" iconSize="20" />
@@ -59,23 +65,7 @@
                     </Button>
                 </VBox>
 
-                <Button alignment="CENTER_LEFT" onAction="#handleQuanLyKho" styleClass="menu-btn" text="Quản lý kho hàng">
-                    <graphic>
-                        <FontIcon iconLiteral="mdi2p-package-variant" iconSize="20" />
-                    </graphic>
-                </Button>
-                <VBox fx:id="menuQuanLyKho" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
-                    <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhap" styleClass="sub-menu-btn" text="Quản lý nhập">
-                        <graphic>
-                            <FontIcon iconLiteral="mdi2t-truck-delivery" iconSize="18" />
-                        </graphic>
-                    </Button>
-                    <Button alignment="CENTER_LEFT" onAction="#handleNhaCungCap" styleClass="sub-menu-btn" text="Nhà cung cấp">
-                        <graphic>
-                            <FontIcon iconLiteral="mdi2d-domain" iconSize="18" />
-                        </graphic>
-                    </Button>
-                </VBox>
+
 
                 <Button alignment="CENTER_LEFT" onAction="#handleQuanLyThongKe" styleClass="menu-btn" text="Quản lý thống kê">
                     <graphic>

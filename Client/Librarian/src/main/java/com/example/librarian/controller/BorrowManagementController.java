@@ -7,16 +7,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.StackPane;
 
 import java.time.LocalDate;
@@ -192,6 +189,39 @@ public class BorrowManagementController implements Initializable {
                     showAlert(Alert.AlertType.WARNING, "Sách không sẵn sàng", checkStatus);
                     return; // Sách đang bị mượn -> Lập tức Đuổi về, KHÔNG CHO CHẠY TIẾP XUỐNG DƯỚI
                 }
+
+                //Tính tiền cọc và hiển thị QR
+                double totalDeposit = borrowDAO.calculateTotalDeposit(copyIds);
+
+                Alert confirmPayment = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmPayment.setTitle("Thanh toán tiền cọc");
+                confirmPayment.setHeaderText("Xác nhận mượn sách và thanh toán");
+
+                // Tạo giao diện Tùy chỉnh (VBox) ngay trong Code Java
+                javafx.scene.layout.VBox vbox = new javafx.scene.layout.VBox(15);
+                vbox.setAlignment(javafx.geometry.Pos.CENTER);
+
+                javafx.scene.control.Label lblDeposit = new javafx.scene.control.Label("Tổng tiền cọc (50% giá sách): " + new java.text.DecimalFormat("#,### đ").format(totalDeposit));
+                lblDeposit.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #d9534f;");
+
+                javafx.scene.image.ImageView qrView = new javafx.scene.image.ImageView();
+                try {
+                    // Nhớ đảm bảo bạn có ảnh sample-qr.png trong folder resources/images nhé
+                    qrView.setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("/images/img_1.png")));
+                    qrView.setFitWidth(200);
+                    qrView.setFitHeight(200);
+                } catch (Exception e) {
+                    System.out.println("Không tìm thấy ảnh QR mẫu!");
+                }
+
+                javafx.scene.control.Label lblInstruction = new javafx.scene.control.Label("Vui lòng cho Độc giả quét mã QR để thanh toán cọc.");
+                vbox.getChildren().addAll(lblDeposit, qrView, lblInstruction);
+
+                // Nhét VBox vào trong Alert
+                confirmPayment.getDialogPane().setContent(vbox);
+
+                // Chờ Thủ thư xác nhận (Bấm OK)
+                java.util.Optional<ButtonType> result = confirmPayment.showAndWait();
 
                 // BƯỚC 3: Nếu qua được bảo vệ an toàn -> Mới bắt đầu ghi vào Database
                 String borrowCode = "PM-" + (System.currentTimeMillis() % 10000);

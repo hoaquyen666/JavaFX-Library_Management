@@ -28,6 +28,7 @@
            maxHeight="1.7976931348623157E308"
            xmlns="http://javafx.com/javafx/21"
            xmlns:fx="http://javafx.com/fxml/1"
+           fx:id="rootPane"
            fx:controller="com.example.librarian.controller.ReaderManagementController">
 
     <padding>

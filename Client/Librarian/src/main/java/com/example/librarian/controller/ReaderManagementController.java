@@ -28,7 +28,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class ReaderManagementController {
-    // Bộ lọc nhóm quyền ở đầu màn hình.
+
+    @FXML
+    private StackPane rootPane;
+    
     @FXML
     private ComboBox<String> groupFilter;
 
@@ -300,6 +303,8 @@ public class ReaderManagementController {
         return value == null ? "" : value.toLowerCase(Locale.ROOT).trim();
     }
 
+
+    //Hàm thêm độc giả, hiển thị PopUp
     @FXML
     private void onAddReader() {
         // Mode thêm => xóa tham chiếu đối tượng đang sửa.
