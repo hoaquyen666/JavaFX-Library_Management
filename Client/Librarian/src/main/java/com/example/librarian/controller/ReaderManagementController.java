@@ -1,5 +1,7 @@
 package com.example.librarian.controller;
 
+import com.example.librarian.dao.ReaderDAO;
+import com.example.librarian.model.ReaderRecord;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,28 +11,21 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.Button;
-import java.util.Locale;
-import com.example.librarian.dao.ReaderDAO;
-import com.example.librarian.model.ReaderRecord;
-import javafx.scene.control.TextInputDialog;
-import java.util.Optional;
-import java.util.List;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.ButtonType;
-import javafx.scene.layout.GridPane;
 
+import java.util.List;
+import java.util.Locale;
 
 public class ReaderManagementController {
     @FXML
@@ -51,7 +46,6 @@ public class ReaderManagementController {
     private TableColumn<ReaderRow, String> colPhone;
     @FXML
     private TableColumn<ReaderRow, String> colEmail;
-
     @FXML
     private TableColumn<ReaderRow, String> colAddress;
     @FXML
@@ -62,15 +56,30 @@ public class ReaderManagementController {
     private ComboBox<String> pageSizeCombo;
     @FXML
     private Button btnAdd;
-
     @FXML
     private Button btnEdit;
-
     @FXML
     private Button btnResetPassword;
+    @FXML
+    private StackPane readerPopupOverlay;
+    @FXML
+    private Label readerPopupTitle;
+    @FXML
+    private Label readerCodeCaption;
+    @FXML
+    private Label readerCodeValue;
+    @FXML
+    private TextField popupFullNameField;
+    @FXML
+    private TextField popupPhoneField;
+    @FXML
+    private TextField popupEmailField;
+    @FXML
+    private ComboBox<String> popupStatusCombo;
 
     private final ObservableList<ReaderRow> masterRows = FXCollections.observableArrayList();
     private FilteredList<ReaderRow> filteredRows;
+    private ReaderRow editingReader;
 
     @FXML
     private void initialize() {
@@ -80,15 +89,18 @@ public class ReaderManagementController {
         loadReadersFromDatabase();
         applyFilter();
 
-        readerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)->{
+        popupStatusCombo.setItems(FXCollections.observableArrayList("Kích hoạt", "Khóa"));
+        readerPopupOverlay.setOnMouseClicked(event -> {
+            if (event.getTarget() == readerPopupOverlay) {
+                closeReaderPopup();
+            }
+        });
 
+        readerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             boolean disable = newVal == null;
-
             btnEdit.setDisable(disable);
             btnResetPassword.setDisable(disable);
         });
-
-
     }
 
     @FXML
@@ -102,12 +114,10 @@ public class ReaderManagementController {
         ));
         groupFilter.getSelectionModel().selectFirst();
 
-
         pageSizeCombo.setItems(FXCollections.observableArrayList("20 / trang", "50 / trang", "100 / trang"));
         pageSizeCombo.getSelectionModel().selectFirst();
 
         groupFilter.valueProperty().addListener((obs, oldValue, newValue) -> applyFilter());
-
         searchField.textProperty().addListener((obs, oldValue, newValue) -> applyFilter());
     }
 
@@ -165,13 +175,17 @@ public class ReaderManagementController {
                     return;
                 }
                 Label chip = new Label(item);
-                chip.getStyleClass().addAll("status-chip", "status-active");
+                chip.getStyleClass().add("status-chip");
+                if ("Khóa".equalsIgnoreCase(item)) {
+                    chip.getStyleClass().add("status-locked");
+                } else {
+                    chip.getStyleClass().add("status-active");
+                }
                 setGraphic(chip);
                 setText(null);
             }
         });
     }
-
 
     private void bindTableData() {
         filteredRows = new FilteredList<>(masterRows, row -> true);
@@ -181,14 +195,12 @@ public class ReaderManagementController {
     }
 
     private void loadReadersFromDatabase() {
-
         ReaderDAO dao = new ReaderDAO();
         List<ReaderRecord> readers = dao.findAllReaders();
 
         masterRows.clear();
 
         for (ReaderRecord r : readers) {
-
             masterRows.add(new ReaderRow(
                     r.getReaderCode(),
                     r.getUsername(),
@@ -209,7 +221,6 @@ public class ReaderManagementController {
 
         String keyword = normalize(searchField.getText());
         String group = groupFilter.getValue();
-
 
         filteredRows.setPredicate(row -> {
             boolean groupMatched = group == null
@@ -233,132 +244,106 @@ public class ReaderManagementController {
     }
 
     @FXML
-    private void onAddReader(){
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Thêm độc giả");
+    private void onAddReader() {
+        editingReader = null;
+        readerPopupTitle.setText("Thêm Độc Giả Mới");
+        readerCodeCaption.setText("Mã độc giả sẽ được tạo tự động");
+        readerCodeValue.setText("--");
+        popupFullNameField.clear();
+        popupPhoneField.clear();
+        popupEmailField.clear();
+        popupStatusCombo.getSelectionModel().selectFirst();
+        readerPopupOverlay.setVisible(true);
+    }
 
-        TextField txtName = new TextField();
-        TextField txtPhone = new TextField();
-        TextField txtEmail = new TextField();
+    @FXML
+    private void onEditReader() {
+        ReaderRow selected = readerTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng chọn độc giả cần sửa.");
+            return;
+        }
 
-        ComboBox<String> cbStatus = new ComboBox<>();
-        cbStatus.getItems().addAll("Kích hoạt", "Khóa");
-        cbStatus.getSelectionModel().selectFirst();
+        editingReader = selected;
+        readerPopupTitle.setText("Sửa Thông Tin Độc Giả");
+        readerCodeCaption.setText("Mã độc giả");
+        readerCodeValue.setText(selected.getReaderCode());
+        popupFullNameField.setText(selected.getFullName());
+        popupPhoneField.setText(selected.getPhone());
+        popupEmailField.setText(selected.getEmail());
+        popupStatusCombo.setValue(selected.getStatus());
+        readerPopupOverlay.setVisible(true);
+    }
 
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
+    @FXML
+    private void closeReaderPopup() {
+        readerPopupOverlay.setVisible(false);
+    }
 
-        grid.add(new Label("Họ tên:"),0,0);
-        grid.add(txtName,1,0);
+    @FXML
+    private void saveReader() {
+        String fullName = popupFullNameField.getText() == null ? "" : popupFullNameField.getText().trim();
+        String phone = popupPhoneField.getText() == null ? "" : popupPhoneField.getText().trim();
+        String email = popupEmailField.getText() == null ? "" : popupEmailField.getText().trim();
+        String status = popupStatusCombo.getValue();
 
-        grid.add(new Label("Điện thoại:"),0,1);
-        grid.add(txtPhone,1,1);
+        if (fullName.isBlank() || phone.isBlank() || email.isBlank() || status == null || status.isBlank()) {
+            showAlert(Alert.AlertType.WARNING, "Thiếu thông tin", "Vui lòng nhập đầy đủ họ tên, điện thoại, email và trạng thái.");
+            return;
+        }
 
-        grid.add(new Label("Email:"),0,2);
-        grid.add(txtEmail,1,2);
-
-        grid.add(new Label("Trạng thái:"),0,3);
-        grid.add(cbStatus,1,3);
-
-        dialog.getDialogPane().setContent(grid);
-
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK,ButtonType.CANCEL);
-
-        Optional<ButtonType> result = dialog.showAndWait();
-
-        if(result.isPresent() && result.get() == ButtonType.OK){
-
+        ReaderDAO dao = new ReaderDAO();
+        if (editingReader == null) {
             ReaderRecord reader = new ReaderRecord(
                     "SV" + System.currentTimeMillis(),
                     "",
-                    txtName.getText(),
-                    txtPhone.getText(),
-                    txtEmail.getText(),
-                    cbStatus.getValue()
+                    fullName,
+                    phone,
+                    email,
+                    status
             );
-
-            ReaderDAO dao = new ReaderDAO();
             dao.addReader(reader);
-
-            loadReadersFromDatabase();
-        }
-    }
-
-    @FXML
-    private void onEditReader(){
-        ReaderRow selected = readerTable.getSelectionModel().getSelectedItem();
-
-        if(selected == null) return;
-
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Sửa độc giả");
-
-        TextField txtName = new TextField(selected.getFullName());
-        TextField txtPhone = new TextField(selected.getPhone());
-        TextField txtEmail = new TextField(selected.getEmail());
-
-        ComboBox<String> cbStatus = new ComboBox<>();
-        cbStatus.getItems().addAll("Kích hoạt","Khóa");
-        cbStatus.setValue(selected.getStatus());
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-
-        grid.add(new Label("Họ tên:"),0,0);
-        grid.add(txtName,1,0);
-
-        grid.add(new Label("Điện thoại:"),0,1);
-        grid.add(txtPhone,1,1);
-
-        grid.add(new Label("Email:"),0,2);
-        grid.add(txtEmail,1,2);
-
-        grid.add(new Label("Trạng thái:"),0,3);
-        grid.add(cbStatus,1,3);
-
-        dialog.getDialogPane().setContent(grid);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK,ButtonType.CANCEL);
-
-        Optional<ButtonType> result = dialog.showAndWait();
-
-        if(result.isPresent() && result.get()==ButtonType.OK){
-
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã thêm độc giả mới.");
+        } else {
             ReaderRecord reader = new ReaderRecord(
-                    selected.getReaderCode(),
-                    selected.getAccount(),
-                    txtName.getText(),
-                    txtPhone.getText(),
-                    txtEmail.getText(),
-                    cbStatus.getValue()
+                    editingReader.getReaderCode(),
+                    editingReader.getAccount(),
+                    fullName,
+                    phone,
+                    email,
+                    status
             );
-
-            ReaderDAO dao = new ReaderDAO();
             dao.updateReader(reader);
-
-            loadReadersFromDatabase();
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã cập nhật thông tin độc giả.");
         }
+
+        closeReaderPopup();
+        loadReadersFromDatabase();
+        applyFilter();
     }
 
     @FXML
-    private void onResetPassword(){
+    private void onResetPassword() {
         ReaderRow selected = readerTable.getSelectionModel().getSelectedItem();
 
-        if(selected == null) return;
+        if (selected == null) {
+            return;
+        }
 
         ReaderDAO dao = new ReaderDAO();
         dao.resetPassword(selected.getAccount());
-
-        Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("Reset Password");
-        dialog.setContentText("Password đã reset về: 123456");
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-        dialog.showAndWait();
+        showAlert(Alert.AlertType.INFORMATION, "Reset Password", "Password đã reset về: 123456");
 
         loadReadersFromDatabase();
     }
 
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 
     public static class ReaderRow {
         private final BooleanProperty selected = new SimpleBooleanProperty(false);
@@ -411,8 +396,6 @@ public class ReaderManagementController {
             return "Khách";
         }
 
-
-
         public BooleanProperty selectedProperty() {
             return selected;
         }
@@ -453,6 +436,8 @@ public class ReaderManagementController {
             return group.get();
         }
 
-        public String getReaderCode(){ return readerCode.get(); }
+        public String getReaderCode() {
+            return readerCode.get();
+        }
     }
 }
