@@ -155,7 +155,7 @@ create table BorrowDetail
     Status         varchar(20)  null default 'Borrowing' comment 'Borrowing | Returned | Lost',
     FineAmount     decimal(10, 2)       default 0 comment 'Tiền phạt',
     Note           text,
-    DepositAmount decimal(13,0) default 0 comment 'Tiền cọc = 1/2 giá sách'
+    DepositAmount decimal(13,0) default 0 comment 'Tiền cọc = 1/2 giá sách',
 
     unique (BorrowId, CopyId),
 	
