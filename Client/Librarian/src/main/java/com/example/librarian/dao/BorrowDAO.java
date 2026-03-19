@@ -2,14 +2,16 @@ package com.example.librarian.dao;
 
 import com.example.librarian.model.Borrow;
 import com.example.librarian.util.DatabaseConnection;
-
+import com.example.librarian.model.ReaderStat;
+import com.example.librarian.model.BookBorrowStat;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
+import java.util.LinkedHashMap;
 public class BorrowDAO {
 
     public List<Borrow> getAllBorrows() {
@@ -257,5 +259,186 @@ public class BorrowDAO {
         } finally {
             if (conn != null) try { conn.setAutoCommit(true); conn.close(); } catch (Exception e) {}
         }
+    }
+    // Hàm kiểm tra xem danh sách sách có đủ điều kiện để mượn không
+    public String checkCopiesAvailable(List<Integer> copyIds) {
+        if (copyIds == null || copyIds.isEmpty()) return "Chưa nhập ID sách.";
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            for (Integer id : copyIds) {
+                String query = "SELECT Status FROM BookCopy WHERE CopyId = ?";
+                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                    pstmt.setInt(1, id);
+                    try (ResultSet rs = pstmt.executeQuery()) {
+                        if (rs.next()) {
+                            String status = rs.getString("Status");
+                            // Nếu sách không khả dụng (Ví dụ: Borrowed, Lost...)
+                            if (!"Available".equalsIgnoreCase(status)) {
+                                return "Bản sao ID " + id + " đang ở trạng thái '" + status + "', không thể mượn!";
+                            }
+                        } else {
+                            return "Bản sao ID " + id + " không tồn tại trong kho!";
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Lỗi CSDL khi kiểm tra tình trạng sách.";
+        }
+        return "OK"; // Trả về OK nếu tất cả sách đều rảnh
+    }
+
+    public Map<String, Integer> countBorrowByMonth() {
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+
+        String sql = """
+        SELECT MONTH(BorrowDate) AS month, COUNT(*) AS total
+        FROM Borrow
+        GROUP BY MONTH(BorrowDate)
+        ORDER BY month
+    """;
+
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+
+            while(rs.next()){
+                result.put(
+                        "T" + rs.getInt("month"),
+                        rs.getInt("total")
+                );
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public List<BookBorrowStat> getTopBorrowedBooks(){
+
+        List<BookBorrowStat> list = new ArrayList<>();
+
+        String sql = """
+        SELECT bk.Title, COUNT(*) AS total
+        FROM BorrowDetail bd
+        JOIN BookCopy bc ON bd.CopyId = bc.CopyId
+        JOIN Book bk ON bc.BookId = bk.BookId
+        GROUP BY bk.Title
+        ORDER BY total DESC
+        LIMIT 5
+    """;
+
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+
+            while(rs.next()){
+                list.add(new BookBorrowStat(
+                        rs.getString("Title"),
+                        rs.getInt("total")
+                ));
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public List<ReaderStat> getTopReaders(){
+
+        List<ReaderStat> list = new ArrayList<>();
+
+        String sql = """
+        SELECT r.FullName, COUNT(b.BorrowId) AS total
+        FROM Reader r
+        JOIN Borrow b ON r.ReaderId = b.ReaderId
+        GROUP BY r.ReaderId
+        ORDER BY total DESC
+        LIMIT 5
+    """;
+
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+
+            while(rs.next()){
+                list.add(new ReaderStat(
+                        rs.getString("FullName"),
+                        rs.getInt("total")
+                ));
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public int countReaders(){
+
+        String sql = "SELECT COUNT(*) FROM Reader";
+
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int countBorrowing(){
+
+        String sql = "SELECT COUNT(*) FROM BorrowDetail WHERE Status='Borrowing'";
+
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int countOverdue(){
+
+        String sql = """
+        SELECT COUNT(*)
+        FROM Borrow
+        WHERE Status='Borrowing' AND DueDate < NOW()
+    """;
+
+        try(Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()){
+
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }

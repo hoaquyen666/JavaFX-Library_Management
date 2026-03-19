@@ -6,16 +6,19 @@
 <?import javafx.scene.layout.*?>
 <?import org.kordamp.ikonli.javafx.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #111827;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarian.controller.MainViewController">
+<BorderPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #111827;" stylesheets="@libra-main.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.librarian.controller.MainViewController">
 
     <left>
-        <VBox fx:id="sidebar" prefWidth="260.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+        <VBox fx:id="sidebar" prefWidth="70.0" styleClass="sidebar" BorderPane.alignment="CENTER">
             <children>
                 <StackPane prefHeight="80.0">
-                    <ImageView fx:id="logoImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fx:id="logoImage" fitHeight="140.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@img_1.png" />
+                            <Image url="@../../../../images/img_1.png" />
                         </image>
+                  <StackPane.margin>
+                     <Insets bottom="25.0" top="35.0" />
+                  </StackPane.margin>
                     </ImageView>
                 </StackPane>
 
@@ -61,7 +64,6 @@
                         <FontIcon iconLiteral="mdi2p-package-variant" iconSize="20" />
                     </graphic>
                 </Button>
-
                 <VBox fx:id="menuQuanLyKho" managed="false" style="-fx-padding: 0 0 0 30;" visible="false">
                     <Button alignment="CENTER_LEFT" onAction="#handleQuanLyNhap" styleClass="sub-menu-btn" text="Quản lý nhập">
                         <graphic>
@@ -91,8 +93,18 @@
             </padding>
             <children>
                 <StackPane fx:id="mainContentArea" styleClass="main-content-card">
+                    <!--                    <children>-->
+                    <!--                        <Label text="HỆ THỐNG QUẢN LÝ THƯ VIỆN" textFill="#a1a1a1">-->
+                    <!--                            <font>-->
+                    <!--                                <Font name="System Bold" size="20.0" />-->
+                    <!--                            </font>-->
+                    <!--                        </Label>-->
+                    <!--                    </children>-->
                 </StackPane>
             </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
         </StackPane>
     </center>
 </BorderPane>

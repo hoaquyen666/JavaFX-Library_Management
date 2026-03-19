@@ -15,7 +15,7 @@
 
 /* Các nút menu trong Sidebar */
 .menu-btn  {
-    -fx-background-color: #0f172a;
+    -fx-background-color: #111827;
     -fx-icon-color: white;
     -fx-text-fill: white;
     -fx-font-size: 14px;
@@ -83,4 +83,14 @@
     -fx-background-color: #273346;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 25, 0, 0, 12);
     -fx-translate-y: -5;
+}
+
+/* Màu nền và màu chữ cho Tab đang được chọn ở Sidebar */
+.active-nav {
+    -fx-text-fill: #f8843d;
+    -fx-background-color: transparent;
+}
+
+.active-nav .ikonli-font-icon {
+    -fx-icon-color: #f8843d;
 }

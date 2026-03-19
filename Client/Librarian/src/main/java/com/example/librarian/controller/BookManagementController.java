@@ -2,6 +2,7 @@ package com.example.librarian.controller;
 
 import com.example.librarian.dao.BookDAO;
 import com.example.librarian.model.Book;
+import com.example.librarian.model.CategoryOption;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -38,6 +39,12 @@ public class BookManagementController implements Initializable {
     @FXML
     private TableColumn<Book, Integer> colPublishYear;
 
+    @FXML private TableColumn<Book, Integer> colPrice;
+
+    @FXML private TableColumn<Book, String> colAuthor;
+    @FXML private TableColumn<Book, String> colCategory;
+    @FXML private TextField txtPopupAuthor;
+    @FXML private ComboBox<CategoryOption> cbPopupCategory;
     public static boolean showAddPopupOnLoad = false;
 
     @FXML private StackPane addPopupOverlay;
@@ -46,6 +53,7 @@ public class BookManagementController implements Initializable {
     @FXML private TextField txtPopupIsbn;
     @FXML private TextField txtPopupPublisher;
     @FXML private TextField txtPopupPublishYear;
+    @FXML private TextField txtPopupPrice;
     @FXML private Label lblPopupTitle;
 
     @FXML private Label lblTotalRecords;
@@ -65,6 +73,9 @@ public class BookManagementController implements Initializable {
         txtPopupIsbn.clear();
         txtPopupPublisher.clear();
         txtPopupPublishYear.clear();
+        txtPopupAuthor.clear();
+        txtPopupPrice.clear();
+        cbPopupCategory.cancelEdit();
         addPopupOverlay.setVisible(true);
     }
     @FXML
@@ -75,7 +86,9 @@ public class BookManagementController implements Initializable {
         txtPopupIsbn.clear();
         txtPopupPublisher.clear();
         txtPopupPublishYear.clear();
+        txtPopupAuthor.clear();
 
+        txtPopupPrice.clear();
         // Ẩn lớp mờ đi
         addPopupOverlay.setVisible(false);
     }
@@ -89,6 +102,17 @@ public class BookManagementController implements Initializable {
         String isbn = txtPopupIsbn.getText().trim();
         String publisher = txtPopupPublisher.getText().trim();
         String yearStr = txtPopupPublishYear.getText().trim();
+        String author = txtPopupAuthor.getText().trim();
+        String priceText = txtPopupPrice.getText().trim();
+        CategoryOption selectedCategory = cbPopupCategory.getValue();
+        if (selectedCategory == null) {
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng chọn một Thể loại cho sách!");
+            return;
+        }
+
+        int categoryId = selectedCategory.getCategoryId();
+        String categoryName = selectedCategory.getCategoryName();
+
 
         // 2. Kiểm tra xem người dùng có bỏ trống không
         if (code.isEmpty() || title.isEmpty() || isbn.isEmpty()) {
@@ -107,10 +131,20 @@ public class BookManagementController implements Initializable {
             }
         }
 
+        int price = 0;
+        if (!priceText.isEmpty()) {
+            try {
+                price = Integer.parseInt(priceText);
+            } catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi nhập liệu", "Giá tiền phải là một con số hợp lệ!");
+                return;
+            }
+        }
+
         if (editingBook == null) {
             // ---> CHẾ ĐỘ THÊM MỚI
-            Book newBook = new Book(0, code, title, isbn, publisher, publishYear);
-            if (bookDAO.insertBook(newBook)) {
+            Book newBook = new Book(0, code, title, author, categoryName, isbn, publisher, publishYear, price);
+            if (bookDAO.insertBook(newBook, categoryId)) {
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã thêm sách mới!");
                 handleClosePopup();
                 loadDataToTable();
@@ -125,8 +159,11 @@ public class BookManagementController implements Initializable {
             editingBook.setISBN(isbn);
             editingBook.setPublisher(publisher);
             editingBook.setPublishYear(publishYear);
+            editingBook.setAuthor(author);
+            editingBook.setCategory(categoryName);
+            editingBook.setPrice(price);
 
-            if (bookDAO.updateBook(editingBook)) {
+            if (bookDAO.updateBook(editingBook, categoryId)) {
                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã cập nhật thông tin sách!");
                 handleClosePopup();
                 loadDataToTable();
@@ -154,8 +191,23 @@ public class BookManagementController implements Initializable {
         txtPopupBookCode.setText(selectedBook.getBookCode());
         txtPopupTitle.setText(selectedBook.getTitle());
         txtPopupIsbn.setText(selectedBook.getISBN());
+        int price = selectedBook.getPrice();
+        String priceTxt = String.valueOf(price);
+        txtPopupPrice.setText(priceTxt);
         txtPopupPublisher.setText(selectedBook.getPublisher() != null ? selectedBook.getPublisher() : "");
         txtPopupPublishYear.setText(selectedBook.getPublishYear() > 0 ? String.valueOf(selectedBook.getPublishYear()) : "");
+        txtPopupAuthor.setText(selectedBook.getAuthor() != null ? selectedBook.getAuthor() : "");
+        cbPopupCategory.getSelectionModel().clearSelection();
+
+        if (selectedBook.getCategory() != null) {
+            for (CategoryOption opt : cbPopupCategory.getItems()) {
+                // Nếu tên thể loại trong sách chứa tên thể loại trong ComboBox thì chọn nó
+                if (selectedBook.getCategory().contains(opt.getCategoryName())) {
+                    cbPopupCategory.setValue(opt);
+                    break;
+                }
+            }
+        }
 
         // 4. Bật Pop-up lên
         addPopupOverlay.setVisible(true);
@@ -204,6 +256,10 @@ public class BookManagementController implements Initializable {
         colISBN.setCellValueFactory(new PropertyValueFactory<>("ISBN"));
         colPublisher.setCellValueFactory(new PropertyValueFactory<>("Publisher"));
         colPublishYear.setCellValueFactory(new PropertyValueFactory<>("PublishYear"));
+        colAuthor.setCellValueFactory(new PropertyValueFactory<>("Author"));
+        colCategory.setCellValueFactory(new PropertyValueFactory<>("Category"));
+        cbPopupCategory.getItems().addAll(bookDAO.getCategoryOptions());
+        colPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
 
         // 2. Load dữ liệu từ Database lên bảng
         loadDataToTable();
