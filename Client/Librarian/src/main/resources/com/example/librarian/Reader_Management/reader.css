@@ -1,12 +1,15 @@
 .root {
+    /* Font mặc định cho toàn màn hình Reader Management */
     -fx-font-family: "Segoe UI";
 }
 
 .reader-page {
+    /* Màu nền tổng quan nếu class này được gắn cho root/container */
     -fx-background-color: #eef2f6;
 }
 
 .page-title {
+    /* Tiêu đề lớn phía trên cùng */
     -fx-font-size: 20px;
     -fx-font-weight: 700;
     -fx-text-fill: #354f7b;
@@ -14,6 +17,7 @@
 }
 
 .button {
+    /* Style chung cho button: cỡ chữ, bo góc, con trỏ */
     -fx-font-size: 12px;
     -fx-background-radius: 5;
     -fx-border-radius: 5;
@@ -21,15 +25,21 @@
 }
 
 .btn-primary{
+    /* Nút chính, đang dùng cho nút +Thêm */
     -fx-background-color: linear-gradient(to right bottom, #329d9c, #56c596);
-    -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
 }
+
 .btn-primary:hover{
+    /* Hover để tạo cảm giác nổi hơn */
     -fx-background-color: linear-gradient(to left top, #329d9c, #56c596);
     -fx-effect: dropshadow(three-pass-box, rgba(50, 157, 156, 0.5), 10, 0, 0, 3);
 }
 
 .btn-disabled {
+    /* Style fallback cho nút disabled nếu muốn dùng class riêng */
     -fx-background-color: #f3f4f6;
     -fx-border-color: #e4e7ec;
     -fx-text-fill: #b8bec8;
@@ -37,11 +47,13 @@
 }
 
 .btn-disabled:disabled {
+    /* Giữ nguyên độ rõ thay vì bị mờ theo mặc định JavaFX */
     -fx-opacity: 1.0;
 }
 
 .filter-combo,
 .search-field {
+    /* Style chung cho thanh lọc và ô tìm kiếm */
     -fx-pref-height: 30;
     -fx-background-color: white;
     -fx-background-radius: 4;
@@ -56,6 +68,7 @@
 
 .filter-combo .list-cell,
 .filter-combo .text {
+    /* Cỡ chữ bên trong ComboBox lọc */
     -fx-font-size: 12px;
     -fx-text-fill: #54657f;
 }
@@ -66,6 +79,7 @@
 }
 
 .btn-search {
+    /* Nút tìm kiếm */
     -fx-background-color: #1f88f3;
     -fx-text-fill: white;
     -fx-padding: 7 14;
@@ -73,6 +87,7 @@
 }
 
 .reader-table {
+    /* Khung tổng của bảng độc giả */
     -fx-background-color: white;
     -fx-border-color: #bfe5ff;
     -fx-border-width: 1;
@@ -83,10 +98,12 @@
 }
 
 .reader-table .column-header-background {
+    /* Màu nền hàng header */
     -fx-background-color: #d7f2ff;
 }
 
 .reader-table .column-header {
+    /* Từng ô header */
     -fx-background-color: #d7f2ff;
     -fx-border-color: #bfe5ff;
     -fx-border-width: 0 1 1 0;
@@ -94,6 +111,7 @@
 }
 
 .reader-table .column-header .label {
+    /* Text ở header cột */
     -fx-text-fill: #4b6786;
     -fx-font-size: 12px;
     -fx-font-weight: 700;
@@ -101,33 +119,37 @@
 }
 
 .reader-table .filler {
+    /* Phần filler ở cuối header khi bảng rộng hơn tổng chiều rộng cột */
     -fx-background-color: #d7f2ff;
 }
 
 .reader-table .table-row-cell {
+    /* Từng dòng dữ liệu */
     -fx-background-color: white;
     -fx-border-color: transparent transparent #c7e8fb transparent;
 }
 
 .reader-table .table-row-cell:filled:hover {
+    /* Hiệu ứng hover dòng */
     -fx-background-color: #f7fcff;
 }
 
 .reader-table .table-cell {
-   -fx-text-fill: #5d6f89;
+    /* Cell dữ liệu trong bảng */
+    -fx-text-fill: #5d6f89;
     -fx-font-size: 12px;
     -fx-padding: 6 6;
     -fx-border-color: transparent #c7e8fb transparent transparent;
     -fx-alignment: CENTER-LEFT;
 }
 
-
-
 .reader-table .check-box {
+    /* Dịch checkbox vào trong một chút cho cân bố cục */
     -fx-padding: 0 0 0 4;
 }
 
 .reader-table .check-box .box {
+    /* Style ô checkbox */
     -fx-background-color: white;
     -fx-border-color: #ced8e4;
     -fx-border-radius: 3;
@@ -135,6 +157,7 @@
 }
 
 .avatar-wrapper {
+    /* Vòng tròn chứa chữ avatar */
     -fx-min-width: 26;
     -fx-max-width: 26;
     -fx-min-height: 26;
@@ -146,12 +169,14 @@
 }
 
 .avatar-text {
+    /* Chữ bên trong avatar */
     -fx-font-size: 10px;
     -fx-font-weight: 700;
     -fx-text-fill: #6a7f9a;
 }
 
 .status-chip {
+    /* Style chung cho nhãn trạng thái */
     -fx-padding: 2 8;
     -fx-font-size: 11px;
     -fx-font-weight: 700;
@@ -159,16 +184,19 @@
 }
 
 .status-active {
+    /* Trạng thái đang hoạt động */
     -fx-background-color: #8be05f;
     -fx-text-fill: white;
 }
 
 .status-locked {
+    /* Trạng thái khóa */
     -fx-background-color: #f59f7a;
     -fx-text-fill: white;
 }
 
 .footer-bar {
+    /* Vùng footer ở cuối bảng */
     -fx-padding: 2 2 4 2;
 }
 
@@ -178,18 +206,21 @@
 }
 
 .footer-count {
+    /* Label số bản ghi */
     -fx-text-fill: #4f6784;
     -fx-font-size: 12px;
     -fx-font-weight: 700;
 }
 
 .pager-arrow {
+    /* Mũi tên phân trang */
     -fx-text-fill: #8ea3bc;
     -fx-font-size: 16px;
     -fx-padding: 0 2;
 }
 
 .pager-current {
+    /* Số trang hiện tại */
     -fx-min-width: 24;
     -fx-alignment: CENTER;
     -fx-padding: 1 6;
@@ -203,6 +234,7 @@
 }
 
 .page-size-combo {
+    /* Combo số dòng mỗi trang */
     -fx-pref-width: 92;
     -fx-pref-height: 26;
     -fx-background-color: white;
@@ -217,19 +249,22 @@
     -fx-text-fill: #586c85;
 }
 
-/* Nút Sửa */
 .btn-edit{
+    /* Nút sửa */
     -fx-background-color: linear-gradient(to right bottom, #ff9190, #fdc094);
-    -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
 }
 
 .btn-edit:hover{
+    /* Hiệu ứng hover nút sửa */
     -fx-background-color: linear-gradient(to left top, #ff9190, #fdc094);
     -fx-effect: dropshadow(three-pass-box, rgba(255, 145, 144, 0.2), 10, 0, 0, 3);
 }
 
-/* Nút Reset password - màu đỏ */
 .btn-reset {
+    /* Nút reset mật khẩu */
     -fx-background-color: #dc3545;
     -fx-text-fill: white;
     -fx-background-radius: 8;
@@ -240,6 +275,7 @@
 }
 
 .reader-code-box {
+    /* Khung hiển thị mã độc giả trong popup */
     -fx-background-color: #f8fbff;
     -fx-background-radius: 10;
     -fx-border-color: #d7e7ff;
@@ -248,11 +284,13 @@
 }
 
 .reader-code-caption {
+    /* Dòng mô tả phía trên mã độc giả */
     -fx-text-fill: #6b7a90;
     -fx-font-size: 12px;
 }
 
 .reader-code-value {
+    /* Giá trị mã độc giả */
     -fx-text-fill: #233771;
     -fx-font-size: 18px;
     -fx-font-weight: 700;
@@ -260,6 +298,7 @@
 
 .reader-popup-field,
 .reader-popup-combo {
+    /* Style các ô nhập trong popup thêm/sửa độc giả */
     -fx-background-color: white;
     -fx-border-color: #d8e3ef;
     -fx-border-radius: 5;
