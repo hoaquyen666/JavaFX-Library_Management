@@ -3,17 +3,26 @@ package com.example.librarian.controller;
 import com.example.librarian.dao.BorrowDAO;
 import com.example.librarian.dao.ReturnDAO;
 import com.example.librarian.model.Borrow;
+import com.example.librarian.model.ReturnDetailDTO;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,21 +31,23 @@ import java.util.ResourceBundle;
 public class ReturnManagementController implements Initializable {
 
     // Các thành phần bảng
-    @FXML private TableView<Borrow> returnTable;
-    @FXML private TableColumn<Borrow, Integer> colStt, colBorrowId, colQuantity;
-    @FXML private TableColumn<Borrow, String> colBorrowCode, colReaderCode, colStaffCode, colBorrowDate, colDueDate, colStatus;
+    @FXML private TableView<ReturnDetailDTO> returnTable;
+    @FXML private TableColumn<ReturnDetailDTO, Integer> colBorrowId;
+    @FXML private TableColumn<ReturnDetailDTO, Integer> colReaderId;
+    @FXML private TableColumn<ReturnDetailDTO, String> colReaderName;
+    @FXML private TableColumn<ReturnDetailDTO, String> colCopyId;
+    @FXML private TableColumn<ReturnDetailDTO, String> colBookName;
+    @FXML private TableColumn<ReturnDetailDTO, Double> colDeposit;
+    @FXML private TableColumn<ReturnDetailDTO, Double> colFine;
+    @FXML private TableColumn<ReturnDetailDTO, String> colStatus;
+
     @FXML private TextField txtSearch;
-    @FXML private Label lblTotalReturns, lblPageInfo;
-    @FXML private Button btnPrevPage, btnNextPage;
+    @FXML private Label lblTotalReturns;
+    private ObservableList<ReturnDetailDTO> masterData = FXCollections.observableArrayList();
 
-    // Các thành phần Popup kết quả
-    @FXML private StackPane resultPopupOverlay;
-    @FXML private Label lblResCode, lblResReader, lblResStatus;
-    @FXML private ImageView imgQrCode;
 
-    private BorrowDAO borrowDAO = new BorrowDAO();
     private ReturnDAO returnDAO = new ReturnDAO();
-    private List<Borrow> allData;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,14 +56,11 @@ public class ReturnManagementController implements Initializable {
     }
 
     private void setupTableColumns() {
-        colStt.setCellValueFactory(c -> new ReadOnlyObjectWrapper<>(returnTable.getItems().indexOf(c.getValue()) + 1));
         colBorrowId.setCellValueFactory(new PropertyValueFactory<>("borrowId"));
-        colBorrowCode.setCellValueFactory(new PropertyValueFactory<>("borrowCode"));
-        colReaderCode.setCellValueFactory(new PropertyValueFactory<>("readerCode"));
-        colStaffCode.setCellValueFactory(new PropertyValueFactory<>("staffCode"));
-        colBorrowDate.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
-        colDueDate.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
-        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colReaderId.setCellValueFactory(new PropertyValueFactory<>("readerId"));
+        colReaderName.setCellValueFactory(new PropertyValueFactory<>("readerName"));
+        colCopyId.setCellValueFactory(new PropertyValueFactory<>("displayCopy")); // Lấy mã gộp
+        colBookName.setCellValueFactory(new PropertyValueFactory<>("bookName"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         colStatus.setCellFactory(column -> new TableCell<>() {
@@ -67,70 +75,64 @@ public class ReturnManagementController implements Initializable {
                 }
             }
         });
+
+        DecimalFormat df = new DecimalFormat("#,### đ");
+        colDeposit.setCellFactory(tc -> new TableCell<>() {
+            @Override protected void updateItem(Double price, boolean empty) {
+                super.updateItem(price, empty);
+                setText((empty || price == null) ? null : df.format(price));
+            }
+        });
+        colFine.setCellFactory(tc -> new TableCell<>() {
+            @Override protected void updateItem(Double price, boolean empty) {
+                super.updateItem(price, empty);
+                if (empty || price == null) setText(null);
+                else {
+                    setText(df.format(price));
+                    setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                }
+            }
+        });
+
+
     }
 
-    private void loadData() {
-        allData = borrowDAO.getAllBorrows();
-        returnTable.setItems(FXCollections.observableArrayList(allData));
-        lblTotalReturns.setText(allData.size() + " phiếu");
+    void loadData() {
+        List<ReturnDetailDTO> data = returnDAO.getPendingReturns();
+        masterData.setAll(data);
+        returnTable.setItems(masterData);
+        lblTotalReturns.setText(data.size() + " cuốn");;
     }
 
     @FXML
     void handleReturnAction() {
-        Borrow selected = returnTable.getSelectionModel().getSelectedItem();
-        if (selected == null || !"Borrowing".equals(selected.getStatus())) {
-            new Alert(Alert.AlertType.WARNING, "Vui lòng chọn phiếu đang mượn!").show();
+        ReturnDetailDTO selectedItem = returnTable.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            new Alert(Alert.AlertType.WARNING, "Vui lòng chọn một cuốn sách để trả!").show();
             return;
         }
 
-        DatePicker dp = new DatePicker(LocalDate.now());
-        VBox box = new VBox(10, new Label("Ngày trả thực tế:"), dp);
-        box.setPadding(new Insets(15));
+        try {
+            //Gọi file fxml popUp
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/librarian/Borrow_Return_Management/payment-popup.fxml"));
+            Parent root = loader.load();
 
-        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDialog.setTitle("Xác nhận");
-        confirmDialog.setHeaderText("Kiểm tra thông tin trả sách cho phiếu: " + selected.getBorrowCode());
-        confirmDialog.getDialogPane().setContent(box);
+            PaymentPopupController paymentPopupController = loader.getController();
+            paymentPopupController.setReturnData(selectedItem, this);
 
-        confirmDialog.showAndWait().ifPresent(res -> {
-            if (res == ButtonType.OK && dp.getValue() != null) {
-                try {
-                    // Logic: So sánh ngày trả thực tế với Hạn trả
-                    // Chú ý: Pattern phải khớp với chuỗi ngày trong bảng (thường là dd/MM/yyyy HH:mm)
-                    String dueDateStr = selected.getDueDate().split(" ")[0]; // Lấy phần ngày
-                    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                    LocalDate dueDate = LocalDate.parse(dueDateStr, fmt);
+            Stage stage = new Stage();
+            stage.setTitle("Thanh toán Trả sách");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
 
-                    String newStatus = dp.getValue().isAfter(dueDate) ? "Overdue" : "Returned";
-
-                    List<Integer> ids = returnDAO.getCopyIdsByBorrowId(selected.getBorrowId());
-
-                    if (returnDAO.processReturn(selected.getBorrowId(), ids, newStatus)) {
-                        // Hiển thị thông tin lên Popup kết quả
-                        lblResCode.setText(selected.getBorrowCode());
-                        lblResReader.setText(selected.getReaderCode());
-
-                        if ("Overdue".equals(newStatus)) {
-                            lblResStatus.setText("QUÁ HẠN (Cần nộp phạt)");
-                            lblResStatus.setStyle("-fx-text-fill: #ed3736; -fx-font-weight: bold;");
-                        } else {
-                            lblResStatus.setText("ĐÃ TRẢ (Đúng hạn)");
-                            lblResStatus.setStyle("-fx-text-fill: #31b865; -fx-font-weight: bold;");
-                        }
-
-                        resultPopupOverlay.setVisible(true);
-                        loadData();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    new Alert(Alert.AlertType.ERROR, "Lỗi định dạng ngày tháng!").show();
-                }
-            }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Lỗi không mở được Popup Thanh toán!");
+        }
     }
 
-    @FXML
-    void handleCloseResultPopup() {
-        resultPopupOverlay.setVisible(false);
-    }
+
+
+
 }

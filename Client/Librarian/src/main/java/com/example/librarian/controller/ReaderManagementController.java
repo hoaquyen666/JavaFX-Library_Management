@@ -33,6 +33,7 @@ import javafx.scene.layout.GridPane;
 
 
 public class ReaderManagementController {
+    @FXML private  StackPane rootPane;
     @FXML
     private ComboBox<String> groupFilter;
     @FXML
@@ -232,6 +233,8 @@ public class ReaderManagementController {
         return value == null ? "" : value.toLowerCase(Locale.ROOT).trim();
     }
 
+
+    //Hàm thêm độc giả, hiển thị PopUp
     @FXML
     private void onAddReader(){
         Dialog<ButtonType> dialog = new Dialog<>();

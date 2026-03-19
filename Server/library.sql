@@ -156,6 +156,7 @@ create table BorrowDetail
     Status         varchar(20)  null default 'Borrowing' comment 'Borrowing | Returned | Lost',
     FineAmount     decimal(10, 2)       default 0 comment 'Tiền phạt',
     Note           text,
+    DepositAmount decimal(13,0) default 0 comment 'Tiền cọc = 1/2 giá sách'
 
     unique (BorrowId, CopyId),
 
@@ -226,91 +227,21 @@ CREATE TABLE librarian_shift
         foreign key (Assigned_by) references Staff (StaffId)
 ) comment= 'Phân công ca làm';
 
-create table Supplier
-(
-    SupplierId    int auto_increment primary key,
-    SupplierCode  varchar(20)  null unique comment 'Mã nhà cung cấp',
-    SupplierName  varchar(255) null,
-    ContactPerson varchar(100) null,
-    Email         varchar(100) null,
-    Phone         varchar(15) null,
-    Address       varchar(255) null,
-    Status        varchar(20)  null default 'Active',
-    Note          text,
+-- create table Supplier
+-- (
+--     SupplierId    int auto_increment primary key,
+--     SupplierCode  varchar(20)  null unique comment 'Mã nhà cung cấp',
+--     SupplierName  varchar(255) null,
+--     ContactPerson varchar(100) null,
+--     Email         varchar(100) null,
+--     Phone         varchar(15) null,
+--     Address       varchar(255) null,
+--     Status        varchar(20)  null default 'Active',
+--     Note          text,
+--
+--     constraint ck_supplier_status
+--         check (Status in ('Active', 'Inactive'))
+-- ) comment = 'Nhà cung cấp sách';
 
-    constraint ck_supplier_status
-        check (Status in ('Active', 'Inactive'))
-) comment = 'Nhà cung cấp sách';
 
-########
-# Dưới đây là các dữ liệu cơ bản được thêm
-########
 
-insert into CategoryGroup (CategoryGroupCode, CategoryGroupName, Description)
-values  ('CG1', 'Fiction', 'Sách hư cấu - Truyện/Tiểu thuyết'),
-		('CG2', 'Non-fiction', 'Sách phi hư cấu - Sách tri thức/thực tế'),
-		('CG3', 'Target Audience', 'Sách theo đối tượng');
-
-insert into Category (CategoryCode, CategoryGroupId, CategoryName, Description)
-values ('C1', 1, 'Romance', 'Tiểu thuyết tình cảm - Chuyện tình yêu, cảm xúc'),
-       ('C2', 1, 'Fantasy/Sci-fi', 'Viễn tưởng/giả tưởng - Thế giới hư cấu, khoa học tương lai'),
-       ('C3', 1, 'Horror/Thriller', 'Kinh dị/giật gân - Cảm giác mạnh, hồi hộp, bí ẩn'),
-       ('C4', 1, 'Mystery/Detective', 'Trinh thám/bí ẩn - Giải mã vụ án'),
-       ('C5', 1, 'Short Stories', 'Các tác phẩm ngắn gọn'),
-       ('C6', 1, 'Comic Book/Graphic Novels', 'Truyện tranh/sách truyện đồ họa'),
-       ('C7', 1, 'Classic Literature', 'Văn học cổ điển'),
-       ('C8', 2, 'Self-help', 'Sách kĩ năng/truyền cảm hứng - Phát triển bản thân, tư duy'),
-       ('C9', 2, 'Biography/Memoir', 'Tiểu sử/tự truyện'),
-       ('C10', 2, 'Business/Finance', 'Sách kinh doanh/tài chính - Quản lý tài chính, kinh tế'),
-       ('C11', 2, 'Science/Technology', 'Sách khoa học/công nghệ - Kiến thức khoa học'),
-       ('C12', 2, 'History/Social-cultural', 'Sách lịch sử/văn hóa xã hội - Ghi chép lịch sử, xã hội'),
-       ('C13', 2, 'Cookbooks', 'Sách nấu ăn/đời sống - Công thức, kỹ năng đời sống'),
-       ('C14', 2, 'Textbooks', 'Sách giáo trình/tài liệu học tập - Sách giáo khoa, chuyên ngành'),
-       ('C15', 2, 'Spirituality/Religion', 'Tâm linh/tôn giáo - Sách về đức tin, triết lý'),
-       ('C16', 3, 'Children-book', 'Sách thiếu nhi'),
-       ('C17', 3, 'Specialized-book', 'Sách chuyên ngành');
-
-insert into Author (AuthorCode, AuthorName)
-values ('A1', 'Nguyễn Nhật Ánh'),
-       ('A2', 'J. K. Rowling');
-
-insert into Book (BookCode, Title, ISBN, Publisher, PublishYear)
-values ('B1', 'Tôi thấy hoa vàng trên cỏ xanh', '123456', 'NXB Trẻ', 2010),
-       ('B2', 'Hạ đỏ', '123457', 'NXB Kim Đồng', 1991),
-       ('B3', 'Harry Potter', '654321', 'Bloomsbury', 1997),
-       ('B4', 'Quidditch qua các thời đại', '754321', 'Bloomsbury', 2001);
-
-insert into BookCategory (BookId, CategoryId)
-values (1, 16), -- thiếu nhi
-       (2, 1),  -- romance
-       (3, 2),  -- fantasy
-       (3, 16), -- thiếu nhi
-       (4, 2); -- fantasy
-
-insert into BookAuthor (BookId, AuthorId)
-values (1, 1),
-       (2, 1),
-       (3, 2),
-       (4, 2);
-
-insert into BookCopy (CopyCode, BookId, Status, Location)
-values ('BC0001', 1, 'Available', 'A1-S1'),
-       ('BC0002', 1, 'Available', 'A1-S1'),
-       ('BC0003', 2, 'Available', 'A1-S2'),
-       ('BC0004', 3, 'Available', 'B1-S1'),
-       ('BC0005', 3, 'Available', 'B1-S1'),
-       ('BC0006', 4, 'Available', 'B1-S2');
-
-insert into Reader (ReaderCode, FullName, Email, Phone)
-values ('R1', 'Test Reader', 'reader@gmail.com', '0900000000');
-insert into Account (Username, PasswordHash, Role, ReaderId)
-values ('reader1', '123456', 'Reader', 1);
-
-insert into Staff (StaffCode, Role, FullName, DoB, Email, Phone)
-values  ('S1','Librarian','Test Librarian','1990-01-01','librarian@gmail.com','0911111111'),
-        ('S2','Admin','Test Admin','1990-01-01','admin@gmail.com','0911111112'),
-        ('S3','Senior','Test Senior','1990-01-01','senior@gmail.com','0911111113');
-insert into Account (Username, PasswordHash, Role, StaffId)
-values ('librarian1', '123456', 'Librarian', 1),
-       ('admin1', '123456', 'Admin', 2),
-       ('senior1', '123456', 'Senior', 3);

@@ -216,7 +216,9 @@ public class BorrowDAO {
     // Hàm Insert (Dùng trực tiếp ID số nguyên thay vì Sub-query tìm Mã chữ)
     public boolean insertBorrowWithDetailsById(Borrow borrow, int readerId, int staffId, List<Integer> copyIds) {
         String insertBorrowQuery = "INSERT INTO Borrow (BorrowCode, ReaderId, StaffId, DueDate, Status) VALUES (?, ?, ?, ?, 'Borrowing')";
-        String insertDetailQuery = "INSERT INTO BorrowDetail (BorrowId, CopyId, Status) VALUES (?, ?, 'Borrowing')";
+        String insertDetailQuery = "INSERT INTO BorrowDetail (BorrowId, CopyId, Status, DepositAmount) " +
+                "VALUES (?, ?, 'Borrowing', (SELECT IFNULL(Price, 0) / 2 FROM Book b JOIN BookCopy bc ON b.BookId = bc.BookId WHERE bc.CopyId = ?))";
+
         String updateCopyQuery = "UPDATE BookCopy SET Status = 'Borrowed' WHERE CopyId = ?";
 
         Connection conn = null;
@@ -241,6 +243,7 @@ public class BorrowDAO {
                 for (Integer copyId : copyIds) {
                     pstmtDetail.setInt(1, newBorrowId);
                     pstmtDetail.setInt(2, copyId);
+                    pstmtDetail.setInt(3, copyId);
                     pstmtDetail.addBatch();
 
                     pstmtUpdateCopy.setInt(1, copyId);
@@ -316,6 +319,35 @@ public class BorrowDAO {
         }
 
         return result;
+    }
+
+    //Hàm tính tiền cọc
+    public double calculateTotalDeposit(List<Integer> copyIds) {
+        if (copyIds == null || copyIds.isEmpty()) return 0;
+        double total = 0;
+
+        StringBuilder placeholders = new StringBuilder();
+        for (int i = 0; i < copyIds.size(); i++) {
+            placeholders.append("?");
+            if (i < copyIds.size() - 1) placeholders.append(",");
+        }
+
+        // Lấy tổng giá sách chia đôi (Dùng IFNULL phòng trường hợp sách chưa nhập giá)
+        String query = "SELECT SUM(IFNULL(bk.Price, 0)) / 2 AS TotalDeposit " +
+                "FROM BookCopy bc JOIN Book bk ON bc.BookId = bk.BookId " +
+                "WHERE bc.CopyId IN (" + placeholders + ")";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            for (int i = 0; i < copyIds.size(); i++) {
+                ps.setInt(i + 1, copyIds.get(i));
+            }
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getDouble("TotalDeposit");
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return total;
     }
 
     public List<BookBorrowStat> getTopBorrowedBooks(){

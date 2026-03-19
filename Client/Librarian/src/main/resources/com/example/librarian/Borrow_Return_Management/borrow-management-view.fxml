@@ -40,11 +40,11 @@
 
          <Region HBox.hgrow="ALWAYS" />
 
-         <Button onAction="#handleAddBorrow" style="-fx-background-color: #233771; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="+ Tạo phiếu mượn">
+         <Button onAction="#handleAddBorrow" styleClass="btn-add" text="+ Tạo phiếu mượn">
             <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
             <font><Font name="System Bold" size="13.0" /></font>
          </Button>
-         <Button onAction="#handleEditBorrow" style="-fx-background-color: #f0ad4e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;" text="Sửa phiếu">
+         <Button onAction="#handleEditBorrow" styleClass="btn-edit" text="Sửa phiếu">
             <padding><Insets bottom="8.0" left="15.0" right="15.0" top="8.0" /></padding>
             <font><Font name="System Bold" size="13.0" /></font>
          </Button>
@@ -59,10 +59,10 @@
                    -fx-padding: 15;">
 
          <HBox alignment="CENTER_LEFT" spacing="15.0">
-            <ComboBox fx:id="cbStatusFilter" prefWidth="150.0" promptText="Trạng thái" style="-fx-background-radius: 8;" />
+            <ComboBox fx:id="cbStatusFilter" prefWidth="150.0" promptText="Trạng thái" style="-fx-background-radius: 8;" styleClass="combo-box" />
             <ComboBox fx:id="cbDateFilter" prefWidth="150.0" promptText="Sắp đến hạn" style="-fx-background-radius: 8;" />
 
-            <TextField fx:id="txtSearch" promptText="Tìm mã phiếu, mã độc giả, tên sách..." style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-padding: 8;" HBox.hgrow="ALWAYS" />
+            <TextField fx:id="txtSearch" promptText="Tìm mã phiếu, mã độc giả, tên sách..." style="-fx-background-radius: 5; -fx-border-color: #bfe5ff; -fx-border-radius: 5; -fx-padding: 8;" HBox.hgrow="ALWAYS" />
          </HBox>
 
          <VBox stylesheets="@borrow.css"
