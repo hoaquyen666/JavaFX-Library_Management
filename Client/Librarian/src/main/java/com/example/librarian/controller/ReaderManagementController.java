@@ -30,6 +30,9 @@ import java.util.Locale;
 public class ReaderManagementController {
 
     @FXML
+    private StackPane rootPane;
+    
+    @FXML
     private ComboBox<String> groupFilter;
 
     // Ô nhập từ khóa tìm kiếm.
