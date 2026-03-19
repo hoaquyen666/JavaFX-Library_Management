@@ -15,13 +15,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!--
-    Đây là file FXML chính của màn hình quản lý độc giả.
-    Cấu trúc tổng quát:
-    1. StackPane gốc để có thể chồng popup lên trên nội dung chính.
-    2. VBox lớn chứa header, bộ lọc, bảng dữ liệu, footer.
-    3. StackPane overlay ở cuối file dùng làm popup thêm/sửa độc giả.
--->
 <StackPane style="-fx-background-color: transparent;"
            stylesheets="@reader.css"
            maxWidth="1.7976931348623157E308"
@@ -34,7 +27,6 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
-    <!-- Khối nội dung chính của trang -->
     <VBox spacing="20.0"
           style="-fx-background-color: white;
           -fx-background-radius: 20;
@@ -44,7 +36,6 @@
             <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
         </padding>
 
-        <!-- Header: tiêu đề + nhóm nút thao tác -->
         <HBox alignment="CENTER_LEFT" spacing="10.0">
             <Label styleClass="page-title" text="Tài khoản Độc giả" textFill="#233771">
                 <font>
@@ -54,7 +45,6 @@
 
             <Region HBox.hgrow="ALWAYS" />
 
-            <!-- Nút thêm mở popup ở chế độ tạo mới -->
             <Button fx:id="btnAdd" text="+Thêm" styleClass="btn-primary" onAction="#onAddReader">
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
@@ -64,7 +54,6 @@
                 </font>
             </Button>
 
-            <!-- Nút sửa chỉ bật khi controller detect có dòng đang được chọn -->
             <Button fx:id="btnEdit" text="Sửa" disable="true" styleClass="btn-edit" onAction="#onEditReader">
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
@@ -74,7 +63,6 @@
                 </font>
             </Button>
 
-            <!-- Reset mật khẩu cho account của độc giả đang chọn -->
             <Button fx:id="btnResetPassword" text="Đặt lại mật khẩu" disable="true" styleClass="btn-reset" onAction="#onResetPassword">
                 <padding>
                     <Insets bottom="8.0" left="15.0" right="15.0" top="8.0" />
@@ -85,19 +73,12 @@
             </Button>
         </HBox>
 
-        <!-- Thanh filter + search -->
         <HBox alignment="CENTER_LEFT" spacing="15.0">
-            <!-- Lọc theo nhóm quyền suy luận từ mã độc giả -->
             <ComboBox fx:id="groupFilter" prefWidth="170.0" promptText="Tất cả nhóm quyền" styleClass="filter-combo" style="-fx-background-radius: 8;" />
-
-            <!-- Tìm kiếm theo account, họ tên, sdt, email... -->
             <TextField fx:id="searchField" promptText="Tìm kiếm tài khoản, họ tên..." styleClass="search-field" style="-fx-background-radius: 8; -fx-padding: 8;" HBox.hgrow="ALWAYS" />
-
-            <!-- Nút tìm gọi lại applyFilter trong controller -->
             <Button onAction="#onSearchAction" styleClass="btn-search" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-background-radius: 8;" text="Tìm" />
         </HBox>
 
-        <!-- Khu vực bảng dữ liệu -->
         <VBox VBox.vgrow="ALWAYS">
             <TableView fx:id="readerTable"
                        editable="true"
@@ -105,13 +86,8 @@
                        style="-fx-background-color: transparent;"
                        VBox.vgrow="ALWAYS">
                 <columns>
-                    <!-- Checkbox chọn dòng -->
                     <TableColumn fx:id="colSelect" prefWidth="40.0" text="" />
-
-                    <!-- Avatar chữ viết tắt -->
                     <TableColumn fx:id="colAvatar" prefWidth="50.0" text="" />
-
-                    <!-- Các cột dữ liệu độc giả -->
                     <TableColumn fx:id="colAccount" prefWidth="120.0" text="Tài khoản" />
                     <TableColumn fx:id="colFullName" prefWidth="160.0" text="Họ tên" />
                     <TableColumn fx:id="colPhone" prefWidth="110.0" text="Điện thoại" />
@@ -125,47 +101,34 @@
             </TableView>
         </VBox>
 
-        <!-- Footer: tổng số bản ghi + UI phân trang -->
         <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="footer-bar">
             <Region HBox.hgrow="ALWAYS" />
             <Label styleClass="footer-label" text="Tổng:" />
             <Label fx:id="totalCountLabel" styleClass="footer-count" text="0 bản ghi" />
-
-            <!-- Hai mũi tên và current page hiện mới là phần giao diện -->
             <Label styleClass="pager-arrow" text="‹" style="-fx-cursor: hand;" />
             <Label styleClass="pager-current" text="1" style="-fx-font-weight: bold;" />
             <Label styleClass="pager-arrow" text="›" style="-fx-cursor: hand;" />
-
-            <!-- Combo chọn số dòng mỗi trang -->
             <ComboBox fx:id="pageSizeCombo" styleClass="page-size-combo" style="-fx-background-radius: 4;" />
         </HBox>
     </VBox>
 
-    <!--
-        Overlay popup:
-        - visible=false mặc định nên khi mới mở màn hình sẽ bị ẩn.
-        - controller sẽ bật visible=true khi thêm hoặc sửa độc giả.
-    -->
     <StackPane fx:id="readerPopupOverlay" visible="false" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-background-radius: 20;">
         <VBox maxWidth="550.0"
               maxHeight="-Infinity"
               spacing="20.0"
               style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 20, 0, 0, 5);">
 
-            <!-- Tiêu đề popup sẽ đổi theo mode thêm/sửa -->
             <Label fx:id="readerPopupTitle" text="Thêm Độc Giả Mới" textFill="#233771">
                 <font>
                     <Font name="System Bold" size="22.0" />
                 </font>
             </Label>
 
-            <!-- Khối thông tin mã độc giả -->
             <VBox spacing="6.0" styleClass="reader-code-box">
                 <Label fx:id="readerCodeCaption" text="Mã độc giả sẽ được tạo tự động" styleClass="reader-code-caption" />
                 <Label fx:id="readerCodeValue" text="--" styleClass="reader-code-value" />
             </VBox>
 
-            <!-- Form nhập dữ liệu -->
             <GridPane vgap="15.0" hgap="15.0">
                 <columnConstraints>
                     <ColumnConstraints minWidth="110.0" />
@@ -185,7 +148,6 @@
                 <ComboBox fx:id="popupStatusCombo" promptText="Chọn trạng thái" styleClass="reader-popup-combo" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             </GridPane>
 
-            <!-- Nút hủy và lưu -->
             <HBox alignment="CENTER_RIGHT" spacing="15.0">
                 <Button onAction="#closeReaderPopup" style="-fx-background-color: #f1f5f9; -fx-text-fill: #64748b; -fx-padding: 8 20; -fx-background-radius: 5; -fx-cursor: hand;" text="Hủy bỏ" />
                 <Button onAction="#saveReader" style="-fx-background-color: #1a73e8; -fx-text-fill: white; -fx-padding: 8 20; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold;" text="Lưu độc giả" />

@@ -6,9 +6,25 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<!--
+    File này hiện mới là form mẫu (template) và chưa được sử dụng thực tế
+    trong luồng quản lý độc giả hiện tại.
+
+    Hiện tại màn hình Reader Management đang dùng trực tiếp:
+    - reader-management-view.fxml cho màn hình chính
+    - popup overlay ngay trong file đó cho thêm/sửa độc giả
+
+    Vì vậy reader-form.fxml đang đóng vai trò "placeholder" hoặc file scaffold
+    được tạo ra ban đầu bởi IDE/JavaFX template.
+-->
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="CONTROLLER_NAME"
             prefHeight="400.0" prefWidth="600.0">
 
+    <!--
+        Chưa có node UI nào ở đây.
+        Nếu sau này muốn tách popup thêm/sửa độc giả ra thành một FXML riêng,
+        đây có thể là nơi phù hợp để dựng form đó.
+    -->
 </AnchorPane>
