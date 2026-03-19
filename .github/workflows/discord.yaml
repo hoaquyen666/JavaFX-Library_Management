@@ -20,7 +20,7 @@ jobs:
             \"embeds\": [{
               \"author\": {
                 \"name\": \"${{ github.actor }} vừa push code\",
-                \"icon_url\": \"https://github.com/${{ github.actor }}.png\"
+                \"icon_url\": \"https://avatars.githubusercontent.com/${{ github.actor }}?v=${{ github.run_number }}\"
               },
               \"title\": \"🚀 Có người vừa push code kìa!\",
               \"url\": \"https://github.com/${{ github.repository }}/commit/${{ github.sha }}\",
@@ -57,7 +57,7 @@ jobs:
             \"embeds\": [{
               \"author\": {
                 \"name\": \"${{ github.actor }} vừa merge Pull Request\",
-                \"icon_url\": \"https://github.com/${{ github.actor }}.png\"
+                \"icon_url\": \"https://avatars.githubusercontent.com/${{ github.actor }}?v=${{ github.run_number }}\"
               },
               \"title\": \"🔀 Pull Request đã được merge!\",
               \"url\": \"${{ github.event.pull_request.html_url }}\",

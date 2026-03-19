@@ -1,5 +1,7 @@
 package com.example.librarian.controller;
 
+import com.example.librarian.dao.ReaderDAO;
+import com.example.librarian.model.ReaderRecord;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,37 +11,36 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.Button;
-import java.util.Locale;
-import com.example.librarian.dao.ReaderDAO;
-import com.example.librarian.model.ReaderRecord;
-import javafx.scene.control.TextInputDialog;
-import java.util.Optional;
-import java.util.List;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.ButtonType;
-import javafx.scene.layout.GridPane;
 
+import java.util.List;
+import java.util.Locale;
 
 public class ReaderManagementController {
-    @FXML private  StackPane rootPane;
+
     @FXML
     private ComboBox<String> groupFilter;
+
+    // Ô nhập từ khóa tìm kiếm.
     @FXML
     private TextField searchField;
+
+    // Bảng hiển thị dữ liệu độc giả.
     @FXML
     private TableView<ReaderRow> readerTable;
+
+    // Các cột hiển thị trong bảng.
     @FXML
     private TableColumn<ReaderRow, Boolean> colSelect;
     @FXML
@@ -52,78 +53,127 @@ public class ReaderManagementController {
     private TableColumn<ReaderRow, String> colPhone;
     @FXML
     private TableColumn<ReaderRow, String> colEmail;
-
     @FXML
     private TableColumn<ReaderRow, String> colAddress;
     @FXML
     private TableColumn<ReaderRow, String> colStatus;
+
+    // Label tổng số bản ghi đang hiển thị sau lọc.
     @FXML
     private Label totalCountLabel;
+
+    // UI phân trang. Hiện controller mới nạp dữ liệu lên combo, chưa xử lý phân trang thật.
     @FXML
     private ComboBox<String> pageSizeCombo;
+
+    // Các nút hành động chính của màn hình.
     @FXML
     private Button btnAdd;
-
     @FXML
     private Button btnEdit;
-
     @FXML
     private Button btnResetPassword;
 
+    // Popup overlay dùng chung cho cả thêm và sửa độc giả.
+    @FXML
+    private StackPane readerPopupOverlay;
+    @FXML
+    private Label readerPopupTitle;
+    @FXML
+    private Label readerCodeCaption;
+    @FXML
+    private Label readerCodeValue;
+    @FXML
+    private TextField popupFullNameField;
+    @FXML
+    private TextField popupPhoneField;
+    @FXML
+    private TextField popupEmailField;
+    @FXML
+    private ComboBox<String> popupStatusCombo;
+
+    // masterRows giữ dữ liệu gốc lấy từ DB.
+    // filteredRows là lớp bọc để áp điều kiện filter lên masterRows.
     private final ObservableList<ReaderRow> masterRows = FXCollections.observableArrayList();
     private FilteredList<ReaderRow> filteredRows;
 
+    // editingReader == null  -> popup đang ở mode thêm mới.
+    // editingReader != null  -> popup đang ở mode chỉnh sửa.
+    private ReaderRow editingReader;
+
     @FXML
     private void initialize() {
+        // Trình tự khởi tạo:
+        // 1. dựng filter,
+        // 2. cấu hình bảng,
+        // 3. bind nguồn dữ liệu,
+        // 4. đọc dữ liệu từ DB,
+        // 5. lọc lần đầu.
         setupFilters();
         setupTable();
         bindTableData();
         loadReadersFromDatabase();
         applyFilter();
 
-        readerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)->{
+        // Hai trạng thái cho popup thêm/sửa độc giả.
+        popupStatusCombo.setItems(FXCollections.observableArrayList("Kích hoạt", "Khóa"));
 
+        // Click ra vùng nền tối để đóng popup.
+        readerPopupOverlay.setOnMouseClicked(event -> {
+            if (event.getTarget() == readerPopupOverlay) {
+                closeReaderPopup();
+            }
+        });
+
+        // Khi chưa chọn dòng nào thì vô hiệu hóa nút sửa và reset password.
+        readerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             boolean disable = newVal == null;
-
             btnEdit.setDisable(disable);
             btnResetPassword.setDisable(disable);
         });
-
-
     }
 
     @FXML
     private void onSearchAction() {
+        // Nút "Tìm" chỉ gọi lại logic filter.
+        // Ngoài ra, controller cũng đã lọc realtime khi người dùng gõ.
         applyFilter();
     }
 
     private void setupFilters() {
+        // Nhóm quyền ở đây được suy luận từ mã độc giả, không đọc trực tiếp từ DB.
         groupFilter.setItems(FXCollections.observableArrayList(
                 "Tất cả nhóm quyền", "Sinh viên", "Giảng viên", "Khách"
         ));
         groupFilter.getSelectionModel().selectFirst();
 
-
         pageSizeCombo.setItems(FXCollections.observableArrayList("20 / trang", "50 / trang", "100 / trang"));
         pageSizeCombo.getSelectionModel().selectFirst();
 
+        // Cứ thay đổi filter hoặc nội dung search là áp filter lại.
         groupFilter.valueProperty().addListener((obs, oldValue, newValue) -> applyFilter());
-
         searchField.textProperty().addListener((obs, oldValue, newValue) -> applyFilter());
     }
 
     private void setupTable() {
         readerTable.setEditable(true);
+
+        // Ẩn placeholder mặc định của JavaFX khi bảng rỗng.
         readerTable.setPlaceholder(new Label(""));
+
+        // Tự co giãn cột để tận dụng chiều ngang.
         readerTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         readerTable.setFixedCellSize(40);
 
+        // Cột checkbox được bind trực tiếp với BooleanProperty trong ReaderRow.
         colSelect.setCellValueFactory(cell -> cell.getValue().selectedProperty());
         colSelect.setCellFactory(CheckBoxTableCell.forTableColumn(colSelect));
         colSelect.setSortable(false);
         colSelect.setEditable(true);
         colSelect.setReorderable(false);
 
+        // Avatar ở đây không phải ảnh thật.
+        // Nó là chữ viết tắt của họ tên được dựng bằng ReaderRow.buildAvatar(...).
         colAvatar.setCellValueFactory(new PropertyValueFactory<>("avatarText"));
         colAvatar.setCellFactory(column -> new TableCell<>() {
             private final Label avatar = new Label();
@@ -149,12 +199,15 @@ public class ReaderManagementController {
         colAvatar.setSortable(false);
         colAvatar.setReorderable(false);
 
+        // PropertyValueFactory("account") sẽ gọi getAccount() trong ReaderRow.
+        // Tương tự cho fullName, phone, email, address.
         colAccount.setCellValueFactory(new PropertyValueFactory<>("account"));
         colFullName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
 
+        // Cột trạng thái dùng label dạng chip màu để nhìn rõ hơn.
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colStatus.setCellFactory(column -> new TableCell<>() {
             @Override
@@ -165,31 +218,44 @@ public class ReaderManagementController {
                     setText(null);
                     return;
                 }
+
                 Label chip = new Label(item);
-                chip.getStyleClass().addAll("status-chip", "status-active");
+                chip.getStyleClass().add("status-chip");
+
+                // Nếu status là "Khóa" thì tô màu khác để phân biệt với trạng thái hoạt động.
+                if ("Khóa".equalsIgnoreCase(item)) {
+                    chip.getStyleClass().add("status-locked");
+                } else {
+                    chip.getStyleClass().add("status-active");
+                }
+
                 setGraphic(chip);
                 setText(null);
             }
         });
     }
 
-
     private void bindTableData() {
+        // FilteredList cho phép thay đổi predicate để lọc dữ liệu mà không sửa masterRows.
         filteredRows = new FilteredList<>(masterRows, row -> true);
+
+        // SortedList giúp tận dụng sort của TableView.
         SortedList<ReaderRow> sortedRows = new SortedList<>(filteredRows);
         sortedRows.comparatorProperty().bind(readerTable.comparatorProperty());
+
+        // Từ đây về sau bảng luôn dùng dữ liệu sau lọc + sau sắp xếp.
         readerTable.setItems(sortedRows);
     }
 
     private void loadReadersFromDatabase() {
-
         ReaderDAO dao = new ReaderDAO();
         List<ReaderRecord> readers = dao.findAllReaders();
 
         masterRows.clear();
 
         for (ReaderRecord r : readers) {
-
+            // ReaderRecord là model dữ liệu DB.
+            // ReaderRow là model phục vụ UI, có thêm avatar/group/checkbox.
             masterRows.add(new ReaderRow(
                     r.getReaderCode(),
                     r.getUsername(),
@@ -208,14 +274,15 @@ public class ReaderManagementController {
             return;
         }
 
+        // Chuẩn hóa text để so sánh không phân biệt hoa thường và tránh khoảng trắng thừa.
         String keyword = normalize(searchField.getText());
         String group = groupFilter.getValue();
-
 
         filteredRows.setPredicate(row -> {
             boolean groupMatched = group == null
                     || "Tất cả nhóm quyền".equals(group)
                     || group.equals(row.getGroup());
+
             boolean keywordMatched = keyword.isBlank()
                     || normalize(row.getAccount()).contains(keyword)
                     || normalize(row.getFullName()).contains(keyword)
@@ -236,135 +303,134 @@ public class ReaderManagementController {
 
     //Hàm thêm độc giả, hiển thị PopUp
     @FXML
-    private void onAddReader(){
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Thêm độc giả");
+    private void onAddReader() {
+        // Mode thêm => xóa tham chiếu đối tượng đang sửa.
+        editingReader = null;
 
-        TextField txtName = new TextField();
-        TextField txtPhone = new TextField();
-        TextField txtEmail = new TextField();
+        // Reset popup về trạng thái rỗng để nhập mới.
+        readerPopupTitle.setText("Thêm Độc Giả Mới");
+        readerCodeCaption.setText("Mã độc giả sẽ được tạo tự động");
+        readerCodeValue.setText("--");
+        popupFullNameField.clear();
+        popupPhoneField.clear();
+        popupEmailField.clear();
+        popupStatusCombo.getSelectionModel().selectFirst();
 
-        ComboBox<String> cbStatus = new ComboBox<>();
-        cbStatus.getItems().addAll("Kích hoạt", "Khóa");
-        cbStatus.getSelectionModel().selectFirst();
+        readerPopupOverlay.setVisible(true);
+    }
 
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
+    @FXML
+    private void onEditReader() {
+        ReaderRow selected = readerTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Vui lòng chọn độc giả cần sửa.");
+            return;
+        }
 
-        grid.add(new Label("Họ tên:"),0,0);
-        grid.add(txtName,1,0);
+        // Lưu lại dòng được chọn để saveReader biết đang UPDATE chứ không phải INSERT.
+        editingReader = selected;
 
-        grid.add(new Label("Điện thoại:"),0,1);
-        grid.add(txtPhone,1,1);
+        // Đổ dữ liệu hiện tại của dòng lên popup.
+        readerPopupTitle.setText("Sửa Thông Tin Độc Giả");
+        readerCodeCaption.setText("Mã độc giả");
+        readerCodeValue.setText(selected.getReaderCode());
+        popupFullNameField.setText(selected.getFullName());
+        popupPhoneField.setText(selected.getPhone());
+        popupEmailField.setText(selected.getEmail());
+        popupStatusCombo.setValue(selected.getStatus());
 
-        grid.add(new Label("Email:"),0,2);
-        grid.add(txtEmail,1,2);
+        readerPopupOverlay.setVisible(true);
+    }
 
-        grid.add(new Label("Trạng thái:"),0,3);
-        grid.add(cbStatus,1,3);
+    @FXML
+    private void closeReaderPopup() {
+        readerPopupOverlay.setVisible(false);
+    }
 
-        dialog.getDialogPane().setContent(grid);
+    @FXML
+    private void saveReader() {
+        // Lấy dữ liệu từ form popup.
+        String fullName = popupFullNameField.getText() == null ? "" : popupFullNameField.getText().trim();
+        String phone = popupPhoneField.getText() == null ? "" : popupPhoneField.getText().trim();
+        String email = popupEmailField.getText() == null ? "" : popupEmailField.getText().trim();
+        String status = popupStatusCombo.getValue();
 
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK,ButtonType.CANCEL);
+        // Validation hiện tại mới ở mức cơ bản:
+        // - không để trống
+        // - chưa kiểm tra định dạng email/số điện thoại.
+        if (fullName.isBlank() || phone.isBlank() || email.isBlank() || status == null || status.isBlank()) {
+            showAlert(Alert.AlertType.WARNING, "Thiếu thông tin", "Vui lòng nhập đầy đủ họ tên, điện thoại, email và trạng thái.");
+            return;
+        }
 
-        Optional<ButtonType> result = dialog.showAndWait();
+        ReaderDAO dao = new ReaderDAO();
 
-        if(result.isPresent() && result.get() == ButtonType.OK){
-
+        if (editingReader == null) {
+            // THÊM MỚI:
+            // Mã độc giả được tạo tạm bằng timestamp.
+            // Cách này nhanh nhưng không đẹp và khó kiểm soát quy chuẩn mã về lâu dài.
             ReaderRecord reader = new ReaderRecord(
                     "SV" + System.currentTimeMillis(),
                     "",
-                    txtName.getText(),
-                    txtPhone.getText(),
-                    txtEmail.getText(),
-                    cbStatus.getValue()
+                    fullName,
+                    phone,
+                    email,
+                    status
             );
-
-            ReaderDAO dao = new ReaderDAO();
             dao.addReader(reader);
-
-            loadReadersFromDatabase();
-        }
-    }
-
-    @FXML
-    private void onEditReader(){
-        ReaderRow selected = readerTable.getSelectionModel().getSelectedItem();
-
-        if(selected == null) return;
-
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Sửa độc giả");
-
-        TextField txtName = new TextField(selected.getFullName());
-        TextField txtPhone = new TextField(selected.getPhone());
-        TextField txtEmail = new TextField(selected.getEmail());
-
-        ComboBox<String> cbStatus = new ComboBox<>();
-        cbStatus.getItems().addAll("Kích hoạt","Khóa");
-        cbStatus.setValue(selected.getStatus());
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-
-        grid.add(new Label("Họ tên:"),0,0);
-        grid.add(txtName,1,0);
-
-        grid.add(new Label("Điện thoại:"),0,1);
-        grid.add(txtPhone,1,1);
-
-        grid.add(new Label("Email:"),0,2);
-        grid.add(txtEmail,1,2);
-
-        grid.add(new Label("Trạng thái:"),0,3);
-        grid.add(cbStatus,1,3);
-
-        dialog.getDialogPane().setContent(grid);
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK,ButtonType.CANCEL);
-
-        Optional<ButtonType> result = dialog.showAndWait();
-
-        if(result.isPresent() && result.get()==ButtonType.OK){
-
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã thêm độc giả mới.");
+        } else {
+            // CẬP NHẬT:
+            // Giữ nguyên mã độc giả và account cũ, chỉ sửa thông tin thay đổi.
             ReaderRecord reader = new ReaderRecord(
-                    selected.getReaderCode(),
-                    selected.getAccount(),
-                    txtName.getText(),
-                    txtPhone.getText(),
-                    txtEmail.getText(),
-                    cbStatus.getValue()
+                    editingReader.getReaderCode(),
+                    editingReader.getAccount(),
+                    fullName,
+                    phone,
+                    email,
+                    status
             );
-
-            ReaderDAO dao = new ReaderDAO();
             dao.updateReader(reader);
-
-            loadReadersFromDatabase();
+            showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã cập nhật thông tin độc giả.");
         }
+
+        // Sau khi lưu, reload lại dữ liệu để UI khớp hoàn toàn với DB.
+        closeReaderPopup();
+        loadReadersFromDatabase();
+        applyFilter();
     }
 
     @FXML
-    private void onResetPassword(){
+    private void onResetPassword() {
         ReaderRow selected = readerTable.getSelectionModel().getSelectedItem();
-
-        if(selected == null) return;
+        if (selected == null) {
+            return;
+        }
 
         ReaderDAO dao = new ReaderDAO();
-        dao.resetPassword(selected.getAccount());
 
-        Dialog<String> dialog = new Dialog<>();
-        dialog.setTitle("Reset Password");
-        dialog.setContentText("Password đã reset về: 123456");
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-        dialog.showAndWait();
+        // Reset password ở đây chỉ gọi DAO set cứng mật khẩu về 123456.
+        dao.resetPassword(selected.getAccount());
+        showAlert(Alert.AlertType.INFORMATION, "Reset Password", "Password đã reset về: 123456");
 
         loadReadersFromDatabase();
     }
 
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        // Gom logic Alert để tránh lặp code ở nhiều nơi.
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 
     public static class ReaderRow {
+        // selected phục vụ cột checkbox trong TableView.
         private final BooleanProperty selected = new SimpleBooleanProperty(false);
+
+        // Các property phục vụ UI.
+        // Dùng JavaFX Property giúp TableView binding dữ liệu thuận tiện hơn.
         private final StringProperty readerCode = new SimpleStringProperty();
         private final StringProperty account = new SimpleStringProperty();
         private final StringProperty fullName = new SimpleStringProperty();
@@ -386,22 +452,31 @@ public class ReaderManagementController {
             this.department.set(department);
             this.address.set(address);
             this.status.set(status);
+
+            // Hai field này được "suy luận" để phục vụ hiển thị.
             this.avatarText.set(buildAvatar(fullName));
             this.group.set(resolveGroup(id));
         }
 
         private static String buildAvatar(String name) {
+            // Nếu tên trống thì dùng ký tự mặc định.
             if (name == null || name.isBlank()) {
                 return "R";
             }
+
             String[] parts = name.trim().split("\\s+");
+
+            // Nếu chỉ có một từ thì lấy tối đa 2 ký tự đầu.
             if (parts.length == 1) {
                 return parts[0].substring(0, Math.min(2, parts[0].length())).toUpperCase(Locale.ROOT);
             }
+
+            // Nếu nhiều từ thì lấy chữ cái đầu của từ đầu và từ cuối.
             return (parts[0].substring(0, 1) + parts[parts.length - 1].substring(0, 1)).toUpperCase(Locale.ROOT);
         }
 
         private static String resolveGroup(String id) {
+            // Suy luận nhóm độc giả từ prefix của ReaderCode.
             if (id == null) {
                 return "Khách";
             }
@@ -413,8 +488,6 @@ public class ReaderManagementController {
             }
             return "Khách";
         }
-
-
 
         public BooleanProperty selectedProperty() {
             return selected;
@@ -456,6 +529,8 @@ public class ReaderManagementController {
             return group.get();
         }
 
-        public String getReaderCode(){ return readerCode.get(); }
+        public String getReaderCode() {
+            return readerCode.get();
+        }
     }
 }

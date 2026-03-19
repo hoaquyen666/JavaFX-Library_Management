@@ -3,8 +3,7 @@ DATABASE IF NOT EXISTS library
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
-use
-library;
+use library;
 
 create table CategoryGroup
 (
@@ -159,9 +158,7 @@ create table BorrowDetail
     DepositAmount decimal(13,0) default 0 comment 'Tiền cọc = 1/2 giá sách'
 
     unique (BorrowId, CopyId),
-
-    constraint FK_Price_Book
-
+	
     constraint FK_BorrowDetail_Borrow
         foreign key (BorrowId) references Borrow (BorrowId),
     constraint FK_BorrowDetail_Copy

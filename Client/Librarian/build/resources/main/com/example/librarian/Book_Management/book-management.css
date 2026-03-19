@@ -1,0 +1,101 @@
+/*!* Sidebar cơ bản *!*/
+/*.sidebar {*/
+/*    -fx-background-color: #233771;*/
+/*    -fx-padding: 10 10 10 10;*/
+/*    -fx-spacing: 15;*/
+/*}*/
+
+/*.card {*/
+/*    -fx-background-color: white;*/
+/*    -fx-background-radius: 20; !* Bo góc phần nền trắng *!*/
+/*    -fx-border-color: #e0e0e0; !* Màu viền xám nhạt để phân tách với nền *!*/
+/*    -fx-border-radius: 12;     !* Độ bo góc của viền (phải bằng background-radius) *!*/
+/*    -fx-border-width: 1;       !* Độ dày của viền *!*/
+/*    -fx-padding: 15;*/
+/*    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);*/
+/*}*/
+
+/*.book-table {*/
+/*    -fx-border-color: #bfe5ff;*/
+/*    -fx-border-width: 1;*/
+/*    -fx-table-cell-border-color: #c7e8fb;*/
+/*    -fx-selection-bar: #edf7ff;*/
+/*    -fx-selection-bar-non-focused: #edf7ff;*/
+/*    -fx-fixed-cell-size: 40;*/
+/*}*/
+/*!* Nút bấm bo góc *!*/
+/*.btn-primary {*/
+/*    -fx-background-color: #007bff; !* Hoặc màu cam của trường *!*/
+/*    -fx-text-fill: white;*/
+/*    -fx-background-radius: 8;*/
+/*    -fx-cursor: hand;*/
+/*    -fx-padding: 8 15 8 15;*/
+/*}*/
+
+/*.table-view {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-border-color: transparent;*/
+/*}*/
+/*.table-view .column-header-background {*/
+/*    -fx-background-color: #f8f9fa; !* Màu xám nhạt cho tiêu đề cột giống web *!*/
+/*}*/
+
+/*.dynamic-island {*/
+/*    -fx-background-color: black;*/
+/*    -fx-background-radius: 20; !* Bo tròn thành hình viên thuốc *!*/
+/*    -fx-padding: 10 20;*/
+/*    -fx-alignment: center;*/
+/*    -fx-translate-y: 15; !* Cách lề trên một chút *!*/
+/*    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 5);*/
+/*}*/
+
+/*.book-table .column-header-background {*/
+/*    -fx-background-color: #d7f2ff;*/
+/*    -fx-background-radius: 8 8 0 0; !* Bo tròn nhẹ 2 góc trên cùng *!*/
+/*    -fx-background-insets: 0 0 1 0;*/
+/*}*/
+
+/*.book-table .column-header {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-border-color: transparent #c7e8fb transparent transparent;*/
+/*    -fx-border-width: 1px;*/
+/*}*/
+
+/*.book-table .column-header .label {*/
+/*    -fx-text-fill: #233771;*/
+/*    -fx-font-weight: bold;*/
+/*    -fx-font-size: 13px;*/
+/*    -fx-alignment: CENTER;*/
+/*}*/
+
+/*.book-table .filler {*/
+/*    -fx-background-color: #d7f2ff;*/
+/*}*/
+
+/*CSS CHO CÁC BUTTON THÊM SỬA XOÁ */
+.btn-add{
+    -fx-background-color: linear-gradient(to right bottom, #329d9c, #56c596);
+    -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;
+}
+.btn-add:hover{
+    -fx-background-color: linear-gradient(to left top, #329d9c, #56c596);
+    -fx-effect: dropshadow(three-pass-box, rgba(50, 157, 156, 0.5), 10, 0, 0, 3);
+}
+.btn-edit{
+    -fx-background-color: linear-gradient(to right bottom, #ff9190, #fdc094);
+    -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;
+}
+
+.btn-edit:hover{
+    -fx-background-color: linear-gradient(to left top, #ff9190, #fdc094);
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 145, 144, 0.2), 10, 0, 0, 3);
+}
+.btn-delete{
+    -fx-background-color: linear-gradient(to right bottom, #f9ad6a, #d46c4e);
+    -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand;
+}
+
+.btn-delete:hover{
+    -fx-background-color: linear-gradient(to left top, #f9ad6a, #d46c4e);
+    -fx-effect: dropshadow(three-pass-box, rgba(249, 173, 146, 0.3), 10, 0, 0, 3);
+}
